@@ -8,11 +8,16 @@
 
 #import "TMBOAppDelegate.h"
 
+#import <Crashlytics/Crashlytics.h>
+
 @implementation TMBOAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    [Crashlytics startWithAPIKey:@"eff98601e169f1338233242f16fb6b59edf0cf8c"];
+    
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

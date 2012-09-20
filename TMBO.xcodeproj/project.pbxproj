@@ -21,6 +21,7 @@
 		BC2FF609160AA21500FE4AA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
 		BC2FF611160AA21500FE4AA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC2FF60F160AA21500FE4AA5 /* InfoPlist.strings */; };
 		BC2FF614160AA21500FE4AA5 /* TMBOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2FF613160AA21500FE4AA5 /* TMBOTests.m */; };
+		BC2FF61F160AA28300FE4AA5 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF61E160AA28300FE4AA5 /* Crashlytics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		BC2FF610160AA21500FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC2FF612160AA21500FE4AA5 /* TMBOTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TMBOTests.h; sourceTree = "<group>"; };
 		BC2FF613160AA21500FE4AA5 /* TMBOTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBOTests.m; sourceTree = "<group>"; };
+		BC2FF61E160AA28300FE4AA5 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				BC2FF5E9160AA21400FE4AA5 /* UIKit.framework in Frameworks */,
 				BC2FF5EB160AA21400FE4AA5 /* Foundation.framework in Frameworks */,
 				BC2FF5ED160AA21400FE4AA5 /* CoreGraphics.framework in Frameworks */,
+				BC2FF61F160AA28300FE4AA5 /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +104,7 @@
 		BC2FF5E7160AA21400FE4AA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BC2FF61E160AA28300FE4AA5 /* Crashlytics.framework */,
 				BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */,
 				BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */,
 				BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */,
@@ -162,6 +166,7 @@
 				BC2FF5E0160AA21400FE4AA5 /* Sources */,
 				BC2FF5E1160AA21400FE4AA5 /* Frameworks */,
 				BC2FF5E2160AA21400FE4AA5 /* Resources */,
+				BC2FF61D160AA24D00FE4AA5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -254,6 +259,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		BC2FF61D160AA24D00FE4AA5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run eff98601e169f1338233242f16fb6b59edf0cf8c";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -359,6 +377,10 @@
 		BC2FF618160AA21500FE4AA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TMBO/TMBO-Prefix.pch";
 				INFOPLIST_FILE = "TMBO/TMBO-Info.plist";
@@ -370,6 +392,10 @@
 		BC2FF619160AA21500FE4AA5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TMBO/TMBO-Prefix.pch";
 				INFOPLIST_FILE = "TMBO/TMBO-Info.plist";
