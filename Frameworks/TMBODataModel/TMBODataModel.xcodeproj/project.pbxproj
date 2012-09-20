@@ -54,6 +54,8 @@
 		BC2F20F6160B8D6700C28105 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC2F20F8160B8D6700C28105 /* TMBODataModelTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TMBODataModelTests.h; sourceTree = "<group>"; };
 		BC2F20F9160B8D6700C28105 /* TMBODataModelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBODataModelTests.m; sourceTree = "<group>"; };
+		BC2F2114160B937800C28105 /* TMBODataModelToken-local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TMBODataModelToken-local.h"; sourceTree = "<group>"; };
+		BC2F2115160B937800C28105 /* TMBODataModelToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMBODataModelToken.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,8 @@
 		BC2F20F2160B8D6700C28105 /* TMBODataModelTests */ = {
 			isa = PBXGroup;
 			children = (
+				BC2F2114160B937800C28105 /* TMBODataModelToken-local.h */,
+				BC2F2115160B937800C28105 /* TMBODataModelToken.h */,
 				BC2F20F8160B8D6700C28105 /* TMBODataModelTests.h */,
 				BC2F20F9160B8D6700C28105 /* TMBODataModelTests.m */,
 				BC2F20F3160B8D6700C28105 /* Supporting Files */,
