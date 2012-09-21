@@ -12,7 +12,7 @@
         <attribute name="nsfw" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="repostVotes" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="subscribed" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="thumbnail" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="thumbnailData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="thumbURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="tmbo" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -20,9 +20,10 @@
         <attribute name="type" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="uploadid" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="userid" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Upload" positionX="160" positionY="192" width="128" height="345"/>
+        <element name="Upload" positionX="160" positionY="192" width="128" height="360"/>
     </elements>
 </model>

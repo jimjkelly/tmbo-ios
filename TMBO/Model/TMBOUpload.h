@@ -2,7 +2,7 @@
 //  TMBOUpload.h
 //  TMBO
 //
-//  Created by Scott Perry on 09/20/12.
+//  Created by Scott Perry on 09/21/12.
 //  Copyright (c) 2012 Scott Perry. All rights reserved.
 //
 
@@ -31,5 +31,9 @@
 @property (nonatomic) int32_t width;
 @property (nonatomic) int32_t height;
 @property (nonatomic, retain) NSString * thumbURL;
+@property (nonatomic, retain) NSData * thumbnailData;
+@property (nonatomic, retain) NSString * username;
+
+@property (nonatomic, retain) UIImage *thumbnail;
 
 @end

@@ -2,7 +2,7 @@
 //  TMBOUpload.m
 //  TMBO
 //
-//  Created by Scott Perry on 09/20/12.
+//  Created by Scott Perry on 09/21/12.
 //  Copyright (c) 2012 Scott Perry. All rights reserved.
 //
 
@@ -30,5 +30,29 @@
 @dynamic width;
 @dynamic height;
 @dynamic thumbURL;
+@dynamic thumbnailData;
+@dynamic username;
+
+@synthesize thumbnail = _thumbnail;
+
+- (UIImage *)thumbnail
+{
+    if (!self.thumbnailData) return nil;
+    
+    if (!_thumbnail) {
+        _thumbnail = [UIImage imageWithData:self.thumbnailData];
+    }
+    return _thumbnail;
+}
+
+- (void)setThumbnail:(UIImage *)image;
+{
+    UIImage *smallImage = image;
+    // TODO: resize this to thumbnailish-size for device
+
+    _thumbnail = smallImage;
+    
+    self.thumbnailData = UIImageJPEGRepresentation(smallImage, 0.8);
+}
 
 @end

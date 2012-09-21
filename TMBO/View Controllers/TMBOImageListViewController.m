@@ -10,6 +10,7 @@
 
 #import <CoreData/CoreData.h>
 
+#import "TMBOImageListCell.h"
 #import "TMBOUpload.h"
 
 @interface TMBOImageListViewController () <NSFetchedResultsControllerDelegate> {
@@ -50,6 +51,9 @@
     [self refetchData];
     
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refetchData)];
+    
+    UINib *nib = [UINib nibWithNibName:@"TMBOImageListCell" bundle:nil];
+    [[self tableView] registerNib:nib forCellReuseIdentifier:@"TMBOImageListCell"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,21 +76,41 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"TMBOImageListCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     
     [self configureCell:cell atIndexPath:indexPath];
     
     return cell;
 }
 
-- (void)configureCell:(UITableViewCell *)cell
+- (void)configureCell:(UITableViewCell *)uitvcell
           atIndexPath:(NSIndexPath *)indexPath
 {
+    TMBOImageListCell *cell = (TMBOImageListCell *)uitvcell;
     @try {
         TMBOUpload *upload = (TMBOUpload *)[_fetchedResultsController objectAtIndexPath:indexPath];
-        [[cell textLabel] setText:[upload filename]];
+        
+        [[cell filenameView] setText:[upload filename]];
+        
+        [[cell uploaderView] setText:[NSString stringWithFormat:@"uploaded by %@", [upload username]]];
+        
+        NSString *commentsLabel;
+        if ([upload comments] == 0) {
+            commentsLabel = @"0 comments";
+        } else if ([upload comments] == 1) {
+            commentsLabel = @"1 comment";
+        } else {
+            commentsLabel = [NSString stringWithFormat:@"%u comments", [upload comments]];
+        }
+        [[cell commentsView] setText:commentsLabel];
+        
+        NSString *votesLabel = [NSString stringWithFormat:@"+%u -%u", [upload goodVotes], [upload badVotes]];
+        if ([upload tmboVotes]) {
+            votesLabel = [votesLabel stringByAppendingFormat:@" x%u", [upload tmboVotes]];
+        }
+        [[cell votesView] setText:votesLabel];
     }
     @catch (NSException *exception) {
         NSLog(@"Exception: %@", exception);
