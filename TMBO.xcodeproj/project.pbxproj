@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E6E0FE5CE7C4DC5ABD49088 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE62E04601140D4889DFD23 /* libPods.a */; };
 		BC2F210E160B8DB900C28105 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2F210D160B8DB900C28105 /* Crashlytics.framework */; };
 		BC2FF5E9160AA21400FE4AA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */; };
 		BC2FF5EB160AA21400FE4AA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
@@ -35,11 +36,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BC2F210D160B8DB900C28105 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
+		BC2F210D160B8DB900C28105 /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
 		BC2FF5E4160AA21400FE4AA5 /* TMBO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBO.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		BC2FF5F0160AA21400FE4AA5 /* TMBO-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TMBO-Info.plist"; sourceTree = "<group>"; };
 		BC2FF5F2160AA21400FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC2FF5F4160AA21400FE4AA5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -55,6 +56,8 @@
 		BC2FF610160AA21500FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC2FF612160AA21500FE4AA5 /* TMBOTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TMBOTests.h; sourceTree = "<group>"; };
 		BC2FF613160AA21500FE4AA5 /* TMBOTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBOTests.m; sourceTree = "<group>"; };
+		DBE62E04601140D4889DFD23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE9D6074275D4E8BAE5CDAAB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +69,7 @@
 				BC2FF5EB160AA21400FE4AA5 /* Foundation.framework in Frameworks */,
 				BC2FF5ED160AA21400FE4AA5 /* CoreGraphics.framework in Frameworks */,
 				BC2F210E160B8DB900C28105 /* Crashlytics.framework in Frameworks */,
+				4E6E0FE5CE7C4DC5ABD49088 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +93,7 @@
 				BC2FF60C160AA21500FE4AA5 /* TMBOTests */,
 				BC2FF5E7160AA21400FE4AA5 /* Frameworks */,
 				BC2FF5E5160AA21400FE4AA5 /* Products */,
+				FE9D6074275D4E8BAE5CDAAB /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,6 +114,7 @@
 				BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */,
 				BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */,
 				BC2FF606160AA21500FE4AA5 /* SenTestingKit.framework */,
+				DBE62E04601140D4889DFD23 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -168,6 +174,7 @@
 				BC2FF5E2160AA21400FE4AA5 /* Resources */,
 				BC2FF61D160AA24D00FE4AA5 /* ShellScript */,
 				BC2F210F160B8DDF00C28105 /* ShellScript */,
+				00B5111BC7D44E26B6540966 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -248,6 +255,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		00B5111BC7D44E26B6540966 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
 		BC2F210F160B8DDF00C28105 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -390,6 +411,7 @@
 		};
 		BC2FF618160AA21500FE4AA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE9D6074275D4E8BAE5CDAAB /* Pods.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -406,6 +428,7 @@
 		};
 		BC2FF619160AA21500FE4AA5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE9D6074275D4E8BAE5CDAAB /* Pods.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
