@@ -1,3 +1,0 @@
-[submodule "Frameworks/AFIncrementalStore"]
-	path = Frameworks/AFIncrementalStore
-	url = git://github.com/AFNetworking/AFIncrementalStore.git
