@@ -9,9 +9,11 @@
 #import "TMBOImageListViewController.h"
 
 #import <CoreData/CoreData.h>
+#import <UIImageView+AFNetworking.h>
 
 #import "TMBOImageListCell.h"
 #import "TMBOUpload.h"
+#import "UIImage+Resize.h"
 
 @interface TMBOImageListViewController () <NSFetchedResultsControllerDelegate> {
     NSFetchedResultsController *_fetchedResultsController;
@@ -111,6 +113,35 @@
             votesLabel = [votesLabel stringByAppendingFormat:@" x%u", [upload tmboVotes]];
         }
         [[cell votesView] setText:votesLabel];
+        
+        // Compute ideal thumbnail size in pixels (not points)
+        CGSize thumbsize = [[cell thumbnailView] bounds].size;
+        thumbsize.width *= [[UIScreen mainScreen] scale];
+        thumbsize.height *= [[UIScreen mainScreen] scale];
+        
+        UIImage *thumbnail = [upload thumbnail];
+        if (thumbnail) {
+            [[cell thumbnailView] setImage:thumbnail];
+        }
+        if ([upload thumbURL] && (!thumbnail || [thumbnail size].height < thumbsize.height || [thumbnail size].width < thumbsize.width)) {
+            // Thumbnail is not good enough. Load another!
+            NSURL *thumbURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://thismight.be%@", [upload thumbURL]]];
+            NSURLRequest *req = [NSURLRequest requestWithURL:thumbURL cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:60.0];
+            [[cell thumbnailView] setImageWithURLRequest:req
+                                    placeholderImage:nil
+                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                 UIImage *thumb = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:thumbsize interpolationQuality:kCGInterpolationHigh];
+                                                 [upload setThumbnail:thumb];
+//                                                 [cell thumbnailView] setImage:<#(UIImage *)#>
+                                                 [[cell spinner] stopAnimating];
+                                                 [cell setNeedsDisplay];
+                                             }
+                                             failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                                 NSLog(@"Error getting thumbnail: %@ (%@)", error, [error localizedDescription]);
+                                                 [[cell spinner] stopAnimating];
+                                                 [cell setNeedsDisplay];
+                                             }];
+        }
     }
     @catch (NSException *exception) {
         NSLog(@"Exception: %@", exception);
