@@ -25,6 +25,9 @@
     [super forwardInvocation:anInvocation];
 }
 
+/*
+ * responseJSON returns the parsed JSON data as Foundation objects, but when piping the result directly into a Core Data model, the types are occasionally incorrect. This causes really bad errors later, so inspect the result and ensure that data objects are of the correct types.
+ */
 - (id)responseJSON;
 {
     id response = [super responseJSON];
@@ -71,8 +74,7 @@
                 }
                 if (tzone) {
                     NSLog(@"Time zone info extracted from time: %@", tzone);
-                } else {
-                    NSLog(@"No time zone information found");
+                    NotTested();
                 }
                 return date;
             }
