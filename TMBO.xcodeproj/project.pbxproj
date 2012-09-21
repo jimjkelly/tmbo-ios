@@ -25,20 +25,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BC2F2108160B8D6800C28105 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BC2F2103160B8D6700C28105 /* TMBODataModel.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC2F20D8160B8D6700C28105;
-			remoteInfo = TMBODataModel;
-		};
-		BC2F210A160B8D6800C28105 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BC2F2103160B8D6700C28105 /* TMBODataModel.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC2F20E9160B8D6700C28105;
-			remoteInfo = TMBODataModelTests;
-		};
 		BC2FF60A160AA21500FE4AA5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BC2FF5DB160AA21400FE4AA5 /* Project object */;
@@ -49,7 +35,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BC2F2103160B8D6700C28105 /* TMBODataModel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TMBODataModel.xcodeproj; path = Frameworks/TMBODataModel/TMBODataModel.xcodeproj; sourceTree = "<group>"; };
 		BC2F210D160B8DB900C28105 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
 		BC2FF5E4160AA21400FE4AA5 /* TMBO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -97,15 +82,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		BC2F2104160B8D6700C28105 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BC2F2109160B8D6800C28105 /* libTMBODataModel.a */,
-				BC2F210B160B8D6800C28105 /* TMBODataModelTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		BC2FF5D9160AA21400FE4AA5 = {
 			isa = PBXGroup;
 			children = (
@@ -128,7 +104,6 @@
 		BC2FF5E7160AA21400FE4AA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BC2F2103160B8D6700C28105 /* TMBODataModel.xcodeproj */,
 				BC2F210D160B8DB900C28105 /* Crashlytics.framework */,
 				BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */,
 				BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */,
@@ -242,12 +217,6 @@
 			mainGroup = BC2FF5D9160AA21400FE4AA5;
 			productRefGroup = BC2FF5E5160AA21400FE4AA5 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = BC2F2104160B8D6700C28105 /* Products */;
-					ProjectRef = BC2F2103160B8D6700C28105 /* TMBODataModel.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				BC2FF5E3160AA21400FE4AA5 /* TMBO */,
@@ -255,23 +224,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		BC2F2109160B8D6800C28105 /* libTMBODataModel.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libTMBODataModel.a;
-			remoteRef = BC2F2108160B8D6800C28105 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BC2F210B160B8D6800C28105 /* TMBODataModelTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = TMBODataModelTests.octest;
-			remoteRef = BC2F210A160B8D6800C28105 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		BC2FF5E2160AA21400FE4AA5 /* Resources */ = {
