@@ -16,6 +16,7 @@
 		BC2F2166160C016000C28105 /* TMBOJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2165160C016000C28105 /* TMBOJSONRequestOperation.m */; };
 		BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BC2F2173160CE41C00C28105 /* TMBOImageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2172160CE41C00C28105 /* TMBOImageListViewController.m */; };
+		BC2F2181160CF57900C28105 /* debugger.c in Sources */ = {isa = PBXBuildFile; fileRef = BC2F217F160CF57900C28105 /* debugger.c */; };
 		BC2FF5E9160AA21400FE4AA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */; };
 		BC2FF5EB160AA21400FE4AA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
 		BC2FF5ED160AA21400FE4AA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */; };
@@ -57,6 +58,8 @@
 		BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ISO8601DateFormatter.m; path = "lib/iso-8601-date-formatter/ISO8601DateFormatter.m"; sourceTree = "<group>"; };
 		BC2F2171160CE41C00C28105 /* TMBOImageListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOImageListViewController.h; path = "View Controllers/TMBOImageListViewController.h"; sourceTree = "<group>"; };
 		BC2F2172160CE41C00C28105 /* TMBOImageListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOImageListViewController.m; path = "View Controllers/TMBOImageListViewController.m"; sourceTree = "<group>"; };
+		BC2F217F160CF57900C28105 /* debugger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = debugger.c; path = lib/debugger.c; sourceTree = "<group>"; };
+		BC2F2180160CF57900C28105 /* debugger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = debugger.h; path = lib/debugger.h; sourceTree = "<group>"; };
 		BC2FF5E4160AA21400FE4AA5 /* TMBO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -125,6 +128,8 @@
 		BC2F216B160C09EF00C28105 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				BC2F217F160CF57900C28105 /* debugger.c */,
+				BC2F2180160CF57900C28105 /* debugger.h */,
 				BC2F216C160C09F600C28105 /* iso-8601-date-formatter */,
 			);
 			name = lib;
@@ -389,6 +394,7 @@
 				BC2F2166160C016000C28105 /* TMBOJSONRequestOperation.m in Sources */,
 				BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */,
 				BC2F2173160CE41C00C28105 /* TMBOImageListViewController.m in Sources */,
+				BC2F2181160CF57900C28105 /* debugger.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
