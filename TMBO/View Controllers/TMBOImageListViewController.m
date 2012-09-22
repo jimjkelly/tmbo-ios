@@ -114,34 +114,64 @@
         }
         [[cell votesView] setText:votesLabel];
         
-        // Compute ideal thumbnail size in pixels (not points)
-        CGSize thumbsize = [[cell thumbnailView] bounds].size;
-        thumbsize.width *= [[UIScreen mainScreen] scale];
-        thumbsize.height *= [[UIScreen mainScreen] scale];
-        
-        UIImage *thumbnail = [upload thumbnail];
-        if (thumbnail) {
-            [[cell thumbnailView] setImage:thumbnail];
-        }
-        if ([upload thumbURL] && (!thumbnail || [thumbnail size].height < thumbsize.height || [thumbnail size].width < thumbsize.width)) {
-            // Thumbnail is not good enough. Load another!
-            NSURL *thumbURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://thismight.be%@", [upload thumbURL]]];
-            NSURLRequest *req = [NSURLRequest requestWithURL:thumbURL cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:60.0];
-            [[cell thumbnailView] setImageWithURLRequest:req
-                                    placeholderImage:nil
-                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                 UIImage *thumb = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:thumbsize interpolationQuality:kCGInterpolationHigh];
-                                                 [upload setThumbnail:thumb];
-//                                                 [cell thumbnailView] setImage:<#(UIImage *)#>
-                                                 [[cell spinner] stopAnimating];
-                                                 [cell setNeedsDisplay];
-                                             }
-                                             failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                                 NSLog(@"Error getting thumbnail: %@ (%@)", error, [error localizedDescription]);
-                                                 [[cell spinner] stopAnimating];
-                                                 [cell setNeedsDisplay];
-                                             }];
-        }
+        // Image stuff is potentially slow, so get off the main thread right away.
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            // Compute ideal thumbnail size in pixels (not points)
+            CGSize thumbsize = [[cell thumbnailView] bounds].size;
+            thumbsize.width *= [[UIScreen mainScreen] scale];
+            thumbsize.height *= [[UIScreen mainScreen] scale];
+            
+            UIImage *thumbnail = [upload thumbnail];
+            if (thumbnail && ![upload filtered]) {
+                [[cell spinner] stopAnimating];
+                [[cell thumbnailView] setImage:thumbnail];
+                [cell setNeedsDisplay];
+            } else if ([upload filtered]) {
+                [[cell spinner] stopAnimating];
+                [[cell thumbnailView] setImage:[UIImage imageNamed:@"th-filtered"]];
+                [cell setNeedsDisplay];
+            }
+            
+            if ([upload thumbURL] && (!thumbnail || [thumbnail size].height < thumbsize.height || [thumbnail size].width < thumbsize.width)) {
+                // Thumbnail is not good enough. Load another!
+                NSURL *thumbURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://thismight.be%@", [upload thumbURL]]];
+                NSURLRequest *req = [NSURLRequest requestWithURL:thumbURL cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:60.0];
+                
+                AFImageRequestOperation *afop = [AFImageRequestOperation imageRequestOperationWithRequest:req imageProcessingBlock:^UIImage *(UIImage *image){
+                        UIImage *thumb = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:thumbsize interpolationQuality:kCGInterpolationHigh];
+                        [upload setThumbnail:thumb];
+                        return thumb;
+                    }
+                    success:^(NSURLRequest *request , NSHTTPURLResponse *response , UIImage *image ) {
+                        NSIndexPath *path = [_fetchedResultsController indexPathForObject:upload];
+                        TMBOImageListCell *validCell = (TMBOImageListCell *)[self.tableView cellForRowAtIndexPath:path];
+                        
+                        if (validCell) {
+NSLog(@"valid cell, update thumb and disable spinner");
+                            [[validCell spinner] stopAnimating];
+                            if (![upload filtered]) {
+                                [[validCell thumbnailView] setImage:image];
+                            }
+                            [validCell setNeedsDisplay];
+                        }
+                    }
+                    failure:^( NSURLRequest *request , NSHTTPURLResponse *response , NSError *error ){
+                        NSIndexPath *path = [_fetchedResultsController indexPathForObject:upload];
+                        TMBOImageListCell *validCell = (TMBOImageListCell *)[self.tableView cellForRowAtIndexPath:path];
+
+                        if (validCell) {
+                            [[cell spinner] stopAnimating];
+                            // TODO: failure?
+                            /* Plan:
+                             * Add a layer over the thumbnail that, if tapped and thumbnail is not set, causes a retry for the thumbnail. In the meantime, come up with an asset to put here that indicates that the load failed.
+                             */
+                            [cell setNeedsDisplay];
+                        }
+                    }];
+                
+                [afop start];
+            }
+        });
     }
     @catch (NSException *exception) {
         NSLog(@"Exception: %@", exception);
