@@ -13,6 +13,7 @@
 
 #import "TMBOImageListCell.h"
 #import "TMBOJSONRequestOperation.h"
+#import "TMBOLoadingCell.h"
 #import "TMBOUpload.h"
 #import "UIImage+Resize.h"
 
@@ -86,6 +87,8 @@
     
     UINib *nib = [UINib nibWithNibName:@"TMBOImageListCell" bundle:nil];
     [[self tableView] registerNib:nib forCellReuseIdentifier:@"TMBOImageListCell"];
+    nib = [UINib nibWithNibName:@"TMBOLoadingCell" bundle:nil];
+    [[self tableView] registerNib:nib forCellReuseIdentifier:@"TMBOLoadingCell"];
     
     _topRefresh = [[UIRefreshControl alloc] init];
     [_topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
