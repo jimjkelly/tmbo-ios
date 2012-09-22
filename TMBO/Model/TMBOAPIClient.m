@@ -100,7 +100,7 @@
 
     // Authentication token
     Assert(kTMBOToken);
-    // if Assert -> [[NSUserDefaults standardUserDefaults] setValue:<#(NSString *)token#> forKey:@"TMBOToken"];
+    // if Assert -> [[NSUserDefaults standardUserDefaults] setValue:<#(NSString *)token#> forKey:@"TMBOToken"]; DebugBreak(); // <- Don't forget to re-comment this line and remove your token!
     [args setObject:kTMBOToken forKey:@"token"];
 
     // TMBO API only returns up to 200 items at a time
