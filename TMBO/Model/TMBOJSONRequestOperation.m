@@ -70,6 +70,7 @@
                 NSDate *date = [[[ISO8601DateFormatter alloc] init] dateFromString:item timeZone:&tzone];
                 if ([date compare:kDawnOfTime] == NSOrderedAscending) {
                     NSLog(@"Parsed key %@ (%@) as date, got %@", self.currentKey, item, date);
+                    NotTested();
                     return item;
                 }
                 if (tzone) {

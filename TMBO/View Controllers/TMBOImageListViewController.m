@@ -147,7 +147,6 @@
                         TMBOImageListCell *validCell = (TMBOImageListCell *)[self.tableView cellForRowAtIndexPath:path];
                         
                         if (validCell) {
-NSLog(@"valid cell, update thumb and disable spinner");
                             [[validCell spinner] stopAnimating];
                             if (![upload filtered]) {
                                 [[validCell thumbnailView] setImage:image];

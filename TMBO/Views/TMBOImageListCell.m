@@ -90,7 +90,6 @@
 
 - (void)prepareForReuse;
 {
-    NSLog(@"reuse cell, enable spinner");
     [self.thumbnailView setImage:nil];
     [self.spinner startAnimating];
 }
