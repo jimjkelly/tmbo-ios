@@ -25,6 +25,9 @@
 		BC2F21B8160D236D00C28105 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		BC2F21BB160D432900C28105 /* th-filtered.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2F21B9160D432900C28105 /* th-filtered.png */; };
 		BC2F21BC160D432900C28105 /* th-filtered@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2F21BA160D432900C28105 /* th-filtered@2x.png */; };
+		BC2F21E1160E506F00C28105 /* TMBOImageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21E0160E506F00C28105 /* TMBOImageDetailViewController.m */; };
+		BC2F21E7160E52ED00C28105 /* TMBOImageDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC2F21E6160E52ED00C28105 /* TMBOImageDetailViewController.xib */; };
+		BC2F21EE160E729200C28105 /* TMBOImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21ED160E729200C28105 /* TMBOImageScrollView.m */; };
 		BC2FF5E9160AA21400FE4AA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */; };
 		BC2FF5EB160AA21400FE4AA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
 		BC2FF5ED160AA21400FE4AA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */; };
@@ -81,6 +84,11 @@
 		BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+RoundedCorner.m"; path = "lib/UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
 		BC2F21B9160D432900C28105 /* th-filtered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "th-filtered.png"; path = "Resources/th-filtered.png"; sourceTree = "<group>"; };
 		BC2F21BA160D432900C28105 /* th-filtered@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "th-filtered@2x.png"; path = "Resources/th-filtered@2x.png"; sourceTree = "<group>"; };
+		BC2F21DF160E506F00C28105 /* TMBOImageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOImageDetailViewController.h; path = "View Controllers/TMBOImageDetailViewController.h"; sourceTree = "<group>"; };
+		BC2F21E0160E506F00C28105 /* TMBOImageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOImageDetailViewController.m; path = "View Controllers/TMBOImageDetailViewController.m"; sourceTree = "<group>"; };
+		BC2F21E6160E52ED00C28105 /* TMBOImageDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOImageDetailViewController.xib; path = "View Controllers/TMBOImageDetailViewController.xib"; sourceTree = "<group>"; };
+		BC2F21EC160E729200C28105 /* TMBOImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOImageScrollView.h; path = Views/TMBOImageScrollView.h; sourceTree = "<group>"; };
+		BC2F21ED160E729200C28105 /* TMBOImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOImageScrollView.m; path = Views/TMBOImageScrollView.m; sourceTree = "<group>"; };
 		BC2FF5E4160AA21400FE4AA5 /* TMBO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -178,6 +186,9 @@
 			children = (
 				BC2F2171160CE41C00C28105 /* TMBOImageListViewController.h */,
 				BC2F2172160CE41C00C28105 /* TMBOImageListViewController.m */,
+				BC2F21DF160E506F00C28105 /* TMBOImageDetailViewController.h */,
+				BC2F21E0160E506F00C28105 /* TMBOImageDetailViewController.m */,
+				BC2F21E6160E52ED00C28105 /* TMBOImageDetailViewController.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -185,6 +196,8 @@
 		BC2F2188160CF9A500C28105 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BC2F21EC160E729200C28105 /* TMBOImageScrollView.h */,
+				BC2F21ED160E729200C28105 /* TMBOImageScrollView.m */,
 				BC2F2189160D0C7600C28105 /* TMBOImageListCell.h */,
 				BC2F218A160D0C7600C28105 /* TMBOImageListCell.m */,
 				BC2F218C160D0C8B00C28105 /* TMBOImageListCell.xib */,
@@ -356,6 +369,7 @@
 				BC2F218D160D0C8B00C28105 /* TMBOImageListCell.xib in Resources */,
 				BC2F21BB160D432900C28105 /* th-filtered.png in Resources */,
 				BC2F21BC160D432900C28105 /* th-filtered@2x.png in Resources */,
+				BC2F21E7160E52ED00C28105 /* TMBOImageDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +459,8 @@
 				BC2F21B2160D221600C28105 /* UIImage+Resize.m in Sources */,
 				BC2F21B7160D236D00C28105 /* UIImage+Alpha.m in Sources */,
 				BC2F21B8160D236D00C28105 /* UIImage+RoundedCorner.m in Sources */,
+				BC2F21E1160E506F00C28105 /* TMBOImageDetailViewController.m in Sources */,
+				BC2F21EE160E729200C28105 /* TMBOImageScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

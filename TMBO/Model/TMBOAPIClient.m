@@ -10,7 +10,7 @@
 
 #import "TMBOJSONRequestOperation.h"
 
-static NSString * const kTMBOAPIBaseURLString = @"https://thismight.be/offensive/api.php/";
+#define kTMBOAPIBaseURL [NSURL URLWithString:@"/offensive/api.php/" relativeToURL:kTMBOBaseURL]
 
 @interface TMBOAPIClient ()
 - (void)parsePredicate:(NSPredicate *)predicate into:(NSMutableDictionary *)dict;
@@ -22,7 +22,7 @@ static NSString * const kTMBOAPIBaseURLString = @"https://thismight.be/offensive
     static TMBOAPIClient *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:kTMBOAPIBaseURLString]];
+        _sharedClient = [[self alloc] initWithBaseURL:kTMBOAPIBaseURL];
     });
     
     return _sharedClient;
@@ -100,6 +100,7 @@ static NSString * const kTMBOAPIBaseURLString = @"https://thismight.be/offensive
 
     // Authentication token
     Assert(kTMBOToken);
+    // if Assert -> [[NSUserDefaults standardUserDefaults] setValue:<#(NSString *)token#> forKey:@"TMBOToken"];
     [args setObject:kTMBOToken forKey:@"token"];
 
     // TMBO API only returns up to 200 items at a time

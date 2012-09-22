@@ -12,6 +12,7 @@
 #import <UIImageView+AFNetworking.h>
 
 #import "TMBOImageListCell.h"
+#import "TMBOImageDetailViewController.h"
 #import "TMBOJSONRequestOperation.h"
 #import "TMBOUpload.h"
 #import "UIImage+Resize.h"
@@ -225,13 +226,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];    
+    TMBOImageDetailViewController *detailViewController = [[TMBOImageDetailViewController alloc] init];
+    [detailViewController setUpload:(TMBOUpload *)[_fetchedResultsController objectAtIndexPath:indexPath]];
+    // ...
+    // Pass the selected object to the new view controller.
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (NSUInteger)supportedInterfaceOrientations;
