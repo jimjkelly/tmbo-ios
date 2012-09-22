@@ -111,16 +111,26 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[_fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+    if (section == 0) {
+        return [[[_fetchedResultsController sections] objectAtIndex:section] numberOfObjects] + 1;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"TMBOImageListCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-    
-    [self configureCell:cell atIndexPath:indexPath];
+    UITableViewCell *cell;
+    if (indexPath.section == 0 && indexPath.row == [[[_fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects]) {
+        static NSString *LoadingCellIdentifier = @"TMBOLoadingCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:LoadingCellIdentifier];
+        if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:LoadingCellIdentifier];
+        [[(TMBOLoadingCell *)cell spinner] startAnimating];
+    } else {
+        static NSString *ImageCellIdentifier = @"TMBOImageListCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:ImageCellIdentifier];
+        if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ImageCellIdentifier];
+        [self configureCell:cell atIndexPath:indexPath];
+    }
     
     return cell;
 }
