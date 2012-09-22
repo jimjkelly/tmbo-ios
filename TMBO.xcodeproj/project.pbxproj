@@ -20,9 +20,11 @@
 		BC2F218B160D0C7600C28105 /* TMBOImageListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F218A160D0C7600C28105 /* TMBOImageListCell.m */; };
 		BC2F218D160D0C8B00C28105 /* TMBOImageListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC2F218C160D0C8B00C28105 /* TMBOImageListCell.xib */; };
 		BC2F21A3160D0EA800C28105 /* UIColor+TMBOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */; };
-		BC2F21B2160D221600C28105 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B1160D221600C28105 /* UIImage+Resize.m */; };
-		BC2F21B7160D236D00C28105 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */; };
-		BC2F21B8160D236D00C28105 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */; };
+		BC2F21B2160D221600C28105 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B1160D221600C28105 /* UIImage+Resize.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		BC2F21B7160D236D00C28105 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		BC2F21B8160D236D00C28105 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		BC2F21BB160D432900C28105 /* th-filtered.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2F21B9160D432900C28105 /* th-filtered.png */; };
+		BC2F21BC160D432900C28105 /* th-filtered@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2F21BA160D432900C28105 /* th-filtered@2x.png */; };
 		BC2FF5E9160AA21400FE4AA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */; };
 		BC2FF5EB160AA21400FE4AA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
 		BC2FF5ED160AA21400FE4AA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */; };
@@ -77,6 +79,8 @@
 		BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Alpha.m"; path = "lib/UIImage+Alpha.m"; sourceTree = "<group>"; };
 		BC2F21B5160D236D00C28105 /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+RoundedCorner.h"; path = "lib/UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
 		BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+RoundedCorner.m"; path = "lib/UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
+		BC2F21B9160D432900C28105 /* th-filtered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "th-filtered.png"; path = "Resources/th-filtered.png"; sourceTree = "<group>"; };
+		BC2F21BA160D432900C28105 /* th-filtered@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "th-filtered@2x.png"; path = "Resources/th-filtered@2x.png"; sourceTree = "<group>"; };
 		BC2FF5E4160AA21400FE4AA5 /* TMBO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -238,6 +242,8 @@
 		BC2FF5EF160AA21400FE4AA5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BC2F21B9160D432900C28105 /* th-filtered.png */,
+				BC2F21BA160D432900C28105 /* th-filtered@2x.png */,
 				BC2FF5F0160AA21400FE4AA5 /* TMBO-Info.plist */,
 				BC2FF5F1160AA21400FE4AA5 /* InfoPlist.strings */,
 				BC2FF5F4160AA21400FE4AA5 /* main.m */,
@@ -348,6 +354,8 @@
 				BC2FF5FD160AA21400FE4AA5 /* Default@2x.png in Resources */,
 				BC2FF5FF160AA21400FE4AA5 /* Default-568h@2x.png in Resources */,
 				BC2F218D160D0C8B00C28105 /* TMBOImageListCell.xib in Resources */,
+				BC2F21BB160D432900C28105 /* th-filtered.png in Resources */,
+				BC2F21BC160D432900C28105 /* th-filtered@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
