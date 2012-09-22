@@ -66,7 +66,7 @@
             || [currentKey isEqualToString:@"last_active"]) {
                 NSTimeZone *tzone;
                 [NSTimeZone setDefaultTimeZone:kServerTimeZone];
-                // TODO: need to save current device's time zone?
+                // TODO: do we need to save the device's current time zone?
                 NSDate *date = [[[ISO8601DateFormatter alloc] init] dateFromString:item timeZone:&tzone];
                 if ([date compare:kDawnOfTime] == NSOrderedAscending) {
                     NSLog(@"Parsed key %@ (%@) as date, got %@", self.currentKey, item, date);
