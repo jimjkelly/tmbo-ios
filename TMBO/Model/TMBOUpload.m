@@ -48,10 +48,7 @@
 - (void)setThumbnail:(UIImage *)image;
 {
     UIImage *smallImage = image;
-    // TODO: resize this to thumbnailish-size for device
-
     _thumbnail = smallImage;
-    
     self.thumbnailData = UIImageJPEGRepresentation(smallImage, 0.8);
 }
 
