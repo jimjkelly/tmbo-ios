@@ -19,22 +19,12 @@
 @implementation TMBOJSONRequestOperation
 @synthesize currentKey;
 
-// This class is mostly a proxy
-- (void)forwardInvocation:(NSInvocation *)anInvocation;
-{
-    [super forwardInvocation:anInvocation];
-}
-
 /*
  * responseJSON returns the parsed JSON data as Foundation objects, but when piping the result directly into a Core Data model, the types are occasionally incorrect. This causes really bad errors later, so inspect the result and ensure that data objects are of the correct types.
  */
 - (id)responseJSON;
 {
-    id response = [super responseJSON];
-    
-    response = [self parseItem:response];
-    
-    return response;
+    return [self parseItem:[super responseJSON]];
 }
 
 - (id)parseItem:(id)item;

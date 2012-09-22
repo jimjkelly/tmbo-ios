@@ -35,7 +35,7 @@
 			</object>
 			<object class="IBUITableViewCell" id="865055105">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<int key="NSvFlags">290</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="436666529">
 						<reference key="NSNextResponder" ref="865055105"/>
@@ -296,16 +296,19 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">20</int>
 						<reference key="object" ref="722458671"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="865055105"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">21</int>
 						<reference key="object" ref="528698610"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="865055105"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">23</int>
 						<reference key="object" ref="469496628"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="865055105"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -337,7 +340,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">30</int>
+			<int key="maxID">48</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

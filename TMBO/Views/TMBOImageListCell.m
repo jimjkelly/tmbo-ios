@@ -86,6 +86,11 @@
     
     [label setFrame:frame];
     [label setContentMode:UIViewContentModeRedraw];
+    
+    // selectedBackgroundView also needs to be updated in case of rotation
+    CGRect backgroundViewFrame = [self frame];
+    backgroundViewFrame.origin = CGPointZero;
+    [[self selectedBackgroundView] setFrame:backgroundViewFrame];
 }
 
 - (void)prepareForReuse;

@@ -12,11 +12,13 @@
 #import <UIImageView+AFNetworking.h>
 
 #import "TMBOImageListCell.h"
+#import "TMBOJSONRequestOperation.h"
 #import "TMBOUpload.h"
 #import "UIImage+Resize.h"
 
 @interface TMBOImageListViewController () <NSFetchedResultsControllerDelegate> {
     NSFetchedResultsController *_fetchedResultsController;
+    UIRefreshControl *_topRefresh;
 }
 - (void)refetchData;
 @end
@@ -25,10 +27,38 @@
 
 - (void)refetchData;
 {
-    [_fetchedResultsController performSelectorOnMainThread:@selector(performFetch:) withObject:nil waitUntilDone:YES modes:@[ NSRunLoopCommonModes ]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_topRefresh beginRefreshing];
+        [_fetchedResultsController performFetch:nil];
+    });
+}
+
+/* HACK: This is a goddamn hack.
+ * The intent is to [_topRefresh endRefreshing] when the server data arrives and is processed by Core Data,
+ * but there's no notification that corresponds to that specific event and not a different model request.
+ * The next closest thing is to use controllerDidChangeContent, but that's not good enough—if the server data indicates no changes, the callback never happens.
+ * This will at least always reset the refreshing status of the table, if not a bit prematurely.
+ */
+- (void)notification:(NSNotification *)note;
+{
+    if ([[note object] isKindOfClass:[TMBOJSONRequestOperation class]]) {
+        [_topRefresh endRefreshing];
+    }
 }
 
 #pragma mark - UITableViewController
+
+// HACK: this is part of the hack described above
+- (void)viewWillAppear:(BOOL)animated;
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification:) name:@"com.alamofire.networking.operation.finish" object:nil];
+}
+
+// HACK: this is part of the hack described above
+- (void)viewWillDisappear:(BOOL)animated;
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -56,6 +86,11 @@
     
     UINib *nib = [UINib nibWithNibName:@"TMBOImageListCell" bundle:nil];
     [[self tableView] registerNib:nib forCellReuseIdentifier:@"TMBOImageListCell"];
+    
+    _topRefresh = [[UIRefreshControl alloc] init];
+    [_topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
+    [self setRefreshControl:_topRefresh];
+    [[self view] addSubview:_topRefresh];
 }
 
 - (void)didReceiveMemoryWarning
@@ -114,23 +149,21 @@
         }
         [[cell votesView] setText:votesLabel];
         
+        UIImage *thumbnail = [upload thumbnail];
+        if (thumbnail && ![upload filtered]) {
+            [[cell spinner] stopAnimating];
+            [[cell thumbnailView] setImage:thumbnail];
+        } else if ([upload filtered]) {
+            [[cell spinner] stopAnimating];
+            [[cell thumbnailView] setImage:[UIImage imageNamed:@"th-filtered"]];
+        }
+        
         // Image stuff is potentially slow, so get off the main thread right away.
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             // Compute ideal thumbnail size in pixels (not points)
             CGSize thumbsize = [[cell thumbnailView] bounds].size;
             thumbsize.width *= [[UIScreen mainScreen] scale];
             thumbsize.height *= [[UIScreen mainScreen] scale];
-            
-            UIImage *thumbnail = [upload thumbnail];
-            if (thumbnail && ![upload filtered]) {
-                [[cell spinner] stopAnimating];
-                [[cell thumbnailView] setImage:thumbnail];
-                [cell setNeedsDisplay];
-            } else if ([upload filtered]) {
-                [[cell spinner] stopAnimating];
-                [[cell thumbnailView] setImage:[UIImage imageNamed:@"th-filtered"]];
-                [cell setNeedsDisplay];
-            }
             
             if ([upload thumbURL] && (!thumbnail || [thumbnail size].height < thumbsize.height || [thumbnail size].width < thumbsize.width)) {
                 // Thumbnail is not good enough. Load another!
@@ -203,6 +236,13 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView reloadData];
+}
+
+#pragma mark Target-action for UIRefreshControl
+
+- (void)refreshControlEvent:(UIRefreshControl *)something;
+{
+    [self refetchData];
 }
 
 @end
