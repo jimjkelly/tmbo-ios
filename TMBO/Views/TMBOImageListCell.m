@@ -16,7 +16,7 @@
 @synthesize votesView;
 @synthesize spinner;
 
-#define kXPadding 4.0
+#define kXPadding 4.0f
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
@@ -35,9 +35,9 @@
     CGSize size = [[label text] sizeWithFont:[label font]];
     
     frame.size = size;
-    frame.size.height = 18.0;
+    frame.size.height = 18.0f;
     frame.origin.x = cellSize.width - (frame.size.width + kXPadding);
-    frame.origin.y = 23.0;
+    frame.origin.y = 23.0f;
     
     [label setFrame:frame];
     [label setContentMode:UIViewContentModeRedraw];
@@ -47,9 +47,9 @@
     size = [[label text] sizeWithFont:[label font]];
 
     frame.size = size;
-    frame.size.height = 18.0;
+    frame.size.height = 18.0f;
     frame.origin.x = cellSize.width - (frame.size.width + kXPadding);
-    frame.origin.y = 4.0;
+    frame.origin.y = 4.0f;
     
     [label setFrame:frame];
     [label setContentMode:UIViewContentModeRedraw];
@@ -59,9 +59,9 @@
     size = [[label text] sizeWithFont:[label font]];
 
     frame.origin.x = thumbFrame.origin.x + thumbFrame.size.width + kXPadding;
-    frame.origin.y = 23.0;
+    frame.origin.y = 23.0f;
     frame.size = size;
-    frame.size.height = 18.0;
+    frame.size.height = 18.0f;
     frame.size.width = MIN(cellSize.width - (frame.origin.x + [self.votesView frame].size.width + kXPadding), frame.size.width);
     
     [label setFrame:frame];
@@ -72,10 +72,10 @@
     size = [[label text] sizeWithFont:[label font]];
 
     frame.origin.x = thumbFrame.origin.x + thumbFrame.size.width + kXPadding;
-    frame.origin.y = 3.0;
+    frame.origin.y = 3.0f;
     frame.size = size;
-    frame.size.height = 20.0;
-    frame.size.width = MIN(cellSize.width - (frame.origin.x + [self.commentsView frame].size.width + 5.0), frame.size.width);
+    frame.size.height = 20.0f;
+    frame.size.width = MIN(cellSize.width - (frame.origin.x + [self.commentsView frame].size.width + 5.0f), frame.size.width);
     
     [label setFrame:frame];
     [label setContentMode:UIViewContentModeRedraw];
@@ -91,7 +91,7 @@
     CGRect thumbFrame;
     thumbFrame.origin = CGPointZero;
     thumbFrame.size.height = self.frame.size.height;
-    thumbFrame.size.width = 133 / 100 * self.frame.size.height;
+    thumbFrame.size.width = 133.0f / 100.0f * self.frame.size.height;
     [self.thumbnailView setFrame:thumbFrame];
     [self.thumbnailView setImage:nil];
     [self.spinner startAnimating];
