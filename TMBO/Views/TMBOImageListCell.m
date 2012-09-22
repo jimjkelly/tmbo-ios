@@ -95,6 +95,11 @@
 
 - (void)prepareForReuse;
 {
+    CGRect thumbFrame;
+    thumbFrame.origin = CGPointZero;
+    thumbFrame.size.height = self.frame.size.height;
+    thumbFrame.size.width = 133 / 100 * self.frame.size.height;
+    [self.thumbnailView setFrame:thumbFrame];
     [self.thumbnailView setImage:nil];
     [self.spinner startAnimating];
 }

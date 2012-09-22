@@ -157,6 +157,12 @@
             [[cell spinner] stopAnimating];
             [[cell thumbnailView] setImage:[UIImage imageNamed:@"th-filtered"]];
         }
+        if (![upload thumbURL]) {
+            [[cell spinner] stopAnimating];
+            CGRect thumbFrame = [[cell thumbnailView] frame];
+            thumbFrame.size.width = 0;
+            [[cell thumbnailView] setFrame:thumbFrame];
+        }
         
         // Image stuff is potentially slow, so get off the main thread right away.
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
