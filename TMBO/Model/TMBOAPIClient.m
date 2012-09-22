@@ -41,7 +41,8 @@ static NSString * const kTMBOAPIBaseURLString = @"https://thismight.be/offensive
 
 - (void)parsePredicate:(NSPredicate *)predicate into:(NSMutableDictionary *)dict;
 {
-    if ([predicate isKindOfClass:[NSCompoundPredicate class]]) {
+    if (predicate == nil) {
+    } else if ([predicate isKindOfClass:[NSCompoundPredicate class]]) {
         NSCompoundPredicate *predicates = (NSCompoundPredicate *)predicate;
         
         if ([predicates compoundPredicateType] != NSAndPredicateType) {
@@ -59,17 +60,31 @@ static NSString * const kTMBOAPIBaseURLString = @"https://thismight.be/offensive
         
         if ([key isEqualToString:@"type"]) {
             // Limit query to uploads of this type
-//            Assert(<#exp#>);
             [dict setObject:constant forKey:key];
         }
         if ([key isEqualToString:@"uploadid"]) {
             // Limit query to uploads newer, older, or equal to this id
-//            Assert(<#exp#>);
-//            <#statements#>
+            switch ([comparison predicateOperatorType]) {
+                case NSGreaterThanOrEqualToPredicateOperatorType:
+                    [dict setObject:constant forKey:@"since"];
+                    break;
+
+                case NSLessThanOrEqualToPredicateOperatorType:
+                    [dict setObject:constant forKey:@"max"];
+                    break;
+
+                default:
+                    NSLog(@"Predicate operator %u not supported", [comparison predicateOperatorType]);
+                    NotReached();
+                    break;
+            }
         }
-    } else if (predicate == nil) {
+        if ([key isEqualToString:@"userid"]) {
+            [dict setObject:constant forKey:@"userid"];
+        }
     } else {
-        NotTested();
+        // This is bad code. Don't use unsupported predicates!
+        NotReached();
     }
 }
 
@@ -79,15 +94,19 @@ static NSString * const kTMBOAPIBaseURLString = @"https://thismight.be/offensive
                              withContext:(NSManagedObjectContext *)context
 {
     NSMutableURLRequest *mutableURLRequest = nil;
-    if ([fetchRequest.entityName isEqualToString:@"Upload"]) {
-        // TODO: tailor arguments for request based on NSFetchRequest shit
-        NSPredicate *predicates = [fetchRequest predicate];
-        NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
+    NSPredicate *predicates = [fetchRequest predicate];
+    [self parsePredicate:predicates into:args];
 
-        [self parsePredicate:predicates into:args];
-        
-        [args setObject:kTMBOToken forKey:@"token"];
-        [args setObject:[NSString stringWithFormat:@"%u", [fetchRequest fetchLimit]] forKey:@"limit"];
+    // Authentication token
+    Assert(kTMBOToken);
+    [args setObject:kTMBOToken forKey:@"token"];
+
+    // TMBO API only returns up to 200 items at a time
+    Assert([fetchRequest fetchLimit] <= 200);
+    [args setObject:[NSString stringWithFormat:@"%u", [fetchRequest fetchLimit]] forKey:@"limit"];
+
+    if ([fetchRequest.entityName isEqualToString:@"Upload"]) {
         mutableURLRequest = [self requestWithMethod:@"GET" path:@"getuploads.json" parameters:args];
         NSLog(@"%@", [[mutableURLRequest URL] absoluteString]);
     }
