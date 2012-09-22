@@ -7,7 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E6E0FE5CE7C4DC5ABD49088 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE62E04601140D4889DFD23 /* libPods.a */; };
 		BC2F210E160B8DB900C28105 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2F210D160B8DB900C28105 /* Crashlytics.framework */; };
+		BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */; };
+		BC2F2160160BFD6100C28105 /* TMBOIncrementalStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F215F160BFD6100C28105 /* TMBOIncrementalStore.m */; };
+		BC2F2163160BFD8000C28105 /* TMBOAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2162160BFD7F00C28105 /* TMBOAPIClient.m */; };
+		BC2F2166160C016000C28105 /* TMBOJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2165160C016000C28105 /* TMBOJSONRequestOperation.m */; };
+		BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BC2F2173160CE41C00C28105 /* TMBOImageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2172160CE41C00C28105 /* TMBOImageListViewController.m */; };
+		BC2F2181160CF57900C28105 /* debugger.c in Sources */ = {isa = PBXBuildFile; fileRef = BC2F217F160CF57900C28105 /* debugger.c */; };
+		BC2F2187160CF7B800C28105 /* TMBOUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2186160CF7B800C28105 /* TMBOUpload.m */; };
+		BC2F218B160D0C7600C28105 /* TMBOImageListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F218A160D0C7600C28105 /* TMBOImageListCell.m */; };
+		BC2F218D160D0C8B00C28105 /* TMBOImageListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC2F218C160D0C8B00C28105 /* TMBOImageListCell.xib */; };
+		BC2F21A3160D0EA800C28105 /* UIColor+TMBOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */; };
+		BC2F21B2160D221600C28105 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B1160D221600C28105 /* UIImage+Resize.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		BC2F21B7160D236D00C28105 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		BC2F21B8160D236D00C28105 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		BC2F21BB160D432900C28105 /* th-filtered.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2F21B9160D432900C28105 /* th-filtered.png */; };
+		BC2F21BC160D432900C28105 /* th-filtered@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2F21BA160D432900C28105 /* th-filtered@2x.png */; };
+		BC2F21E1160E506F00C28105 /* TMBOImageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21E0160E506F00C28105 /* TMBOImageDetailViewController.m */; };
+		BC2F21E7160E52ED00C28105 /* TMBOImageDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC2F21E6160E52ED00C28105 /* TMBOImageDetailViewController.xib */; };
+		BC2F21EE160E729200C28105 /* TMBOImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21ED160E729200C28105 /* TMBOImageScrollView.m */; };
 		BC2FF5E9160AA21400FE4AA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */; };
 		BC2FF5EB160AA21400FE4AA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
 		BC2FF5ED160AA21400FE4AA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */; };
@@ -25,20 +45,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BC2F2108160B8D6800C28105 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BC2F2103160B8D6700C28105 /* TMBODataModel.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC2F20D8160B8D6700C28105;
-			remoteInfo = TMBODataModel;
-		};
-		BC2F210A160B8D6800C28105 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BC2F2103160B8D6700C28105 /* TMBODataModel.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC2F20E9160B8D6700C28105;
-			remoteInfo = TMBODataModelTests;
-		};
 		BC2FF60A160AA21500FE4AA5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BC2FF5DB160AA21400FE4AA5 /* Project object */;
@@ -49,12 +55,44 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BC2F2103160B8D6700C28105 /* TMBODataModel.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TMBODataModel.xcodeproj; path = Frameworks/TMBODataModel/TMBODataModel.xcodeproj; sourceTree = "<group>"; };
-		BC2F210D160B8DB900C28105 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
+		BC2F210D160B8DB900C28105 /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
+		BC2F2159160BF9CB00C28105 /* TMBO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMBO.xcdatamodel; sourceTree = "<group>"; };
+		BC2F215E160BFD6100C28105 /* TMBOIncrementalStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOIncrementalStore.h; path = Model/TMBOIncrementalStore.h; sourceTree = "<group>"; };
+		BC2F215F160BFD6100C28105 /* TMBOIncrementalStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOIncrementalStore.m; path = Model/TMBOIncrementalStore.m; sourceTree = "<group>"; };
+		BC2F2161160BFD7F00C28105 /* TMBOAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOAPIClient.h; path = Model/TMBOAPIClient.h; sourceTree = "<group>"; };
+		BC2F2162160BFD7F00C28105 /* TMBOAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOAPIClient.m; path = Model/TMBOAPIClient.m; sourceTree = "<group>"; };
+		BC2F2164160C016000C28105 /* TMBOJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOJSONRequestOperation.h; path = Model/TMBOJSONRequestOperation.h; sourceTree = "<group>"; };
+		BC2F2165160C016000C28105 /* TMBOJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOJSONRequestOperation.m; path = Model/TMBOJSONRequestOperation.m; sourceTree = "<group>"; };
+		BC2F216D160C0A0C00C28105 /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ISO8601DateFormatter.h; path = "lib/iso-8601-date-formatter/ISO8601DateFormatter.h"; sourceTree = "<group>"; };
+		BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ISO8601DateFormatter.m; path = "lib/iso-8601-date-formatter/ISO8601DateFormatter.m"; sourceTree = "<group>"; };
+		BC2F2171160CE41C00C28105 /* TMBOImageListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOImageListViewController.h; path = "View Controllers/TMBOImageListViewController.h"; sourceTree = "<group>"; };
+		BC2F2172160CE41C00C28105 /* TMBOImageListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOImageListViewController.m; path = "View Controllers/TMBOImageListViewController.m"; sourceTree = "<group>"; };
+		BC2F217F160CF57900C28105 /* debugger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = debugger.c; path = lib/debugger.c; sourceTree = "<group>"; };
+		BC2F2180160CF57900C28105 /* debugger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = debugger.h; path = lib/debugger.h; sourceTree = "<group>"; };
+		BC2F2185160CF7B800C28105 /* TMBOUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOUpload.h; path = Model/TMBOUpload.h; sourceTree = "<group>"; };
+		BC2F2186160CF7B800C28105 /* TMBOUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOUpload.m; path = Model/TMBOUpload.m; sourceTree = "<group>"; };
+		BC2F2189160D0C7600C28105 /* TMBOImageListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOImageListCell.h; path = Views/TMBOImageListCell.h; sourceTree = "<group>"; };
+		BC2F218A160D0C7600C28105 /* TMBOImageListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOImageListCell.m; path = Views/TMBOImageListCell.m; sourceTree = "<group>"; };
+		BC2F218C160D0C8B00C28105 /* TMBOImageListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOImageListCell.xib; path = Views/TMBOImageListCell.xib; sourceTree = "<group>"; };
+		BC2F21A1160D0EA800C28105 /* UIColor+TMBOTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+TMBOTheme.h"; path = "lib/UIColor+TMBOTheme.h"; sourceTree = "<group>"; };
+		BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+TMBOTheme.m"; path = "lib/UIColor+TMBOTheme.m"; sourceTree = "<group>"; };
+		BC2F21B0160D221600C28105 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "lib/UIImage+Resize.h"; sourceTree = "<group>"; };
+		BC2F21B1160D221600C28105 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Resize.m"; path = "lib/UIImage+Resize.m"; sourceTree = "<group>"; };
+		BC2F21B3160D236D00C28105 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Alpha.h"; path = "lib/UIImage+Alpha.h"; sourceTree = "<group>"; };
+		BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Alpha.m"; path = "lib/UIImage+Alpha.m"; sourceTree = "<group>"; };
+		BC2F21B5160D236D00C28105 /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+RoundedCorner.h"; path = "lib/UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
+		BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+RoundedCorner.m"; path = "lib/UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
+		BC2F21B9160D432900C28105 /* th-filtered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "th-filtered.png"; path = "Resources/th-filtered.png"; sourceTree = "<group>"; };
+		BC2F21BA160D432900C28105 /* th-filtered@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "th-filtered@2x.png"; path = "Resources/th-filtered@2x.png"; sourceTree = "<group>"; };
+		BC2F21DF160E506F00C28105 /* TMBOImageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOImageDetailViewController.h; path = "View Controllers/TMBOImageDetailViewController.h"; sourceTree = "<group>"; };
+		BC2F21E0160E506F00C28105 /* TMBOImageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOImageDetailViewController.m; path = "View Controllers/TMBOImageDetailViewController.m"; sourceTree = "<group>"; };
+		BC2F21E6160E52ED00C28105 /* TMBOImageDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOImageDetailViewController.xib; path = "View Controllers/TMBOImageDetailViewController.xib"; sourceTree = "<group>"; };
+		BC2F21EC160E729200C28105 /* TMBOImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOImageScrollView.h; path = Views/TMBOImageScrollView.h; sourceTree = "<group>"; };
+		BC2F21ED160E729200C28105 /* TMBOImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOImageScrollView.m; path = Views/TMBOImageScrollView.m; sourceTree = "<group>"; };
 		BC2FF5E4160AA21400FE4AA5 /* TMBO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBO.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		BC2FF5F0160AA21400FE4AA5 /* TMBO-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TMBO-Info.plist"; sourceTree = "<group>"; };
 		BC2FF5F2160AA21400FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC2FF5F4160AA21400FE4AA5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -70,6 +108,8 @@
 		BC2FF610160AA21500FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC2FF612160AA21500FE4AA5 /* TMBOTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TMBOTests.h; sourceTree = "<group>"; };
 		BC2FF613160AA21500FE4AA5 /* TMBOTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBOTests.m; sourceTree = "<group>"; };
+		DBE62E04601140D4889DFD23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE9D6074275D4E8BAE5CDAAB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +121,7 @@
 				BC2FF5EB160AA21400FE4AA5 /* Foundation.framework in Frameworks */,
 				BC2FF5ED160AA21400FE4AA5 /* CoreGraphics.framework in Frameworks */,
 				BC2F210E160B8DB900C28105 /* Crashlytics.framework in Frameworks */,
+				4E6E0FE5CE7C4DC5ABD49088 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,13 +138,71 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		BC2F2104160B8D6700C28105 /* Products */ = {
+		BC2F2156160BF9B500C28105 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				BC2F2109160B8D6800C28105 /* libTMBODataModel.a */,
-				BC2F210B160B8D6800C28105 /* TMBODataModelTests.octest */,
+				BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */,
+				BC2F2185160CF7B800C28105 /* TMBOUpload.h */,
+				BC2F2186160CF7B800C28105 /* TMBOUpload.m */,
+				BC2F215E160BFD6100C28105 /* TMBOIncrementalStore.h */,
+				BC2F215F160BFD6100C28105 /* TMBOIncrementalStore.m */,
+				BC2F2161160BFD7F00C28105 /* TMBOAPIClient.h */,
+				BC2F2162160BFD7F00C28105 /* TMBOAPIClient.m */,
+				BC2F2164160C016000C28105 /* TMBOJSONRequestOperation.h */,
+				BC2F2165160C016000C28105 /* TMBOJSONRequestOperation.m */,
 			);
-			name = Products;
+			name = Model;
+			sourceTree = "<group>";
+		};
+		BC2F216B160C09EF00C28105 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				BC2F21B3160D236D00C28105 /* UIImage+Alpha.h */,
+				BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */,
+				BC2F21B5160D236D00C28105 /* UIImage+RoundedCorner.h */,
+				BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */,
+				BC2F21B0160D221600C28105 /* UIImage+Resize.h */,
+				BC2F21B1160D221600C28105 /* UIImage+Resize.m */,
+				BC2F21A1160D0EA800C28105 /* UIColor+TMBOTheme.h */,
+				BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */,
+				BC2F2180160CF57900C28105 /* debugger.h */,
+				BC2F217F160CF57900C28105 /* debugger.c */,
+				BC2F216C160C09F600C28105 /* iso-8601-date-formatter */,
+			);
+			name = lib;
+			sourceTree = "<group>";
+		};
+		BC2F216C160C09F600C28105 /* iso-8601-date-formatter */ = {
+			isa = PBXGroup;
+			children = (
+				BC2F216D160C0A0C00C28105 /* ISO8601DateFormatter.h */,
+				BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */,
+			);
+			name = "iso-8601-date-formatter";
+			sourceTree = "<group>";
+		};
+		BC2F2170160CE3ED00C28105 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BC2F2171160CE41C00C28105 /* TMBOImageListViewController.h */,
+				BC2F2172160CE41C00C28105 /* TMBOImageListViewController.m */,
+				BC2F21DF160E506F00C28105 /* TMBOImageDetailViewController.h */,
+				BC2F21E0160E506F00C28105 /* TMBOImageDetailViewController.m */,
+				BC2F21E6160E52ED00C28105 /* TMBOImageDetailViewController.xib */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		BC2F2188160CF9A500C28105 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BC2F21EC160E729200C28105 /* TMBOImageScrollView.h */,
+				BC2F21ED160E729200C28105 /* TMBOImageScrollView.m */,
+				BC2F2189160D0C7600C28105 /* TMBOImageListCell.h */,
+				BC2F218A160D0C7600C28105 /* TMBOImageListCell.m */,
+				BC2F218C160D0C8B00C28105 /* TMBOImageListCell.xib */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		BC2FF5D9160AA21400FE4AA5 = {
@@ -113,6 +212,7 @@
 				BC2FF60C160AA21500FE4AA5 /* TMBOTests */,
 				BC2FF5E7160AA21400FE4AA5 /* Frameworks */,
 				BC2FF5E5160AA21400FE4AA5 /* Products */,
+				FE9D6074275D4E8BAE5CDAAB /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,12 +228,12 @@
 		BC2FF5E7160AA21400FE4AA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BC2F2103160B8D6700C28105 /* TMBODataModel.xcodeproj */,
 				BC2F210D160B8DB900C28105 /* Crashlytics.framework */,
 				BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */,
 				BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */,
 				BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */,
 				BC2FF606160AA21500FE4AA5 /* SenTestingKit.framework */,
+				DBE62E04601140D4889DFD23 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -141,6 +241,10 @@
 		BC2FF5EE160AA21400FE4AA5 /* TMBO */ = {
 			isa = PBXGroup;
 			children = (
+				BC2F2188160CF9A500C28105 /* Views */,
+				BC2F2170160CE3ED00C28105 /* View Controllers */,
+				BC2F216B160C09EF00C28105 /* lib */,
+				BC2F2156160BF9B500C28105 /* Model */,
 				BC2FF5F7160AA21400FE4AA5 /* TMBOAppDelegate.h */,
 				BC2FF5F8160AA21400FE4AA5 /* TMBOAppDelegate.m */,
 				BC2FF5EF160AA21400FE4AA5 /* Supporting Files */,
@@ -151,6 +255,8 @@
 		BC2FF5EF160AA21400FE4AA5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BC2F21B9160D432900C28105 /* th-filtered.png */,
+				BC2F21BA160D432900C28105 /* th-filtered@2x.png */,
 				BC2FF5F0160AA21400FE4AA5 /* TMBO-Info.plist */,
 				BC2FF5F1160AA21400FE4AA5 /* InfoPlist.strings */,
 				BC2FF5F4160AA21400FE4AA5 /* main.m */,
@@ -193,6 +299,7 @@
 				BC2FF5E2160AA21400FE4AA5 /* Resources */,
 				BC2FF61D160AA24D00FE4AA5 /* ShellScript */,
 				BC2F210F160B8DDF00C28105 /* ShellScript */,
+				00B5111BC7D44E26B6540966 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -242,12 +349,6 @@
 			mainGroup = BC2FF5D9160AA21400FE4AA5;
 			productRefGroup = BC2FF5E5160AA21400FE4AA5 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = BC2F2104160B8D6700C28105 /* Products */;
-					ProjectRef = BC2F2103160B8D6700C28105 /* TMBODataModel.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				BC2FF5E3160AA21400FE4AA5 /* TMBO */,
@@ -255,23 +356,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		BC2F2109160B8D6800C28105 /* libTMBODataModel.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libTMBODataModel.a;
-			remoteRef = BC2F2108160B8D6800C28105 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BC2F210B160B8D6800C28105 /* TMBODataModelTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = TMBODataModelTests.octest;
-			remoteRef = BC2F210A160B8D6800C28105 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		BC2FF5E2160AA21400FE4AA5 /* Resources */ = {
@@ -282,6 +366,10 @@
 				BC2FF5FB160AA21400FE4AA5 /* Default.png in Resources */,
 				BC2FF5FD160AA21400FE4AA5 /* Default@2x.png in Resources */,
 				BC2FF5FF160AA21400FE4AA5 /* Default-568h@2x.png in Resources */,
+				BC2F218D160D0C8B00C28105 /* TMBOImageListCell.xib in Resources */,
+				BC2F21BB160D432900C28105 /* th-filtered.png in Resources */,
+				BC2F21BC160D432900C28105 /* th-filtered@2x.png in Resources */,
+				BC2F21E7160E52ED00C28105 /* TMBOImageDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +384,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		00B5111BC7D44E26B6540966 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
 		BC2F210F160B8DDF00C28105 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -344,6 +446,21 @@
 			files = (
 				BC2FF5F5160AA21400FE4AA5 /* main.m in Sources */,
 				BC2FF5F9160AA21400FE4AA5 /* TMBOAppDelegate.m in Sources */,
+				BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */,
+				BC2F2160160BFD6100C28105 /* TMBOIncrementalStore.m in Sources */,
+				BC2F2163160BFD8000C28105 /* TMBOAPIClient.m in Sources */,
+				BC2F2166160C016000C28105 /* TMBOJSONRequestOperation.m in Sources */,
+				BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */,
+				BC2F2173160CE41C00C28105 /* TMBOImageListViewController.m in Sources */,
+				BC2F2181160CF57900C28105 /* debugger.c in Sources */,
+				BC2F2187160CF7B800C28105 /* TMBOUpload.m in Sources */,
+				BC2F218B160D0C7600C28105 /* TMBOImageListCell.m in Sources */,
+				BC2F21A3160D0EA800C28105 /* UIColor+TMBOTheme.m in Sources */,
+				BC2F21B2160D221600C28105 /* UIImage+Resize.m in Sources */,
+				BC2F21B7160D236D00C28105 /* UIImage+Alpha.m in Sources */,
+				BC2F21B8160D236D00C28105 /* UIImage+RoundedCorner.m in Sources */,
+				BC2F21E1160E506F00C28105 /* TMBOImageDetailViewController.m in Sources */,
+				BC2F21EE160E729200C28105 /* TMBOImageScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +555,7 @@
 		};
 		BC2FF618160AA21500FE4AA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE9D6074275D4E8BAE5CDAAB /* Pods.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -454,6 +572,7 @@
 		};
 		BC2FF619160AA21500FE4AA5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE9D6074275D4E8BAE5CDAAB /* Pods.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -533,6 +652,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BC2F2159160BF9CB00C28105 /* TMBO.xcdatamodel */,
+			);
+			currentVersion = BC2F2159160BF9CB00C28105 /* TMBO.xcdatamodel */;
+			name = TMBO.xcdatamodeld;
+			path = Model/TMBO.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = BC2FF5DB160AA21400FE4AA5 /* Project object */;
 }

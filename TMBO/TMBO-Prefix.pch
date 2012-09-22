@@ -11,4 +11,10 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import "debugger.h"
+
+    #define kDawnOfTime [NSDate dateWithTimeIntervalSince1970:1095206400]
+    #define kServerTimeZone [NSTimeZone timeZoneWithName:@"America/Los_Angeles"]
+    #define kTMBOToken [[NSUserDefaults standardUserDefaults] stringForKey:@"TMBOToken"]
+    #define kTMBOBaseURL [NSURL URLWithString:@"https://thismight.be"]
 #endif
