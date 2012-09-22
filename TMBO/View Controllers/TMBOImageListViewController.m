@@ -165,6 +165,11 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
+- (NSUInteger)supportedInterfaceOrientations;
+{
+    return UIInterfaceOrientationMaskAll;
+}
+
 #pragma mark - NSFetchedResultsControllerDelegate
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
