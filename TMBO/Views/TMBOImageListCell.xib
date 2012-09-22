@@ -55,7 +55,7 @@
 							<object class="IBUILabel" id="722458671">
 								<reference key="NSNextResponder" ref="436666529"/>
 								<int key="NSvFlags">295</int>
-								<string key="NSFrame">{{63, 2}, {171, 21}}</string>
+								<string key="NSFrame">{{63, 3}, {171, 20}}</string>
 								<reference key="NSSuperview" ref="436666529"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="469496628"/>
@@ -65,7 +65,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Filename.jpg</string>
+								<string key="IBUIText">There could be a really long Filename.jpg</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDAAA</bytes>
@@ -78,11 +78,11 @@
 								<int key="IBUIBaselineAdjustment">0</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<int key="type">1</int>
-									<double key="pointSize">17</double>
+									<double key="pointSize">16</double>
 								</object>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Helvetica</string>
-									<double key="NSSize">17</double>
+									<double key="NSSize">16</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
@@ -90,7 +90,7 @@
 							<object class="IBUILabel" id="528698610">
 								<reference key="NSNextResponder" ref="436666529"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{63, 26}, {195, 15}}</string>
+								<string key="NSFrame">{{63, 23}, {195, 18}}</string>
 								<reference key="NSSuperview" ref="436666529"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="677469076"/>
@@ -121,7 +121,7 @@
 							<object class="IBUILabel" id="469496628">
 								<reference key="NSNextResponder" ref="436666529"/>
 								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{237, 1}, {78, 21}}</string>
+								<string key="NSFrame">{{237, 4}, {78, 18}}</string>
 								<reference key="NSSuperview" ref="436666529"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="528698610"/>
@@ -143,9 +143,10 @@
 							<object class="IBUILabel" id="677469076">
 								<reference key="NSNextResponder" ref="436666529"/>
 								<int key="NSvFlags">265</int>
-								<string key="NSFrame">{{237, 21}, {78, 21}}</string>
+								<string key="NSFrame">{{237, 23}, {78, 18}}</string>
 								<reference key="NSSuperview" ref="436666529"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
