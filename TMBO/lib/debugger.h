@@ -35,7 +35,6 @@
          */
         #if defined(__arm__)
             #pragma mark iOS(arm)
-            #warning DebugBreak implemented, not yet tested on this platform
 
             #define DebugStop(signal) \
                 __asm__ __volatile__ ( \
