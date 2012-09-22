@@ -26,15 +26,15 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    // TODO: [[NSUserDefaults standardUserDefaults] setValue:<#token#> forKey:@"TMBOToken"];
-    
+        
     [Crashlytics startWithAPIKey:@"eff98601e169f1338233242f16fb6b59edf0cf8c"];
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
     TMBOImageListViewController *ilvc = [[TMBOImageListViewController alloc] init];
-    [[self window] setRootViewController:ilvc];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:ilvc];
+    [navController setNavigationBarHidden:YES];
+    [[self window] setRootViewController:navController];
     
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];

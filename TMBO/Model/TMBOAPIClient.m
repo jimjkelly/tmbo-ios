@@ -10,7 +10,11 @@
 
 #import "TMBOJSONRequestOperation.h"
 
-static NSString * const kTMBOAPIBaseURLString = @"https://thismight.be/offensive/api.php/";
+#define kTMBOAPIBaseURL [NSURL URLWithString:@"/offensive/api.php/" relativeToURL:kTMBOBaseURL]
+
+@interface TMBOAPIClient ()
+- (void)parsePredicate:(NSPredicate *)predicate into:(NSMutableDictionary *)dict;
+@end
 
 @implementation TMBOAPIClient
 
@@ -18,7 +22,7 @@ static NSString * const kTMBOAPIBaseURLString = @"https://thismight.be/offensive
     static TMBOAPIClient *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:kTMBOAPIBaseURLString]];
+        _sharedClient = [[self alloc] initWithBaseURL:kTMBOAPIBaseURL];
     });
     
     return _sharedClient;
@@ -35,17 +39,78 @@ static NSString * const kTMBOAPIBaseURLString = @"https://thismight.be/offensive
     return self;
 }
 
+- (void)parsePredicate:(NSPredicate *)predicate into:(NSMutableDictionary *)dict;
+{
+    if (predicate == nil) {
+    } else if ([predicate isKindOfClass:[NSCompoundPredicate class]]) {
+        NSCompoundPredicate *predicates = (NSCompoundPredicate *)predicate;
+        
+        if ([predicates compoundPredicateType] != NSAndPredicateType) {
+            NotReached();
+        }
+        
+        for (NSPredicate *p in [predicates subpredicates]) {
+            [self parsePredicate:p into:dict];
+        }
+    } else if ([predicate isKindOfClass:[NSComparisonPredicate class]]) {
+        NSComparisonPredicate *comparison = (NSComparisonPredicate *)predicate;
+        NSString *key = [[comparison leftExpression] keyPath];
+        // Constants aren't all strings, but they all can produce useful strings, which is what we're stuffing into our http args anyway
+        NSString *constant = [[[comparison rightExpression] constantValue] description];
+        
+        if ([key isEqualToString:@"type"]) {
+            // Limit query to uploads of this type
+            [dict setObject:constant forKey:key];
+        }
+        if ([key isEqualToString:@"uploadid"]) {
+            // Limit query to uploads newer, older, or equal to this id
+            switch ([comparison predicateOperatorType]) {
+                case NSGreaterThanOrEqualToPredicateOperatorType:
+                    [dict setObject:constant forKey:@"since"];
+                    break;
+
+                case NSLessThanOrEqualToPredicateOperatorType:
+                    [dict setObject:constant forKey:@"max"];
+                    break;
+
+                default:
+                    NSLog(@"Predicate operator %u not supported", [comparison predicateOperatorType]);
+                    NotReached();
+                    break;
+            }
+        }
+        if ([key isEqualToString:@"userid"]) {
+            [dict setObject:constant forKey:@"userid"];
+        }
+    } else {
+        // This is bad code. Don't use unsupported predicates!
+        NotReached();
+    }
+}
+
 #pragma mark - AFIncrementalStore
 
 - (NSURLRequest *)requestForFetchRequest:(NSFetchRequest *)fetchRequest
                              withContext:(NSManagedObjectContext *)context
 {
     NSMutableURLRequest *mutableURLRequest = nil;
+    NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
+    NSPredicate *predicates = [fetchRequest predicate];
+    [self parsePredicate:predicates into:args];
+
+    // Authentication token
+    Assert(kTMBOToken);
+    // if Assert -> [[NSUserDefaults standardUserDefaults] setValue:<#(NSString *)token#> forKey:@"TMBOToken"];
+    [args setObject:kTMBOToken forKey:@"token"];
+
+    // TMBO API only returns up to 200 items at a time
+    Assert([fetchRequest fetchLimit] <= 200);
+    [args setObject:[NSString stringWithFormat:@"%u", [fetchRequest fetchLimit]] forKey:@"limit"];
+
     if ([fetchRequest.entityName isEqualToString:@"Upload"]) {
-        // TODO: tailor arguments for request based on NSFetchRequest shit
-        mutableURLRequest = [self requestWithMethod:@"GET" path:@"getuploads.json" parameters:@{@"token" : kTMBOToken}];
+        mutableURLRequest = [self requestWithMethod:@"GET" path:@"getuploads.json" parameters:args];
+        NSLog(@"%@", [[mutableURLRequest URL] absoluteString]);
     }
-    
     return mutableURLRequest;
 }
 

@@ -12,6 +12,7 @@
 #import <UIImageView+AFNetworking.h>
 
 #import "TMBOImageListCell.h"
+#import "TMBOImageDetailViewController.h"
 #import "TMBOJSONRequestOperation.h"
 #import "TMBOLoadingCell.h"
 #import "TMBOUpload.h"
@@ -78,6 +79,7 @@
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Upload"];
     // WHERE type = image pls
     fetchRequest.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"uploadid" ascending:NO]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"type = \"image\""];
     fetchRequest.fetchLimit = 50;
     _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[(id)[[UIApplication sharedApplication] delegate] managedObjectContext] sectionNameKeyPath:nil cacheName:@"ImageStream"];
     _fetchedResultsController.delegate = self;
@@ -237,13 +239,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];    
+    TMBOImageDetailViewController *detailViewController = [[TMBOImageDetailViewController alloc] init];
+    [detailViewController setUpload:(TMBOUpload *)[_fetchedResultsController objectAtIndexPath:indexPath]];
+    // ...
+    // Pass the selected object to the new view controller.
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (NSUInteger)supportedInterfaceOrientations;
