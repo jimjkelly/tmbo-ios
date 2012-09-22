@@ -27,7 +27,7 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    // TODO: [[NSUserDefaults standardUserDefaults] setValue:<#token#> forKey:@"TMBOToken"];
+    // devdo: [[NSUserDefaults standardUserDefaults] setValue:<#token#> forKey:@"TMBOToken"];
     
     [Crashlytics startWithAPIKey:@"eff98601e169f1338233242f16fb6b59edf0cf8c"];
     
