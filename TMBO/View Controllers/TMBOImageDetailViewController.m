@@ -41,8 +41,8 @@
     [spinner startAnimating];
     
     // Default configuration for zooming scrollview
-//    [self.scrollView setMinimumZoomScale:1.0];
-//    [self.scrollView setMaximumZoomScale:1.0];
+    [self.scrollView setMinimumZoomScale:1.0];
+    [self.scrollView setMaximumZoomScale:1.0];
     [self.scrollView setDelegate:self];
     [self.scrollView setImageView:self.imageView];
     
