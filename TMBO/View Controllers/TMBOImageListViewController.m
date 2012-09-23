@@ -59,6 +59,8 @@
 - (void)viewWillAppear:(BOOL)animated;
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification:) name:@"com.alamofire.networking.operation.finish" object:nil];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 // HACK: this is part of the hack described above

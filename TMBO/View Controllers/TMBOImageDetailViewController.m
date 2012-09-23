@@ -66,6 +66,11 @@
     }];
 }
 
+- (void)viewWillAppear:(BOOL)animated;
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+}
+
 #pragma mark - UIScrollView delegate methods
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView;
