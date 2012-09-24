@@ -115,8 +115,10 @@
 
     if ([fetchRequest.entityName isEqualToString:@"Upload"]) {
         mutableURLRequest = [self requestWithMethod:@"GET" path:@"getuploads.json" parameters:args];
-        NSLog(@"%@", [[mutableURLRequest URL] absoluteString]);
     }
+
+    [mutableURLRequest setValue:kTMBOUserAgent forHTTPHeaderField:@"User-Agent"];
+    NSLog(@"API request: %@", [[mutableURLRequest URL] absoluteString]);
     return mutableURLRequest;
 }
 
