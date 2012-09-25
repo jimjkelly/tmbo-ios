@@ -20,6 +20,7 @@
 #import "TMBOUpload.h"
 
 @interface TMBOImageDetailViewController ()
+- (void)fit;
 @end
 
 @implementation TMBOImageDetailViewController
@@ -27,6 +28,17 @@
 @synthesize scrollView;
 @synthesize imageView;
 @synthesize spinner;
+
+- (void)fit;
+{
+    if (![self.imageView image]) return;
+    
+    CGFloat minScale = [self minScaleForImage:[self.imageView image] inContainer:[self.scrollView frame].size];
+    [self.scrollView setMinimumZoomScale:minScale];
+    [self.scrollView setMaximumZoomScale:[[UIScreen mainScreen] scale]];
+    
+    [self.scrollView setZoomScale:[self.scrollView minimumZoomScale] animated:NO];
+}
 
 - (void)viewDidLoad;
 {
@@ -54,11 +66,7 @@
         [self.scrollView setContentSize:[image size]];
         [self.imageView setFrame:CGRectMake(0.0, 0.0, [image size].width, [image size].height)];
         
-        CGFloat minScale = [self minScaleForImage:image inContainer:[self.scrollView frame].size];
-        [self.scrollView setMinimumZoomScale:minScale];
-        [self.scrollView setMaximumZoomScale:[[UIScreen mainScreen] scale]];
-        
-        [self.scrollView setZoomScale:[self.scrollView minimumZoomScale] animated:NO];
+        [self fit];
         
         [spinner stopAnimating];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error){
@@ -69,6 +77,8 @@
 - (void)viewWillAppear:(BOOL)animated;
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    
+    [self fit];
 }
 
 #pragma mark - UIScrollView delegate methods
