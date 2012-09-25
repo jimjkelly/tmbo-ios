@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4E6E0FE5CE7C4DC5ABD49088 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE62E04601140D4889DFD23 /* libPods.a */; };
+		5D40605B16112A9C00EA0F5E /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605A16112A9C00EA0F5E /* Icon-114.png */; };
+		5D40605E16112AAB00EA0F5E /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605D16112AAB00EA0F5E /* Icon-57.png */; };
+		5D40606016112AB900EA0F5E /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605F16112AB900EA0F5E /* Icon-144.png */; };
+		5D40606216112ABF00EA0F5E /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40606116112ABF00EA0F5E /* Icon-72.png */; };
 		BC2F210E160B8DB900C28105 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2F210D160B8DB900C28105 /* Crashlytics.framework */; };
 		BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */; };
 		BC2F2160160BFD6100C28105 /* TMBOIncrementalStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F215F160BFD6100C28105 /* TMBOIncrementalStore.m */; };
@@ -55,6 +59,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5D40605A16112A9C00EA0F5E /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
+		5D40605D16112AAB00EA0F5E /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-57.png"; sourceTree = "<group>"; };
+		5D40605F16112AB900EA0F5E /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-144.png"; sourceTree = "<group>"; };
+		5D40606116112ABF00EA0F5E /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		BC2F210D160B8DB900C28105 /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
 		BC2F2159160BF9CB00C28105 /* TMBO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMBO.xcdatamodel; sourceTree = "<group>"; };
 		BC2F215E160BFD6100C28105 /* TMBOIncrementalStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOIncrementalStore.h; path = Model/TMBOIncrementalStore.h; sourceTree = "<group>"; };
@@ -208,6 +216,10 @@
 		BC2FF5D9160AA21400FE4AA5 = {
 			isa = PBXGroup;
 			children = (
+				5D40606116112ABF00EA0F5E /* Icon-72.png */,
+				5D40605F16112AB900EA0F5E /* Icon-144.png */,
+				5D40605D16112AAB00EA0F5E /* Icon-57.png */,
+				5D40605A16112A9C00EA0F5E /* Icon-114.png */,
 				BC2FF5EE160AA21400FE4AA5 /* TMBO */,
 				BC2FF60C160AA21500FE4AA5 /* TMBOTests */,
 				BC2FF5E7160AA21400FE4AA5 /* Frameworks */,
@@ -370,6 +382,10 @@
 				BC2F21BB160D432900C28105 /* th-filtered.png in Resources */,
 				BC2F21BC160D432900C28105 /* th-filtered@2x.png in Resources */,
 				BC2F21E7160E52ED00C28105 /* TMBOImageDetailViewController.xib in Resources */,
+				5D40605B16112A9C00EA0F5E /* Icon-114.png in Resources */,
+				5D40605E16112AAB00EA0F5E /* Icon-57.png in Resources */,
+				5D40606016112AB900EA0F5E /* Icon-144.png in Resources */,
+				5D40606216112ABF00EA0F5E /* Icon-72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
