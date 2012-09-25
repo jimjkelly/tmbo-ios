@@ -29,6 +29,9 @@
 @synthesize imageView;
 @synthesize spinner;
 
+#pragma mark Factored functionality
+
+// Called in the image load success completion block and viewWillAppear
 - (void)fit;
 {
     if (![self.imageView image]) return;
@@ -39,6 +42,8 @@
     
     [self.scrollView setZoomScale:[self.scrollView minimumZoomScale] animated:NO];
 }
+
+#pragma mark - UIView overloaded methods
 
 - (void)viewDidLoad;
 {
@@ -86,11 +91,6 @@
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView;
 {
     return imageView;
-}
-
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView;
-{
-    
 }
 
 #pragma mark - Rotation resizing
