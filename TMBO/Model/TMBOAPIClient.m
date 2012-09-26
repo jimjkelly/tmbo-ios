@@ -29,6 +29,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedClient = [[self alloc] initWithBaseURL:kTMBOAPIBaseURL];
+        [_sharedClient setDefaultHeader:@"User-Agent" value:kTMBOUserAgent];
     });
     
     return _sharedClient;
@@ -96,6 +97,21 @@
 
 #pragma mark - AFIncrementalStore
 
+- (NSURLRequest *)requestLoginTokenForUsername:(NSString *)username
+                                   andPassword:(NSString *)password
+{
+    NSMutableURLRequest *mutableURLRequest = nil;
+    NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
+    
+    [args setObject:username forKey:@"username"];
+    [args setObject:password forKey:@"password"];
+    [args setObject:@"1" forKey:@"gettoken"];
+    
+    mutableURLRequest = [self requestWithMethod:@"GET" path:@"login.json" parameters:args];
+    NSLog(@"API request: %@", [[mutableURLRequest URL] absoluteString]);
+    return mutableURLRequest;
+}
+
 - (NSURLRequest *)requestForFetchRequest:(NSFetchRequest *)fetchRequest
                              withContext:(NSManagedObjectContext *)context
 {
@@ -104,10 +120,16 @@
     NSPredicate *predicates = [fetchRequest predicate];
     [self parsePredicate:predicates into:args];
 
-    // Authentication token
-    Assert(kTMBOToken);
-    // if Assert -> [[NSUserDefaults standardUserDefaults] setValue:<#(NSString *)token#> forKey:@"TMBOToken"]; DebugBreak(); // <- Don't forget to re-comment this line and remove your token!
-    [args setObject:kTMBOToken forKey:@"token"];
+    // Authentication token, set via TMBOLoginViewController
+    NSString *TMBOToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"TMBOToken"];
+    if (!TMBOToken) {
+        // We set it to nothing here if it's nil above, presumably the call will 401
+        // and we should be directed to the login page.  Alternatively one could
+        // manually set a token here for development purposes.
+        TMBOToken = @"";
+    }
+    
+    [args setObject:TMBOToken forKey:@"token"];
 
     // TMBO API only returns up to 200 items at a time
     Assert([fetchRequest fetchLimit] <= 200);
@@ -117,7 +139,6 @@
         mutableURLRequest = [self requestWithMethod:@"GET" path:@"getuploads.json" parameters:args];
     }
 
-    [mutableURLRequest setValue:kTMBOUserAgent forHTTPHeaderField:@"User-Agent"];
     NSLog(@"API request: %@", [[mutableURLRequest URL] absoluteString]);
     return mutableURLRequest;
 }

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4E6E0FE5CE7C4DC5ABD49088 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE62E04601140D4889DFD23 /* libPods.a */; };
+		5D1B34D91611402800DDBAE2 /* TMBOLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1B34D71611402800DDBAE2 /* TMBOLoginViewController.m */; };
+		5D1B34DA1611402800DDBAE2 /* TMBOLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1B34D81611402800DDBAE2 /* TMBOLoginViewController.xib */; };
 		5D40605B16112A9C00EA0F5E /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605A16112A9C00EA0F5E /* Icon-114.png */; };
 		5D40605E16112AAB00EA0F5E /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605D16112AAB00EA0F5E /* Icon-57.png */; };
 		5D40606016112AB900EA0F5E /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605F16112AB900EA0F5E /* Icon-144.png */; };
@@ -59,6 +61,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5D1B34D61611402800DDBAE2 /* TMBOLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOLoginViewController.h; path = "View Controllers/TMBOLoginViewController.h"; sourceTree = "<group>"; };
+		5D1B34D71611402800DDBAE2 /* TMBOLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOLoginViewController.m; path = "View Controllers/TMBOLoginViewController.m"; sourceTree = "<group>"; };
+		5D1B34D81611402800DDBAE2 /* TMBOLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOLoginViewController.xib; path = "View Controllers/TMBOLoginViewController.xib"; sourceTree = "<group>"; };
 		5D40605A16112A9C00EA0F5E /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
 		5D40605D16112AAB00EA0F5E /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-57.png"; sourceTree = "<group>"; };
 		5D40605F16112AB900EA0F5E /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-144.png"; sourceTree = "<group>"; };
@@ -197,6 +202,9 @@
 				BC2F21DF160E506F00C28105 /* TMBOImageDetailViewController.h */,
 				BC2F21E0160E506F00C28105 /* TMBOImageDetailViewController.m */,
 				BC2F21E6160E52ED00C28105 /* TMBOImageDetailViewController.xib */,
+				5D1B34D61611402800DDBAE2 /* TMBOLoginViewController.h */,
+				5D1B34D71611402800DDBAE2 /* TMBOLoginViewController.m */,
+				5D1B34D81611402800DDBAE2 /* TMBOLoginViewController.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -386,6 +394,7 @@
 				5D40605E16112AAB00EA0F5E /* Icon-57.png in Resources */,
 				5D40606016112AB900EA0F5E /* Icon-144.png in Resources */,
 				5D40606216112ABF00EA0F5E /* Icon-72.png in Resources */,
+				5D1B34DA1611402800DDBAE2 /* TMBOLoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +486,7 @@
 				BC2F21B8160D236D00C28105 /* UIImage+RoundedCorner.m in Sources */,
 				BC2F21E1160E506F00C28105 /* TMBOImageDetailViewController.m in Sources */,
 				BC2F21EE160E729200C28105 /* TMBOImageScrollView.m in Sources */,
+				5D1B34D91611402800DDBAE2 /* TMBOLoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

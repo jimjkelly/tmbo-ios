@@ -16,4 +16,5 @@
 
 @interface TMBOAPIClient : AFRESTClient <AFIncrementalStoreHTTPClient>
 + (TMBOAPIClient *)sharedClient;
+- (NSURLRequest *)requestLoginTokenForUsername:(NSString *)username andPassword:(NSString *)password;
 @end

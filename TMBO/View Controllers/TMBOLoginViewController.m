@@ -1,0 +1,77 @@
+//
+//  TMBOLoginViewController.m
+//  TMBO
+//
+//  Created by James Kelly on 9/25/12.
+//  Copyright (c) 2012 Scott Perry. All rights reserved.
+//
+
+#import "TMBOLoginViewController.h"
+
+#import "TMBOAPIClient.h"
+#import "TMBOJSONRequestOperation.h"
+
+@interface TMBOLoginViewController ()
+
+@end
+
+@implementation TMBOLoginViewController
+
+- (IBAction)loginPressed:(UIButton *)sender {
+    self.loginError.hidden = YES;
+    self.activity.hidden = NO;
+    [self.activity startAnimating];
+    
+    TMBOAPIClient *api = [TMBOAPIClient sharedClient];
+    NSURLRequest *request = [api requestLoginTokenForUsername:[self.username text] andPassword:[self.password text]];
+    TMBOJSONRequestOperation *operation = [TMBOJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSLog(@"Got token: %@", [JSON valueForKey:@"tokenid"]);
+        [[NSUserDefaults standardUserDefaults] setValue:[JSON valueForKey:@"tokenid"] forKey:@"TMBOToken"];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        NSLog(@"Failure: %@", error);
+        [self loginFailed];
+    }];
+    [operation start];
+}
+
+- (void)loginFailed {
+    // do stuffs for a login failure
+    [self.activity stopAnimating];
+    self.activity.hidden = YES;
+    self.loginError.hidden = NO;
+    // TODO: support richer login error messages
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Set acitivy indicator and errors to hidden
+    self.activity.hidden = YES;
+    self.loginError.hidden = YES;
+}
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
