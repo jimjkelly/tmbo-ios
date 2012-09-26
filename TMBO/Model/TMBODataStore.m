@@ -57,27 +57,56 @@ static TMBODataStore *shared = nil;
 
 - (void)uploadsWithType:(kTMBOType)type since:(NSUInteger)since completion:(void (^)(NSArray *, NSError *))block;
 {
-    
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        block(@[], nil);
+    });
 }
 
 - (void)uploadsWithType:(kTMBOType)type before:(NSUInteger)before completion:(void (^)(NSArray *, NSError *))block;
 {
-    
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        block(@[], nil);
+    });
+}
+
+- (void)latestUploadsWithType:(kTMBOType)type completion:(void (^)(NSArray *, NSError *))block;
+{
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        block(@[], nil);
+    });
 }
 
 - (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange)range completion:(void (^)(void))block;
 {
-    
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        block();
+    });
 }
 
 - (void)latestIDForType:(kTMBOType)type completion:(void (^)(NSUInteger, NSError *))block;
 {
-    
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        block(112, nil);
+    });
 }
 
 - (void)authenticateUsername:(NSString *)username password:(NSString *)password completion:(void (^)(NSError *))block;
 {
-    
+    int64_t delayInSeconds = 2.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        block([NSError errorWithDomain:@"booo" code:55 userInfo:nil]);
+    });
 }
 
 #pragma mark - Private API implementation

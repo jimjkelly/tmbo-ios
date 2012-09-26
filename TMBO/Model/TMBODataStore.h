@@ -95,6 +95,14 @@ typedef struct {
 - (void)uploadsWithType:(kTMBOType)type before:(NSUInteger)before completion:(void (^)(NSArray *, NSError *))block;
 
 /**
+ Fetches the most recent 50 uploads from the server.
+ 
+ @param type The type of upload to return
+ @param block A block that takes two arguments: a result array containing 50 Upload objects or set to nil and an `NSError` indicating the success of the operation. If the operation was successful, the `NSError` parameter will be `nil`.
+ */
+- (void)latestUploadsWithType:(kTMBOType)type completion:(void (^)(NSArray *, NSError *))block;
+
+/**
  Synchronizes upload data with the server.
  
  @param type The type of upload to update

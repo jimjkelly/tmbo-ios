@@ -16,24 +16,67 @@
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
+#import "TMBODataStore.h"
 #import "TMBOImageListCell.h"
 #import "TMBOImageDetailViewController.h"
 #import "TMBOUpload.h"
 #import "UIImage+Resize.h"
 
-@interface TMBOImageListViewController () {
-    UIRefreshControl *_topRefresh;
-}
+@interface TMBOImageListViewController ()
+@property (nonatomic, strong) UIRefreshControl *topRefresh;
+@property (nonatomic, strong) NSMutableArray *items;
 - (void)refetchData;
 @end
 
 @implementation TMBOImageListViewController
+@synthesize topRefresh = _topRefresh;
+@synthesize items = _items;
 
 - (void)refetchData;
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_topRefresh beginRefreshing];
-        [_topRefresh endRefreshing];
+        [self.topRefresh beginRefreshing];
+        
+        void (^completion)(NSArray *, NSError *) = ^(NSArray *results, NSError *error){
+            if (results) {
+                if (![self.items count]) {
+                    [self.items addObjectsFromArray:results];
+                } else {
+                    NSUInteger max = [[self.items objectAtIndex:0] uploadid];
+                    
+                    // Add non-duplicate uploads
+                    for (TMBOUpload *up in results) {
+                        if ([up uploadid] > max) {
+                            [self.items insertObject:up atIndex:0];
+                        }
+                    }
+                    
+                    // Verify sort order
+                    [self.items sortUsingComparator:^(id obj1, id obj2) {
+                        TMBOUpload *up1 = (TMBOUpload *)obj1;
+                        TMBOUpload *up2 = (TMBOUpload *)obj2;
+                        
+                        if ([up1 uploadid] > [up2 uploadid]) return NSOrderedDescending;
+                        Assert([up1 uploadid] != [up2 uploadid]);
+                        return NSOrderedAscending;
+                    }];
+                }
+                
+                // TODO: is updating the table going to jerk around the location of the viewport in relation to the uploads? maybe use -beginUpdates instead?
+                [self.tableView reloadData];
+            } else if (error) {
+                NSLog(@"Refresh error: %@", [error localizedDescription]);
+            } else {
+                NotReached();
+            }
+            [self.topRefresh endRefreshing];
+        };
+        
+        if ([self.items count]) {
+            [[TMBODataStore sharedStore] uploadsWithType:kTMBOTypeImage since:[[self.items objectAtIndex:0] uploadid] completion:completion];
+        } else {
+            [[TMBODataStore sharedStore] latestUploadsWithType:kTMBOTypeImage completion:completion];
+        }
     });
 }
 
@@ -72,10 +115,12 @@
     UINib *nib = [UINib nibWithNibName:@"TMBOImageListCell" bundle:nil];
     [[self tableView] registerNib:nib forCellReuseIdentifier:@"TMBOImageListCell"];
     
-    _topRefresh = [[UIRefreshControl alloc] init];
-    [_topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
-    [self setRefreshControl:_topRefresh];
-    [[self view] addSubview:_topRefresh];
+    self.topRefresh = [[UIRefreshControl alloc] init];
+    [self.topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
+    [self setRefreshControl:self.topRefresh];
+    [[self view] addSubview:self.topRefresh];
+    
+    self.items = [[NSMutableArray alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,14 +131,9 @@
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 0;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return [self.items count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -107,12 +147,29 @@
     return cell;
 }
 
+#pragma mark Helpers
+
+- (TMBOImageListCell *)cellForUpload:(TMBOUpload *)upload;
+{
+    // Get the upload's index in the array
+    NSUInteger uploadIndex = [self.items indexOfObject:upload];
+    if (uploadIndex == NSNotFound) return nil; // TODO: explode?
+    
+    for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
+        if ([path row] == uploadIndex) {
+            return (TMBOImageListCell *)[self.tableView cellForRowAtIndexPath:path];
+        }
+    }
+    
+    return nil;
+}
+
 - (void)configureCell:(UITableViewCell *)uitvcell
           atIndexPath:(NSIndexPath *)indexPath
 {
     TMBOImageListCell *cell = (TMBOImageListCell *)uitvcell;
     @try {
-        TMBOUpload *upload = (TMBOUpload *)nil; // TODO: set to thing
+        TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
         
         [[cell filenameView] setText:[upload filename]];
         
@@ -167,8 +224,7 @@
                         return thumb;
                     }
                     success:^(NSURLRequest *request , NSHTTPURLResponse *response , UIImage *image ) {
-                        // TODO: Get the cell for this upload again
-                        TMBOImageListCell *validCell = nil;
+                        TMBOImageListCell *validCell = [self cellForUpload:upload];
                         
                         if (validCell) {
                             [[validCell spinner] stopAnimating];
@@ -179,8 +235,7 @@
                         }
                     }
                     failure:^( NSURLRequest *request , NSHTTPURLResponse *response , NSError *error ){
-                        // TODO: Get the cell for this upload again
-                        TMBOImageListCell *validCell = nil;
+                        TMBOImageListCell *validCell = [self cellForUpload:upload];
 
                         if (validCell) {
                             [[cell spinner] stopAnimating];
@@ -210,7 +265,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
     TMBOImageDetailViewController *detailViewController = [[TMBOImageDetailViewController alloc] init];
-    [detailViewController setUpload:nil]; // TODO: set to thing
+    [detailViewController setUpload:[self.items objectAtIndex:[indexPath row]]];
     // ...
     // Pass the selected object to the new view controller.
     [self.navigationController pushViewController:detailViewController animated:YES];
@@ -228,5 +283,7 @@
 {
     [self refetchData];
 }
+
+// TODO: handle lazyloading at the bottom
 
 @end
