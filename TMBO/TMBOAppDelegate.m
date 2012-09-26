@@ -20,7 +20,6 @@
 #import <Crashlytics/Crashlytics.h>
 
 #import "TMBOImageListViewController.h"
-#import "TMBOIncrementalStore.h"
 
 @implementation TMBOAppDelegate
 @synthesize window = _window;

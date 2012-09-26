@@ -3,7 +3,13 @@
 //  TMBO
 //
 //  Created by Scott Perry on 09/25/12.
-//  Copyright (c) 2012 Scott Perry. All rights reserved.
+//  Copyright © 2012 Scott Perry (http://numist.net)
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
 #import <Foundation/Foundation.h>
@@ -23,6 +29,8 @@
  - Methods beginning in `set` affect the local data state immediately, and spawn an asynchronous operation to push the change to the server.
  - All other methods take a completion block that is passed the result and an NSError as parameters.
  
+ Note that the methods taking completion blocks will call them on any thread. If you need to interact with UI in your completion block, you should nest a `dispatch_async()` within it, targeting the main thread (`dispatch_get_main_queue()`)
+ 
  ## Development notes
  
  When DEBUG is defined, the model will fail fast and hard wherever possible. If a data getter/setter method is called and there is no token, an exception will be thrown. If `-updateUploadsWithType:inRange:completion:` is called with a range of uploads that is not within the set of uploads cached locally, an exception will be thrown. 
@@ -33,7 +41,6 @@ typedef enum : NSUInteger {
     kTMBOTypeTopic  = 0x2,
     kTMBOTypeAudio  = 0x4,
     kTMBOTypeAvatar = 0x8,
-    kTMBOTypeFile   = kTMBOTypeImage | kTMBOTypeAudio | kTMBOTypeAvatar,
     kTMBOTypeAny    = kTMBOTypeImage | kTMBOTypeTopic | kTMBOTypeAudio | kTMBOTypeAvatar
 } kTMBOType;
 
@@ -68,14 +75,16 @@ typedef struct {
  @param type The type of upload to return
  @param near The upload id to center the request near.
  
- @return An array of `Upload` objects, up to 50 since `near` and up to 100 before `near`.
+ @return An array of `Upload` objects, up to 50 since `near` and up to 50 before `near`.
  */
 - (NSArray *)cachedUploadsWithType:(kTMBOType)type near:(NSUInteger)near;
 
+// TODO: offline support
+//- (NSArray *)cachedUploadsWithType:(kTMBOType)type since:(NSUInteger)since;
+//- (NSArray *)cachedUploadsWithType:(kTMBOType)type before:(NSUInteger)before;
+
 /**
  Fetches upload data after a specified upload, from the server if required.
- 
- If the local cache contains objects that can fulfill this method, the completion block is called synchronously with the local data and this method will initiate traffic to update the objects returned with fresh data from the server.
  
  @param type The type of upload to return
  @param since The minimum uploadid of the returned result set, inclusive.
@@ -85,8 +94,6 @@ typedef struct {
 
 /**
  Fetches upload data before a specified upload, from the server if required.
- 
- If the local cache contains objects that can fulfill this method, the completion block is called synchronously with the local data and this method will initiate traffic to update the objects returned with fresh data from the server.
  
  @param type The type of upload to return
  @param before The maximum uploadid of the returned result set, inclusive.

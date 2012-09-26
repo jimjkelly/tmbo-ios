@@ -4,7 +4,7 @@
 //
 //  Created by Scott Perry on 09/21/12.
 //  Copyright © 2012 Scott Perry (http://numist.net)
-//  
+//
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //  
 //  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -42,28 +42,24 @@
                 if (![self.items count]) {
                     [self.items addObjectsFromArray:results];
                 } else {
-                    NSUInteger max = [[self.items objectAtIndex:0] uploadid];
+                    NSUInteger max = [[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue];
                     
                     // Add non-duplicate uploads
                     for (TMBOUpload *up in results) {
-                        if ([up uploadid] > max) {
+                        if ([[up uploadid] unsignedIntegerValue] > max) {
                             [self.items insertObject:up atIndex:0];
                         }
                     }
                     
                     // Verify sort order
-                    [self.items sortUsingComparator:^(id obj1, id obj2) {
-                        TMBOUpload *up1 = (TMBOUpload *)obj1;
-                        TMBOUpload *up2 = (TMBOUpload *)obj2;
-                        
-                        if ([up1 uploadid] > [up2 uploadid]) return NSOrderedDescending;
-                        Assert([up1 uploadid] != [up2 uploadid]);
-                        return NSOrderedAscending;
-                    }];
+                    [self.items sortUsingComparator:kUploadComparator];
                 }
                 
                 // TODO: is updating the table going to jerk around the location of the viewport in relation to the uploads? maybe use -beginUpdates instead?
-                [self.tableView reloadData];
+                // reloadData must be sent on the main thread
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
             } else if (error) {
                 NSLog(@"Refresh error: %@", [error localizedDescription]);
             } else {
@@ -73,7 +69,7 @@
         };
         
         if ([self.items count]) {
-            [[TMBODataStore sharedStore] uploadsWithType:kTMBOTypeImage since:[[self.items objectAtIndex:0] uploadid] completion:completion];
+            [[TMBODataStore sharedStore] uploadsWithType:kTMBOTypeImage since:[[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue] completion:completion];
         } else {
             [[TMBODataStore sharedStore] latestUploadsWithType:kTMBOTypeImage completion:completion];
         }
@@ -121,6 +117,7 @@
     [[self view] addSubview:self.topRefresh];
     
     self.items = [[NSMutableArray alloc] init];
+    //[self.items addObjectsFromArray:[[TMBODataStore sharedStore] cachedUploadsWithType:kTMBOTypeImage near:<#lastposition#>]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -178,24 +175,24 @@
         NSString *commentsLabel;
         if ([upload comments] == 0) {
             commentsLabel = @"0 comments";
-        } else if ([upload comments] == 1) {
+        } else if ([[upload comments] unsignedIntegerValue] == 1) {
             commentsLabel = @"1 comment";
         } else {
-            commentsLabel = [NSString stringWithFormat:@"%u comments", [upload comments]];
+            commentsLabel = [NSString stringWithFormat:@"%@ comments", [upload comments]];
         }
         [[cell commentsView] setText:commentsLabel];
         
-        NSString *votesLabel = [NSString stringWithFormat:@"+%u -%u", [upload goodVotes], [upload badVotes]];
-        if ([upload tmboVotes]) {
-            votesLabel = [votesLabel stringByAppendingFormat:@" x%u", [upload tmboVotes]];
+        NSString *votesLabel = [NSString stringWithFormat:@"+%@ -%@", [upload goodVotes], [upload badVotes]];
+        if ([[upload tmboVotes] integerValue]) {
+            votesLabel = [votesLabel stringByAppendingFormat:@" x%@", [upload tmboVotes]];
         }
         [[cell votesView] setText:votesLabel];
         
         UIImage *thumbnail = [upload thumbnail];
-        if (thumbnail && ![upload filtered]) {
+        if (thumbnail && ![[upload filtered] boolValue]) {
             [[cell spinner] stopAnimating];
             [[cell thumbnailView] setImage:thumbnail];
-        } else if ([upload filtered]) {
+        } else if ([[upload filtered] boolValue]) {
             [[cell spinner] stopAnimating];
             [[cell thumbnailView] setImage:[UIImage imageNamed:@"th-filtered"]];
         }
@@ -228,7 +225,7 @@
                         
                         if (validCell) {
                             [[validCell spinner] stopAnimating];
-                            if (![upload filtered]) {
+                            if (![[upload filtered] boolValue]) {
                                 [[validCell thumbnailView] setImage:image];
                             }
                             [validCell setNeedsDisplay];
