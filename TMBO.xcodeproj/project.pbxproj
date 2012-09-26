@@ -46,6 +46,7 @@
 		BC2FF609160AA21500FE4AA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
 		BC2FF611160AA21500FE4AA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC2FF60F160AA21500FE4AA5 /* InfoPlist.strings */; };
 		BC2FF614160AA21500FE4AA5 /* TMBOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2FF613160AA21500FE4AA5 /* TMBOTests.m */; };
+		BC97BD9B161372E100A3676A /* TMBODataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BD9A161372E100A3676A /* TMBODataStore.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +117,8 @@
 		BC2FF610160AA21500FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC2FF612160AA21500FE4AA5 /* TMBOTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TMBOTests.h; sourceTree = "<group>"; };
 		BC2FF613160AA21500FE4AA5 /* TMBOTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBOTests.m; sourceTree = "<group>"; };
+		BC97BD99161372D800A3676A /* TMBODataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBODataStore.h; path = Model/TMBODataStore.h; sourceTree = "<group>"; };
+		BC97BD9A161372E100A3676A /* TMBODataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBODataStore.m; path = Model/TMBODataStore.m; sourceTree = "<group>"; };
 		DBE62E04601140D4889DFD23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE9D6074275D4E8BAE5CDAAB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -149,15 +152,9 @@
 		BC2F2156160BF9B500C28105 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */,
 				BC2F2185160CF7B800C28105 /* TMBOUpload.h */,
-				BC2F2186160CF7B800C28105 /* TMBOUpload.m */,
-				BC2F215E160BFD6100C28105 /* TMBOIncrementalStore.h */,
-				BC2F215F160BFD6100C28105 /* TMBOIncrementalStore.m */,
-				BC2F2161160BFD7F00C28105 /* TMBOAPIClient.h */,
-				BC2F2162160BFD7F00C28105 /* TMBOAPIClient.m */,
-				BC2F2164160C016000C28105 /* TMBOJSONRequestOperation.h */,
-				BC2F2165160C016000C28105 /* TMBOJSONRequestOperation.m */,
+				BC97BD99161372D800A3676A /* TMBODataStore.h */,
+				BC97BD94161371B800A3676A /* Private */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -297,6 +294,22 @@
 				BC2FF60F160AA21500FE4AA5 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BC97BD94161371B800A3676A /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				BC2F2186160CF7B800C28105 /* TMBOUpload.m */,
+				BC97BD9A161372E100A3676A /* TMBODataStore.m */,
+				BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */,
+				BC2F215E160BFD6100C28105 /* TMBOIncrementalStore.h */,
+				BC2F215F160BFD6100C28105 /* TMBOIncrementalStore.m */,
+				BC2F2161160BFD7F00C28105 /* TMBOAPIClient.h */,
+				BC2F2162160BFD7F00C28105 /* TMBOAPIClient.m */,
+				BC2F2164160C016000C28105 /* TMBOJSONRequestOperation.h */,
+				BC2F2165160C016000C28105 /* TMBOJSONRequestOperation.m */,
+			);
+			name = Private;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -477,6 +490,7 @@
 				BC2F21B8160D236D00C28105 /* UIImage+RoundedCorner.m in Sources */,
 				BC2F21E1160E506F00C28105 /* TMBOImageDetailViewController.m in Sources */,
 				BC2F21EE160E729200C28105 /* TMBOImageScrollView.m in Sources */,
+				BC97BD9B161372E100A3676A /* TMBODataStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

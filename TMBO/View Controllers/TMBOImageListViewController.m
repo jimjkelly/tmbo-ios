@@ -14,17 +14,14 @@
 
 #import "TMBOImageListViewController.h"
 
-#import <CoreData/CoreData.h>
-#import <UIImageView+AFNetworking.h>
+#import <AFNetworking/UIImageView+AFNetworking.h>
 
 #import "TMBOImageListCell.h"
 #import "TMBOImageDetailViewController.h"
-#import "TMBOJSONRequestOperation.h"
 #import "TMBOUpload.h"
 #import "UIImage+Resize.h"
 
-@interface TMBOImageListViewController () <NSFetchedResultsControllerDelegate> {
-    NSFetchedResultsController *_fetchedResultsController;
+@interface TMBOImageListViewController () {
     UIRefreshControl *_topRefresh;
 }
 - (void)refetchData;
@@ -36,29 +33,15 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [_topRefresh beginRefreshing];
-        [_fetchedResultsController performFetch:nil];
-    });
-}
-
-/* HACK: This is a goddamn hack.
- * The intent is to [_topRefresh endRefreshing] when the server data arrives and is processed by Core Data,
- * but there's no notification that corresponds to that specific event and not a different model request.
- * The next closest thing is to use controllerDidChangeContent, but that's not good enough—if the server data indicates no changes, the callback never happens.
- * This will at least always reset the refreshing status of the table, if not a bit prematurely.
- */
-- (void)notification:(NSNotification *)note;
-{
-    if ([[note object] isKindOfClass:[TMBOJSONRequestOperation class]]) {
         [_topRefresh endRefreshing];
-    }
+    });
 }
 
 #pragma mark - UITableViewController
 
-// HACK: this is part of the hack described above
 - (void)viewWillAppear:(BOOL)animated;
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification:) name:@"com.alamofire.networking.operation.finish" object:nil];
+    [super viewWillAppear:animated];
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
@@ -66,7 +49,8 @@
 // HACK: this is part of the hack described above
 - (void)viewWillDisappear:(BOOL)animated;
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super viewWillDisappear:animated];
+    // …
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -83,16 +67,7 @@
 {
     [super viewDidLoad];
     
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Upload"];
-    // WHERE type = image pls
-    fetchRequest.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"uploadid" ascending:NO]];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"type = \"image\""];
-    fetchRequest.fetchLimit = 50;
-    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[(id)[[UIApplication sharedApplication] delegate] managedObjectContext] sectionNameKeyPath:nil cacheName:@"ImageStream"];
-    _fetchedResultsController.delegate = self;
     [self refetchData];
-    
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refetchData)];
     
     UINib *nib = [UINib nibWithNibName:@"TMBOImageListCell" bundle:nil];
     [[self tableView] registerNib:nib forCellReuseIdentifier:@"TMBOImageListCell"];
@@ -113,12 +88,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[_fetchedResultsController sections] count];
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[_fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -137,7 +112,7 @@
 {
     TMBOImageListCell *cell = (TMBOImageListCell *)uitvcell;
     @try {
-        TMBOUpload *upload = (TMBOUpload *)[_fetchedResultsController objectAtIndexPath:indexPath];
+        TMBOUpload *upload = (TMBOUpload *)nil; // TODO: set to thing
         
         [[cell filenameView] setText:[upload filename]];
         
@@ -192,8 +167,8 @@
                         return thumb;
                     }
                     success:^(NSURLRequest *request , NSHTTPURLResponse *response , UIImage *image ) {
-                        NSIndexPath *path = [_fetchedResultsController indexPathForObject:upload];
-                        TMBOImageListCell *validCell = (TMBOImageListCell *)[self.tableView cellForRowAtIndexPath:path];
+                        // TODO: Get the cell for this upload again
+                        TMBOImageListCell *validCell = nil;
                         
                         if (validCell) {
                             [[validCell spinner] stopAnimating];
@@ -204,8 +179,8 @@
                         }
                     }
                     failure:^( NSURLRequest *request , NSHTTPURLResponse *response , NSError *error ){
-                        NSIndexPath *path = [_fetchedResultsController indexPathForObject:upload];
-                        TMBOImageListCell *validCell = (TMBOImageListCell *)[self.tableView cellForRowAtIndexPath:path];
+                        // TODO: Get the cell for this upload again
+                        TMBOImageListCell *validCell = nil;
 
                         if (validCell) {
                             [[cell spinner] stopAnimating];
@@ -235,7 +210,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
     TMBOImageDetailViewController *detailViewController = [[TMBOImageDetailViewController alloc] init];
-    [detailViewController setUpload:(TMBOUpload *)[_fetchedResultsController objectAtIndexPath:indexPath]];
+    [detailViewController setUpload:nil]; // TODO: set to thing
     // ...
     // Pass the selected object to the new view controller.
     [self.navigationController pushViewController:detailViewController animated:YES];
@@ -245,12 +220,6 @@
 - (NSUInteger)supportedInterfaceOrientations;
 {
     return UIInterfaceOrientationMaskAll;
-}
-
-#pragma mark - NSFetchedResultsControllerDelegate
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView reloadData];
 }
 
 #pragma mark Target-action for UIRefreshControl
