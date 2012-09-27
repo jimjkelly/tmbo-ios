@@ -165,7 +165,7 @@ static const NSUInteger kQueryLimit = 50;
         id rawData = nil;
         {
             NSString *method = @"getuploads";
-            NSMutableDictionary *args = [@{@"since" : @(since)} mutableCopy];
+            NSMutableDictionary *args = [@{@"since" : @(since), @"limit" : @(kQueryLimit)} mutableCopy];
             if ([self typeStringForType:type]) {
                 [args setObject:[self typeStringForType:type] forKey:@"type"];
             }
@@ -196,7 +196,7 @@ static const NSUInteger kQueryLimit = 50;
         id rawData = nil;
         {
             NSString *method = @"getuploads";
-            NSMutableDictionary *args = [@{@"before" : @(before)} mutableCopy];
+            NSMutableDictionary *args = [@{@"before" : @(before), @"limit" : @(kQueryLimit)} mutableCopy];
             if ([self typeStringForType:type]) {
                 [args setObject:[self typeStringForType:type] forKey:@"type"];
             }
@@ -251,7 +251,7 @@ static const NSUInteger kQueryLimit = 50;
 
 - (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange)range completion:(void (^)(void))block;
 {
-    NotTested();
+    Assert(NO);
     int64_t delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -261,7 +261,7 @@ static const NSUInteger kQueryLimit = 50;
 
 - (void)latestIDForType:(kTMBOType)type completion:(void (^)(NSUInteger, NSError *))block;
 {
-    NotTested();
+    Assert(NO);
     int64_t delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -271,11 +271,46 @@ static const NSUInteger kQueryLimit = 50;
 
 - (void)authenticateUsername:(NSString *)username password:(NSString *)password completion:(void (^)(NSError *))block;
 {
-    NotTested();
-    int64_t delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        block([NSError errorWithDomain:@"booo" code:55 userInfo:nil]);
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // Get the raw parsed data from the API call
+        id result = nil;
+        {
+            NSString *method = @"login";
+            NSDictionary *args = @{
+                @"limit" : @(kQueryLimit),
+                @"username" : username,
+                @"password" : password,
+                @"gettoken" : @(1)
+            };
+            result = [self callAPIMethod:method withArgs:args];
+        }
+        
+        // Handle error in API call or parsing
+        if ([result isKindOfClass:[NSError class]]) {
+            NSError *error = (NSError *)result;
+            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            block(error);
+            return;
+        }
+        Assert([result isKindOfClass:[NSDictionary class]]);
+        NSDictionary *dict = (NSDictionary *)result;
+        
+        /*
+         {
+         "tokenid":"2k2a97vtpdmjmdpzrlpkpuhjpyrx9d6b",
+         "userid":"1",
+         "issued_to":" (no name)",
+         "issue_date":"2012-02-20 05:19:26",
+         "last_used":"0000-00-00 00:00:00"
+         }
+         */
+        NSLog(@"Successfully generated token %@ for userid %@ for application \"%@\" on %@",
+              [dict objectForKey:@"tokenid"], [dict objectForKey:@"userid"], [dict objectForKey:@"issued_to"], [dict objectForKey:@"issue_date"]);
+        
+        [[NSUserDefaults standardUserDefaults] setValue:[dict objectForKey:@"tokenid"] forKey:@"TMBOToken"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        block(nil);
     });
 }
 
@@ -403,7 +438,7 @@ static const NSUInteger kQueryLimit = 50;
         if (![value isKindOfClass:[TMBOUpload typeFor:varname]]) {
             if ([value isKindOfClass:[NSString class]] && [TMBOUpload typeFor:varname] == [NSDate class]) {
                 [NSTimeZone setDefaultTimeZone:kServerTimeZone];
-                // TODO: do we need to save the device's current time zone?
+                // do we need to save the device's current time zone?
                 NSDate *date = [[[ISO8601DateFormatter alloc] init] dateFromString:value];
                 if ([date compare:kDawnOfTime] == NSOrderedAscending) {
                     NSLog(@"Parsed key %@ (%@) as date, got %@", varname, value, date);
@@ -412,7 +447,8 @@ static const NSUInteger kQueryLimit = 50;
                 value = date;
             } else {
                 NSLog(@"Not handled: %@ should be of type %@, but is actually type %@", varname, [TMBOUpload typeFor:varname], [value class]);
-                DebugBreak();
+                NotTested();
+                // The setter below will throw an exception.
             }
         }
         
