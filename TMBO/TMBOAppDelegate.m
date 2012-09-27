@@ -14,11 +14,10 @@
 
 #import "TMBOAppDelegate.h"
 
-#import <AFNetworkActivityIndicatorManager.h>
-#import <AFIncrementalStore.h>
 #import <CoreData/CoreData.h>
 #import <Crashlytics/Crashlytics.h>
 
+#import "AFNetworkActivityIndicatorManager.h"
 #import "TMBOImageListViewController.h"
 
 @implementation TMBOAppDelegate

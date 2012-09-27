@@ -14,13 +14,12 @@
 
 #import "TMBOImageListViewController.h"
 
-#import <AFNetworking/UIImageView+AFNetworking.h>
-
 #import "TMBODataStore.h"
 #import "TMBOImageListCell.h"
 #import "TMBOImageDetailViewController.h"
 #import "TMBOUpload.h"
 #import "UIImage+Resize.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface TMBOImageListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;

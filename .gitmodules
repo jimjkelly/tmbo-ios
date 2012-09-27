@@ -1,3 +1,6 @@
 [submodule "TMBO/lib/iso-8601-date-formatter"]
 	path = TMBO/lib/iso-8601-date-formatter
 	url = git://github.com/boredzo/iso-8601-date-formatter.git
+[submodule "TMBO/lib/AFNetworking"]
+	path = TMBO/lib/AFNetworking
+	url = git://github.com/AFNetworking/AFNetworking.git

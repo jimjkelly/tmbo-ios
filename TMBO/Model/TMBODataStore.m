@@ -14,9 +14,9 @@
 
 #import "TMBODataStore.h"
 
-#import <AFNetworking/AFHTTPRequestOperation.h>
 #import <CoreData/CoreData.h>
 
+#import "AFHTTPRequestOperation.h"
 #import "ISO8601DateFormatter.h"
 #import "TMBOAPIClient.h"
 #import "TMBOUpload.h"

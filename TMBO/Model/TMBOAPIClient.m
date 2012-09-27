@@ -14,7 +14,7 @@
 
 #import "TMBOAPIClient.h"
 
-#import <AFNetworking/AFJSONRequestOperation.h>
+#import "AFJSONRequestOperation.h"
 
 #define kTMBOAPIBaseURL [NSURL URLWithString:@"/offensive/api.php/" relativeToURL:kTMBOBaseURL]
 

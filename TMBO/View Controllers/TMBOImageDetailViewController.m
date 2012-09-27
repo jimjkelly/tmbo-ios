@@ -14,7 +14,7 @@
 
 #import "TMBOImageDetailViewController.h"
 
-#import <UIImageView+AFNetworking.h>
+#import "UIImageView+AFNetworking.h"
 
 #import "TMBOImageScrollView.h"
 #import "TMBOUpload.h"
