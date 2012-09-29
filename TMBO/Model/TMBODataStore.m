@@ -24,6 +24,9 @@
 @interface TMBODataStore ()
 {
     NSDictionary *keyRepresentationForUpload;
+    
+    __weak id authFailedTarget;
+    SEL authFailedAction;
 }
 
 @property (nonatomic, strong, readonly) TMBOAPIClient *client;
@@ -314,6 +317,15 @@ static const NSUInteger kQueryLimit = 50;
     });
 }
 
+#pragma mark - Authentication failure methods
+
+- (void)setAuthFailureTarget:(id)target selector:(SEL)sel;
+{
+    authFailedTarget = target;
+    authFailedAction = sel;
+    Assert([target respondsToSelector:sel]);
+}
+
 #pragma mark - Private API implementation
 
 - (id)callAPIMethod:(NSString *)method withArgs:(NSDictionary *)args;
@@ -346,7 +358,12 @@ static const NSUInteger kQueryLimit = 50;
         dispatch_semaphore_signal(sem);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if ([[operation response] statusCode] == 401) {
-            // TODO: authentication problem
+            if (authFailedTarget) {
+                #pragma clang diagnostic push
+                #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                [authFailedTarget performSelector:authFailedAction];
+                #pragma clang diagnostic pop
+            }
         } else {
             // TODO: create nserrors properly for the following:
             /*

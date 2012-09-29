@@ -19,6 +19,13 @@
 
 #import "AFNetworkActivityIndicatorManager.h"
 #import "TMBOImageListViewController.h"
+#import "TMBODataStore.h"
+
+@interface TMBOAppDelegate ()
+{
+    UINavigationController *navController;
+}
+@end
 
 @implementation TMBOAppDelegate
 @synthesize window = _window;
@@ -28,16 +35,21 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         
+    // Set up crashlytics
     [Crashlytics startWithAPIKey:@"eff98601e169f1338233242f16fb6b59edf0cf8c"];
     
+    // Give control of the status bar activity indicator to AFNetworking
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
+    // Set up the initial view(s)
     TMBOImageListViewController *ilvc = [[TMBOImageListViewController alloc] init];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:ilvc];
+    navController = [[UINavigationController alloc] initWithRootViewController:ilvc];
     [navController setNavigationBarHidden:YES];
     [[self window] setRootViewController:navController];
     
-    // Override point for customization after application launch.
+    // Register for auth failure callbacks
+    [[TMBODataStore sharedStore] setAuthFailureTarget:self selector:@selector(authFailed)];
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
@@ -69,6 +81,16 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - Event handling
+
+- (void)authFailed;
+{
+    // TODO: push a modal dialog and do not clear it until the NSError parameter to the auth callback is nil.
+//    [[TMBODataStore sharedStore] authenticateUsername:<#(NSString *)#> password:<#(NSString *)#> completion:^(NSError *error) {
+//        <#code#>
+//    }];
 }
 
 @end

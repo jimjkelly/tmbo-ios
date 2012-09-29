@@ -63,6 +63,14 @@ typedef struct {
 
 + (TMBODataStore *)sharedStore;
 
+/**
+ Sets a callback target for authentication failures. This is intended to be the App delegate, or code that is otherwise relatively global and has access to the root navigation controller.
+ 
+ @discussion When the selector is called, API calls other than `authenticateUsername:password:completion:` will fail (and cause the target to be called again). `authenticateUsername:password:completion:` itself can also cause this target to be called if the user-provided username or password was incorrect. The owner of the modal login view should not allow it to be dismissed until the completion block to `authenticateUsername:password:completion:` is given a nil value to its error parameter, indicating that authentication was successful and a token captured.
+ */
+
+- (void)setAuthFailureTarget:(id)target selector:(SEL)sel;
+
 ///----------------------------
 /// @name Accessing Upload Data
 ///----------------------------
