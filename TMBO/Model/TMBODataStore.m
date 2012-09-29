@@ -330,8 +330,8 @@ static const NSUInteger kQueryLimit = 50;
 
 - (id)callAPIMethod:(NSString *)method withArgs:(NSDictionary *)args;
 {
-    Assert(kTMBOToken);
     // if Assert -> [[NSUserDefaults standardUserDefaults] setValue:<#(NSString *)token#> forKey:@"TMBOToken"]; [[NSUserDefaults standardUserDefaults] synchronize]; DebugBreak(); // <- Don't forget to re-comment this line and remove your token!
+    Assert(kTMBOToken);
 
     // Return type for method should be json
     method = [method stringByAppendingString:@".json"];
