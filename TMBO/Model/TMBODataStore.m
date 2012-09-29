@@ -252,13 +252,39 @@ static const NSUInteger kQueryLimit = 50;
     });
 }
 
-- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange)range completion:(void (^)(void))block;
+- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange)range completion:(void (^)(NSError *))block;
 {
-    Assert(NO);
-    int64_t delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        block();
+    NotTested();
+    Assert(range.first < range.last);
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // Get the raw parsed data from the API call
+        id rawData = nil;
+        {
+            NSString *method = @"getuploads";
+            NSMutableDictionary *args = [@{
+                @"since" : @(range.first),
+                @"before" : @(range.last),
+                @"limit" : @(kQueryLimit)
+            } mutableCopy];
+            if ([self typeStringForType:type]) {
+                [args setObject:[self typeStringForType:type] forKey:@"type"];
+            }
+            rawData = [self callAPIMethod:method withArgs:args];
+        }
+        
+        // Turn the parsed data into model objects
+        id result = [self parseUploadData:rawData];
+        
+        // Handle error in API call or parsing
+        if ([result isKindOfClass:[NSError class]]) {
+            NSError *error = (NSError *)result;
+            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            block(error);
+            return;
+        }
+        Assert([result isKindOfClass:[NSArray class]]);
+        
+        block(nil);
     });
 }
 

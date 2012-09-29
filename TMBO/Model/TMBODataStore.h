@@ -49,6 +49,20 @@ typedef struct {
     NSUInteger last;
 } TMBORange;
 
+TMBORange TMBOMakeRange(NSUInteger first, NSUInteger last) {
+    TMBORange range;
+    Assert(first < last);
+    if (first < last) {
+        range.first = first;
+        range.last = last;
+    } else {
+        NotTested();
+        range.last = first;
+        range.first = last;
+    }
+    return range;
+}
+
 @interface TMBODataStore : NSObject
 
 ///----------------------
@@ -120,11 +134,14 @@ typedef struct {
 /**
  Synchronizes upload data with the server.
  
+ @discussion Unlike other TMBODataStore methods, this method does not pass objects back to the caller via the callback block. Callers interested in specific updates to model objects are encouraged to use KVO notifications.
+ 
  @param type The type of upload to update
  @param range The range of uploads to update, inclusive
- @param block A block with no arguments that is called when all updates inside the range have been processed.
+ @param block A block with an error argument that is called when all updates inside the range have been processed or the operation failed.
  */
-- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange)range completion:(void (^)(void))block;
+- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange)range completion:(void (^)(NSError *))block;
+
 
 ///---------------------------------
 /// @name Pickuplink Property Access
