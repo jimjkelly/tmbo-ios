@@ -17,6 +17,14 @@
 
 extern NSComparator kUploadComparator;
 
+typedef enum : NSUInteger {
+    kTMBOTypeImage  = 0x1,
+    kTMBOTypeTopic  = 0x2,
+    kTMBOTypeAudio  = 0x4,
+    kTMBOTypeAvatar = 0x8,
+    kTMBOTypeAny    = kTMBOTypeImage | kTMBOTypeTopic | kTMBOTypeAudio | kTMBOTypeAvatar
+} kTMBOType;
+
 @interface TMBOUpload : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * badVotes;
@@ -47,5 +55,6 @@ extern NSComparator kUploadComparator;
 // TODO: - (TMBOUpload *)next;
 
 + (Class)typeFor:(NSString *)varname;
+- (kTMBOType)kindOfUpload;
 
 @end

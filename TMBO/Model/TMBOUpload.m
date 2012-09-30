@@ -100,4 +100,19 @@ NSComparator kUploadComparator = ^(id a, id b) {
     return [typearray objectForKey:varname];
 }
 
+- (kTMBOType)kindOfUpload;
+{
+    if ([self.type isEqualToString:@"image"]) {
+        return kTMBOTypeImage;
+    } else if ([self.type isEqualToString:@"topic"]) {
+        return kTMBOTypeTopic;
+    } else if ([self.type isEqualToString:@"avatar"]) {
+        return kTMBOTypeAvatar;
+    } else if ([self.type isEqualToString:@"audio"]) {
+        return kTMBOTypeAudio;
+    }
+    NotReached();
+    return kTMBOTypeAny;
+}
+
 @end

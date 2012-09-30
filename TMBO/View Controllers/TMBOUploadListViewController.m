@@ -254,18 +254,28 @@
 
 #pragma mark - UITableViewDelegate
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return [TweetTableViewCell heightForCellWithTweet:(Tweet *)[_fetchedResultsController objectAtIndexPath:indexPath]];
-//}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
-    TMBOImageDetailViewController *detailViewController = [[TMBOImageDetailViewController alloc] init];
-    [detailViewController setUpload:[self.items objectAtIndex:[indexPath row]]];
-    // ...
-    // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
+    UIViewController *detailView = nil;
+    switch ([upload kindOfUpload]) {
+        case kTMBOTypeImage: {
+            TMBOImageDetailViewController *idvc = [[TMBOImageDetailViewController alloc] init];
+            // TODO: Superclass: UploadDetailViewController w/upload prop
+            [idvc setUpload:upload];
+            detailView = idvc;
+            break;
+        }
+            
+        // Other upload types go here…
+            
+        default:
+            break;
+    }
+    
+    if (detailView) {
+        [self.navigationController pushViewController:detailView animated:YES];
+    }
 }
 
 - (NSUInteger)supportedInterfaceOrientations;

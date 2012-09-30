@@ -253,6 +253,7 @@ static const NSUInteger kQueryLimit = 50;
         }
         
         // Turn the parsed data into model objects
+        // TODO: possible for rawData to still be nil due to timeout?
         id result = [self parseUploadData:rawData];
         
         // Handle error in API call or parsing

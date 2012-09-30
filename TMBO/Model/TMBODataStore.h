@@ -14,6 +14,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "TMBOUpload.h"
+
 /**
  `TMBODataStore` offers a simple programmatic interface to reading and writing data on TMBO.
  
@@ -35,14 +37,6 @@
  
  When DEBUG is defined, the model will fail fast and hard wherever possible. If a data getter/setter method is called and there is no token, an exception will be thrown. If `-updateUploadsWithType:inRange:completion:` is called with a range of uploads that is not within the set of uploads cached locally, an exception will be thrown. 
 */
-
-typedef enum : NSUInteger {
-    kTMBOTypeImage  = 0x1,
-    kTMBOTypeTopic  = 0x2,
-    kTMBOTypeAudio  = 0x4,
-    kTMBOTypeAvatar = 0x8,
-    kTMBOTypeAny    = kTMBOTypeImage | kTMBOTypeTopic | kTMBOTypeAudio | kTMBOTypeAvatar
-} kTMBOType;
 
 typedef struct {
     NSUInteger first;
