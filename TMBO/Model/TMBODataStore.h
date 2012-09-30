@@ -49,19 +49,7 @@ typedef struct {
     NSUInteger last;
 } TMBORange;
 
-TMBORange TMBOMakeRange(NSUInteger first, NSUInteger last) {
-    TMBORange range;
-    Assert(first < last);
-    if (first < last) {
-        range.first = first;
-        range.last = last;
-    } else {
-        NotTested();
-        range.last = first;
-        range.first = last;
-    }
-    return range;
-}
+TMBORange TMBOMakeRange(NSUInteger first, NSUInteger last);
 
 @interface TMBODataStore : NSObject
 
