@@ -14,7 +14,7 @@
 		BC2F210E160B8DB900C28105 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2F210D160B8DB900C28105 /* Crashlytics.framework */; };
 		BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */; };
 		BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		BC2F2173160CE41C00C28105 /* TMBOImageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2172160CE41C00C28105 /* TMBOImageListViewController.m */; };
+		BC2F2173160CE41C00C28105 /* TMBOUploadListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2172160CE41C00C28105 /* TMBOUploadListViewController.m */; };
 		BC2F2181160CF57900C28105 /* debugger.c in Sources */ = {isa = PBXBuildFile; fileRef = BC2F217F160CF57900C28105 /* debugger.c */; };
 		BC2F218B160D0C7600C28105 /* TMBOImageListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F218A160D0C7600C28105 /* TMBOImageListCell.m */; };
 		BC2F218D160D0C8B00C28105 /* TMBOImageListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC2F218C160D0C8B00C28105 /* TMBOImageListCell.xib */; };
@@ -75,8 +75,8 @@
 		BC2F2159160BF9CB00C28105 /* TMBO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMBO.xcdatamodel; sourceTree = "<group>"; };
 		BC2F216D160C0A0C00C28105 /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ISO8601DateFormatter.h; path = "lib/iso-8601-date-formatter/ISO8601DateFormatter.h"; sourceTree = "<group>"; };
 		BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ISO8601DateFormatter.m; path = "lib/iso-8601-date-formatter/ISO8601DateFormatter.m"; sourceTree = "<group>"; };
-		BC2F2171160CE41C00C28105 /* TMBOImageListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOImageListViewController.h; path = "View Controllers/TMBOImageListViewController.h"; sourceTree = "<group>"; };
-		BC2F2172160CE41C00C28105 /* TMBOImageListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOImageListViewController.m; path = "View Controllers/TMBOImageListViewController.m"; sourceTree = "<group>"; };
+		BC2F2171160CE41C00C28105 /* TMBOUploadListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOUploadListViewController.h; path = "View Controllers/TMBOUploadListViewController.h"; sourceTree = "<group>"; };
+		BC2F2172160CE41C00C28105 /* TMBOUploadListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOUploadListViewController.m; path = "View Controllers/TMBOUploadListViewController.m"; sourceTree = "<group>"; };
 		BC2F217F160CF57900C28105 /* debugger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = debugger.c; path = lib/debugger.c; sourceTree = "<group>"; };
 		BC2F2180160CF57900C28105 /* debugger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = debugger.h; path = lib/debugger.h; sourceTree = "<group>"; };
 		BC2F2189160D0C7600C28105 /* TMBOImageListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOImageListCell.h; path = Views/TMBOImageListCell.h; sourceTree = "<group>"; };
@@ -211,8 +211,8 @@
 		BC2F2170160CE3ED00C28105 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BC2F2171160CE41C00C28105 /* TMBOImageListViewController.h */,
-				BC2F2172160CE41C00C28105 /* TMBOImageListViewController.m */,
+				BC2F2171160CE41C00C28105 /* TMBOUploadListViewController.h */,
+				BC2F2172160CE41C00C28105 /* TMBOUploadListViewController.m */,
 				BC2F21DF160E506F00C28105 /* TMBOImageDetailViewController.h */,
 				BC2F21E0160E506F00C28105 /* TMBOImageDetailViewController.m */,
 				BC2F21E6160E52ED00C28105 /* TMBOImageDetailViewController.xib */,
@@ -505,7 +505,7 @@
 				BC2FF5F9160AA21400FE4AA5 /* TMBOAppDelegate.m in Sources */,
 				BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */,
 				BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */,
-				BC2F2173160CE41C00C28105 /* TMBOImageListViewController.m in Sources */,
+				BC2F2173160CE41C00C28105 /* TMBOUploadListViewController.m in Sources */,
 				BC2F2181160CF57900C28105 /* debugger.c in Sources */,
 				BC2F218B160D0C7600C28105 /* TMBOImageListCell.m in Sources */,
 				BC2F21A3160D0EA800C28105 /* UIColor+TMBOTheme.m in Sources */,

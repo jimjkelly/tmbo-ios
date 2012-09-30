@@ -14,6 +14,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TMBOImageListViewController : UITableViewController
+@interface TMBOUploadListViewController : UITableViewController
 
 @end

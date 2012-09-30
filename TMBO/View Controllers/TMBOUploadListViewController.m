@@ -12,7 +12,7 @@
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import "TMBOImageListViewController.h"
+#import "TMBOUploadListViewController.h"
 
 #import "TMBODataStore.h"
 #import "TMBOImageListCell.h"
@@ -21,13 +21,13 @@
 #import "UIImage+Resize.h"
 #import "UIImageView+AFNetworking.h"
 
-@interface TMBOImageListViewController ()
+@interface TMBOUploadListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;
 @property (nonatomic, strong) NSMutableArray *items;
 - (void)refetchData;
 @end
 
-@implementation TMBOImageListViewController
+@implementation TMBOUploadListViewController
 @synthesize topRefresh = _topRefresh;
 @synthesize items = _items;
 

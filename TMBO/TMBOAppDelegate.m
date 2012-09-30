@@ -18,7 +18,7 @@
 #import <Crashlytics/Crashlytics.h>
 
 #import "AFNetworkActivityIndicatorManager.h"
-#import "TMBOImageListViewController.h"
+#import "TMBOUploadListViewController.h"
 #import "TMBODataStore.h"
 
 @interface TMBOAppDelegate ()
@@ -42,7 +42,7 @@
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
     // Set up the initial view(s)
-    TMBOImageListViewController *ilvc = [[TMBOImageListViewController alloc] init];
+    TMBOUploadListViewController *ilvc = [[TMBOUploadListViewController alloc] init];
     navController = [[UINavigationController alloc] initWithRootViewController:ilvc];
     [navController setNavigationBarHidden:YES];
     [[self window] setRootViewController:navController];
