@@ -63,7 +63,7 @@
     [self.scrollView setDelegate:self];
     [self.scrollView setImageView:self.imageView];
     
-    NSURL *fileURL = [NSURL URLWithString:[upload fileURL] relativeToURL:kTMBOBaseURL];
+    NSURL *fileURL = [NSURL URLWithString:[self.upload fileURL] relativeToURL:kTMBOBaseURL];
     
     // TODO: 1) get image with progress 2) get image via model, so model can update thumbnail/cache
     [imageView setImageWithURLRequest:[NSURLRequest requestWithURL:fileURL] placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
