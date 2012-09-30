@@ -275,6 +275,8 @@
     
     if (detailView) {
         [self.navigationController pushViewController:detailView animated:YES];
+    } else {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
