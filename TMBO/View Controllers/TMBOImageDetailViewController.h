@@ -14,11 +14,12 @@
 
 #import <Foundation/Foundation.h>
 
+#import "TMBOUploadDetailViewController.h"
+
 @class TMBOUpload;
 @class TMBOImageScrollView;
 
-@interface TMBOImageDetailViewController : UIViewController <UIScrollViewDelegate>
-@property (nonatomic, strong) TMBOUpload *upload;
+@interface TMBOImageDetailViewController : TMBOUploadDetailViewController <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet TMBOImageScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;

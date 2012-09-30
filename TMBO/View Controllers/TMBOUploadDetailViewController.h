@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TMBOUploadDetailViewController : UIViewController
+@class TMBOUpload;
 
+@interface TMBOUploadDetailViewController : UIViewController
+@property (nonatomic, strong) TMBOUpload *upload;
 @end

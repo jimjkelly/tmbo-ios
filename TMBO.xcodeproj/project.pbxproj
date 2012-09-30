@@ -54,6 +54,7 @@
 		BC97BDCA1613D38500A3676A /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BDC01613D38500A3676A /* AFXMLRequestOperation.m */; };
 		BC97BDCB1613D38500A3676A /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BDC21613D38500A3676A /* UIImageView+AFNetworking.m */; };
 		BC97BDCD1613D48300A3676A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC97BDCC1613D48300A3676A /* CoreData.framework */; };
+		BC97BE221617D88D00A3676A /* TMBOUploadDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BE211617D88D00A3676A /* TMBOUploadDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +143,8 @@
 		BC97BDC11613D38500A3676A /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AFNetworking.h"; path = "lib/AFNetworking/AFNetworking/UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		BC97BDC21613D38500A3676A /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "lib/AFNetworking/AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		BC97BDCC1613D48300A3676A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		BC97BE201617D88D00A3676A /* TMBOUploadDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOUploadDetailViewController.h; path = "View Controllers/TMBOUploadDetailViewController.h"; sourceTree = "<group>"; };
+		BC97BE211617D88D00A3676A /* TMBOUploadDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOUploadDetailViewController.m; path = "View Controllers/TMBOUploadDetailViewController.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +216,8 @@
 			children = (
 				BC2F2171160CE41C00C28105 /* TMBOUploadListViewController.h */,
 				BC2F2172160CE41C00C28105 /* TMBOUploadListViewController.m */,
+				BC97BE201617D88D00A3676A /* TMBOUploadDetailViewController.h */,
+				BC97BE211617D88D00A3676A /* TMBOUploadDetailViewController.m */,
 				BC2F21DF160E506F00C28105 /* TMBOImageDetailViewController.h */,
 				BC2F21E0160E506F00C28105 /* TMBOImageDetailViewController.m */,
 				BC2F21E6160E52ED00C28105 /* TMBOImageDetailViewController.xib */,
@@ -526,6 +531,7 @@
 				BC97BDC91613D38500A3676A /* AFURLConnectionOperation.m in Sources */,
 				BC97BDCA1613D38500A3676A /* AFXMLRequestOperation.m in Sources */,
 				BC97BDCB1613D38500A3676A /* UIImageView+AFNetworking.m in Sources */,
+				BC97BE221617D88D00A3676A /* TMBOUploadDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

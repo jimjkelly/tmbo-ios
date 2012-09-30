@@ -24,7 +24,6 @@
 @end
 
 @implementation TMBOImageDetailViewController
-@synthesize upload;
 @synthesize scrollView;
 @synthesize imageView;
 @synthesize spinner;

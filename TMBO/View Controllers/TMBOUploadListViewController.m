@@ -18,6 +18,7 @@
 #import "TMBOImageListCell.h"
 #import "TMBOImageDetailViewController.h"
 #import "TMBOUpload.h"
+#import "TMBOUploadDetailViewController.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+AFNetworking.h"
 
@@ -257,23 +258,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
     TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
-    UIViewController *detailView = nil;
+    TMBOUploadDetailViewController *detailView = nil;
     switch ([upload kindOfUpload]) {
-        case kTMBOTypeImage: {
-            TMBOImageDetailViewController *idvc = [[TMBOImageDetailViewController alloc] init];
-            // TODO: Superclass: UploadDetailViewController w/upload prop
-            [idvc setUpload:upload];
-            detailView = idvc;
+        case kTMBOTypeImage:
+            detailView = [[TMBOImageDetailViewController alloc] init];
             break;
-        }
             
         // Other upload types go here…
             
         default:
             break;
     }
-    
+
     if (detailView) {
+        [detailView setUpload:upload];
         [self.navigationController pushViewController:detailView animated:YES];
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
