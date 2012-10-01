@@ -4,7 +4,7 @@
 //
 //  Created by Scott Perry on 09/21/12.
 //  Copyright © 2012 Scott Perry (http://numist.net)
-//  
+//
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //  
 //  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -14,51 +14,72 @@
 
 #import "TMBOImageListViewController.h"
 
-#import <CoreData/CoreData.h>
-#import <UIImageView+AFNetworking.h>
-
+#import "TMBODataStore.h"
 #import "TMBOImageListCell.h"
 #import "TMBOImageDetailViewController.h"
-#import "TMBOJSONRequestOperation.h"
 #import "TMBOUpload.h"
 #import "UIImage+Resize.h"
+#import "UIImageView+AFNetworking.h"
 
-@interface TMBOImageListViewController () <NSFetchedResultsControllerDelegate> {
-    NSFetchedResultsController *_fetchedResultsController;
-    UIRefreshControl *_topRefresh;
-}
+@interface TMBOImageListViewController ()
+@property (nonatomic, strong) UIRefreshControl *topRefresh;
+@property (nonatomic, strong) NSMutableArray *items;
 - (void)refetchData;
 @end
 
 @implementation TMBOImageListViewController
+@synthesize topRefresh = _topRefresh;
+@synthesize items = _items;
 
 - (void)refetchData;
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_topRefresh beginRefreshing];
-        [_fetchedResultsController performFetch:nil];
+        [self.topRefresh beginRefreshing];
+        
+        void (^completion)(NSArray *, NSError *) = ^(NSArray *results, NSError *error){
+            if (results) {
+                if (![self.items count]) {
+                    [self.items addObjectsFromArray:results];
+                } else {
+                    NSUInteger max = [[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue];
+                    
+                    // Add non-duplicate uploads
+                    for (TMBOUpload *up in results) {
+                        if ([[up uploadid] unsignedIntegerValue] > max) {
+                            [self.items insertObject:up atIndex:0];
+                        }
+                    }
+                    
+                    // Verify sort order
+                    [self.items sortUsingComparator:kUploadComparator];
+                }
+                
+                // TODO: is updating the table going to jerk around the location of the viewport in relation to the uploads? maybe use -beginUpdates instead?
+                // reloadData must be sent on the main thread
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            } else if (error) {
+                NSLog(@"Refresh error: %@", [error localizedDescription]);
+            } else {
+                NotReached();
+            }
+            [self.topRefresh endRefreshing];
+        };
+        
+        if ([self.items count]) {
+            [[TMBODataStore sharedStore] uploadsWithType:kTMBOTypeImage since:[[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue] completion:completion];
+        } else {
+            [[TMBODataStore sharedStore] latestUploadsWithType:kTMBOTypeImage completion:completion];
+        }
     });
-}
-
-/* HACK: This is a goddamn hack.
- * The intent is to [_topRefresh endRefreshing] when the server data arrives and is processed by Core Data,
- * but there's no notification that corresponds to that specific event and not a different model request.
- * The next closest thing is to use controllerDidChangeContent, but that's not good enough—if the server data indicates no changes, the callback never happens.
- * This will at least always reset the refreshing status of the table, if not a bit prematurely.
- */
-- (void)notification:(NSNotification *)note;
-{
-    if ([[note object] isKindOfClass:[TMBOJSONRequestOperation class]]) {
-        [_topRefresh endRefreshing];
-    }
 }
 
 #pragma mark - UITableViewController
 
-// HACK: this is part of the hack described above
 - (void)viewWillAppear:(BOOL)animated;
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification:) name:@"com.alamofire.networking.operation.finish" object:nil];
+    [super viewWillAppear:animated];
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
@@ -66,7 +87,8 @@
 // HACK: this is part of the hack described above
 - (void)viewWillDisappear:(BOOL)animated;
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super viewWillDisappear:animated];
+    // …
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -83,24 +105,18 @@
 {
     [super viewDidLoad];
     
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Upload"];
-    // WHERE type = image pls
-    fetchRequest.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"uploadid" ascending:NO]];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"type = \"image\""];
-    fetchRequest.fetchLimit = 50;
-    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[(id)[[UIApplication sharedApplication] delegate] managedObjectContext] sectionNameKeyPath:nil cacheName:@"ImageStream"];
-    _fetchedResultsController.delegate = self;
     [self refetchData];
-    
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refetchData)];
     
     UINib *nib = [UINib nibWithNibName:@"TMBOImageListCell" bundle:nil];
     [[self tableView] registerNib:nib forCellReuseIdentifier:@"TMBOImageListCell"];
     
-    _topRefresh = [[UIRefreshControl alloc] init];
-    [_topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
-    [self setRefreshControl:_topRefresh];
-    [[self view] addSubview:_topRefresh];
+    self.topRefresh = [[UIRefreshControl alloc] init];
+    [self.topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
+    [self setRefreshControl:self.topRefresh];
+    [[self view] addSubview:self.topRefresh];
+    
+    self.items = [[NSMutableArray alloc] init];
+    //[self.items addObjectsFromArray:[[TMBODataStore sharedStore] cachedUploadsWithType:kTMBOTypeImage near:<#lastposition#>]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -111,14 +127,9 @@
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return [[_fetchedResultsController sections] count];
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[_fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+    return [self.items count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -132,12 +143,29 @@
     return cell;
 }
 
+#pragma mark Helpers
+
+- (TMBOImageListCell *)cellForUpload:(TMBOUpload *)upload;
+{
+    // Get the upload's index in the array
+    NSUInteger uploadIndex = [self.items indexOfObject:upload];
+    if (uploadIndex == NSNotFound) return nil; // TODO: explode?
+    
+    for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
+        if ([path row] == uploadIndex) {
+            return (TMBOImageListCell *)[self.tableView cellForRowAtIndexPath:path];
+        }
+    }
+    
+    return nil;
+}
+
 - (void)configureCell:(UITableViewCell *)uitvcell
           atIndexPath:(NSIndexPath *)indexPath
 {
     TMBOImageListCell *cell = (TMBOImageListCell *)uitvcell;
     @try {
-        TMBOUpload *upload = (TMBOUpload *)[_fetchedResultsController objectAtIndexPath:indexPath];
+        TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
         
         [[cell filenameView] setText:[upload filename]];
         
@@ -146,24 +174,24 @@
         NSString *commentsLabel;
         if ([upload comments] == 0) {
             commentsLabel = @"0 comments";
-        } else if ([upload comments] == 1) {
+        } else if ([[upload comments] unsignedIntegerValue] == 1) {
             commentsLabel = @"1 comment";
         } else {
-            commentsLabel = [NSString stringWithFormat:@"%u comments", [upload comments]];
+            commentsLabel = [NSString stringWithFormat:@"%@ comments", [upload comments]];
         }
         [[cell commentsView] setText:commentsLabel];
         
-        NSString *votesLabel = [NSString stringWithFormat:@"+%u -%u", [upload goodVotes], [upload badVotes]];
-        if ([upload tmboVotes]) {
-            votesLabel = [votesLabel stringByAppendingFormat:@" x%u", [upload tmboVotes]];
+        NSString *votesLabel = [NSString stringWithFormat:@"+%@ -%@", [upload goodVotes], [upload badVotes]];
+        if ([[upload tmboVotes] integerValue]) {
+            votesLabel = [votesLabel stringByAppendingFormat:@" x%@", [upload tmboVotes]];
         }
         [[cell votesView] setText:votesLabel];
         
         UIImage *thumbnail = [upload thumbnail];
-        if (thumbnail && ![upload filtered]) {
+        if (thumbnail && ![[upload filtered] boolValue]) {
             [[cell spinner] stopAnimating];
             [[cell thumbnailView] setImage:thumbnail];
-        } else if ([upload filtered]) {
+        } else if ([[upload filtered] boolValue]) {
             [[cell spinner] stopAnimating];
             [[cell thumbnailView] setImage:[UIImage imageNamed:@"th-filtered"]];
         }
@@ -192,20 +220,18 @@
                         return thumb;
                     }
                     success:^(NSURLRequest *request , NSHTTPURLResponse *response , UIImage *image ) {
-                        NSIndexPath *path = [_fetchedResultsController indexPathForObject:upload];
-                        TMBOImageListCell *validCell = (TMBOImageListCell *)[self.tableView cellForRowAtIndexPath:path];
+                        TMBOImageListCell *validCell = [self cellForUpload:upload];
                         
                         if (validCell) {
                             [[validCell spinner] stopAnimating];
-                            if (![upload filtered]) {
+                            if (![[upload filtered] boolValue]) {
                                 [[validCell thumbnailView] setImage:image];
                             }
                             [validCell setNeedsDisplay];
                         }
                     }
                     failure:^( NSURLRequest *request , NSHTTPURLResponse *response , NSError *error ){
-                        NSIndexPath *path = [_fetchedResultsController indexPathForObject:upload];
-                        TMBOImageListCell *validCell = (TMBOImageListCell *)[self.tableView cellForRowAtIndexPath:path];
+                        TMBOImageListCell *validCell = [self cellForUpload:upload];
 
                         if (validCell) {
                             [[cell spinner] stopAnimating];
@@ -235,7 +261,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
     TMBOImageDetailViewController *detailViewController = [[TMBOImageDetailViewController alloc] init];
-    [detailViewController setUpload:(TMBOUpload *)[_fetchedResultsController objectAtIndexPath:indexPath]];
+    [detailViewController setUpload:[self.items objectAtIndex:[indexPath row]]];
     // ...
     // Pass the selected object to the new view controller.
     [self.navigationController pushViewController:detailViewController animated:YES];
@@ -247,17 +273,13 @@
     return UIInterfaceOrientationMaskAll;
 }
 
-#pragma mark - NSFetchedResultsControllerDelegate
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView reloadData];
-}
-
 #pragma mark Target-action for UIRefreshControl
 
 - (void)refreshControlEvent:(UIRefreshControl *)something;
 {
     [self refetchData];
 }
+
+// TODO: handle lazyloading at the bottom
 
 @end
