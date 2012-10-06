@@ -19,8 +19,8 @@
 #import "TMBOImageDetailViewController.h"
 #import "TMBOUpload.h"
 #import "TMBOUploadDetailViewController.h"
+#import "AFNetworking.h"
 #import "UIImage+Resize.h"
-#import "UIImageView+AFNetworking.h"
 
 @interface TMBOUploadListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;
