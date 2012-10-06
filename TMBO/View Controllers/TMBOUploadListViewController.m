@@ -43,48 +43,48 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
 
 - (void)refetchData;
 {
-    // TODO: new upload getting code
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.topRefresh beginRefreshing];
-        
-        void (^completion)(NSArray *, NSError *) = ^(NSArray *results, NSError *error){
-            if (results) {
-                NSUInteger max = 111;
-                max = ![self.items count] ?: [[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue];
-                    
-                // Add non-duplicate uploads
-                for (TMBOUpload *up in results) {
-                    if ([[up uploadid] unsignedIntegerValue] > max) {
-                        [up addObserver:self forKeyPath:@"thumbnail" options:NSKeyValueObservingOptionNew context:kUploadThumbnailContext];
-                        [self.items insertObject:up atIndex:0];
-                    }
-                }
-                
-                // Verify sort order
-                [self.items sortUsingComparator:kUploadComparator];
-                
-                // TODO: is updating the table going to jerk around the location of the viewport in relation to the uploads? maybe use -beginUpdates instead?
-                // reloadData must be sent on the main thread
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                });
-            } else if (error) {
-                NSLog(@"Refresh error: %@", [error localizedDescription]);
-            } else {
-                NotReached();
-            }
-
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.topRefresh endRefreshing];
-            });
-        };
-        
-        if ([self.items count]) {
-            [[TMBODataStore sharedStore] uploadsWithType:kTMBOTypeImage since:[[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue] completion:completion];
-        } else {
-            [[TMBODataStore sharedStore] latestUploadsWithType:kTMBOTypeImage completion:completion];
-        }
     });
+    
+    // TODO: new upload getting code, this stuff is CRUFTY!
+    void (^completion)(NSArray *, NSError *) = ^(NSArray *results, NSError *error){
+        if (results) {
+            NSUInteger max = 111;
+            max = ![self.items count] ?: [[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue];
+                
+            // Add non-duplicate uploads
+            for (TMBOUpload *up in results) {
+                if ([[up uploadid] unsignedIntegerValue] > max) {
+                    [up addObserver:self forKeyPath:@"thumbnail" options:NSKeyValueObservingOptionNew context:kUploadThumbnailContext];
+                    [self.items insertObject:up atIndex:0];
+                }
+            }
+            
+            // Verify sort order
+            [self.items sortUsingComparator:kUploadComparator];
+            
+            // TODO: is updating the table going to jerk around the location of the viewport in relation to the uploads? maybe use -beginUpdates instead?
+            // reloadData must be sent on the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        } else if (error) {
+            NSLog(@"Refresh error: %@", [error localizedDescription]);
+        } else {
+            NotReached();
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.topRefresh endRefreshing];
+        });
+    };
+    
+    if ([self.items count]) {
+        [[TMBODataStore sharedStore] uploadsWithType:kTMBOTypeImage since:[[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue] completion:completion];
+    } else {
+        [[TMBODataStore sharedStore] latestUploadsWithType:kTMBOTypeImage completion:completion];
+    }
 }
 
 #pragma mark - UITableViewController
