@@ -22,6 +22,8 @@
 #import "AFNetworking.h"
 #import "UIImage+Resize.h"
 
+static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
+
 @interface TMBOUploadListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;
 @property (nonatomic, strong) NSMutableArray *items;
@@ -32,28 +34,34 @@
 @synthesize topRefresh = _topRefresh;
 @synthesize items = _items;
 
+- (void)dealloc;
+{
+    for (TMBOUpload *up in _items) {
+        [up removeObserver:self forKeyPath:@"thumbnail" context:kUploadThumbnailContext];
+    }
+}
+
 - (void)refetchData;
 {
+    // TODO: new upload getting code
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.topRefresh beginRefreshing];
         
         void (^completion)(NSArray *, NSError *) = ^(NSArray *results, NSError *error){
             if (results) {
-                if (![self.items count]) {
-                    [self.items addObjectsFromArray:results];
-                } else {
-                    NSUInteger max = [[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue];
+                NSUInteger max = 111;
+                max = ![self.items count] ?: [[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue];
                     
-                    // Add non-duplicate uploads
-                    for (TMBOUpload *up in results) {
-                        if ([[up uploadid] unsignedIntegerValue] > max) {
-                            [self.items insertObject:up atIndex:0];
-                        }
+                // Add non-duplicate uploads
+                for (TMBOUpload *up in results) {
+                    if ([[up uploadid] unsignedIntegerValue] > max) {
+                        [up addObserver:self forKeyPath:@"thumbnail" options:NSKeyValueObservingOptionNew context:kUploadThumbnailContext];
+                        [self.items insertObject:up atIndex:0];
                     }
-                    
-                    // Verify sort order
-                    [self.items sortUsingComparator:kUploadComparator];
                 }
+                
+                // Verify sort order
+                [self.items sortUsingComparator:kUploadComparator];
                 
                 // TODO: is updating the table going to jerk around the location of the viewport in relation to the uploads? maybe use -beginUpdates instead?
                 // reloadData must be sent on the main thread
@@ -161,18 +169,16 @@
     return nil;
 }
 
-- (void)configureCell:(UITableViewCell *)uitvcell
-          atIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(TMBOImageListCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 {
-    TMBOImageListCell *cell = (TMBOImageListCell *)uitvcell;
-    @try {
-        TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
-        
-        [[cell filenameView] setText:[upload filename]];
-        
-        [[cell uploaderView] setText:[NSString stringWithFormat:@"uploaded by %@", [upload username]]];
-        
-        NSString *commentsLabel;
+    TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
+    
+    [[cell filenameView] setText:[upload filename]];
+    [[cell uploaderView] setText:[NSString stringWithFormat:@"uploaded by %@", [upload username]]];
+    
+    NSString *commentsLabel;
+    {
+        // TODO: L10n
         if ([upload comments] == 0) {
             commentsLabel = @"0 comments";
         } else if ([[upload comments] unsignedIntegerValue] == 1) {
@@ -180,76 +186,73 @@
         } else {
             commentsLabel = [NSString stringWithFormat:@"%@ comments", [upload comments]];
         }
-        [[cell commentsView] setText:commentsLabel];
-        
-        NSString *votesLabel = [NSString stringWithFormat:@"+%@ -%@", [upload goodVotes], [upload badVotes]];
+    }
+    [[cell commentsView] setText:commentsLabel];
+    
+    NSString *votesLabel;
+    {
+        votesLabel = [NSString stringWithFormat:@"+%@ -%@", [upload goodVotes], [upload badVotes]];
         if ([[upload tmboVotes] integerValue]) {
             votesLabel = [votesLabel stringByAppendingFormat:@" x%@", [upload tmboVotes]];
         }
         [[cell votesView] setText:votesLabel];
-        
-        UIImage *thumbnail = [upload thumbnail];
+    }
+    
+    UIImage *thumbnail = [upload thumbnail];
+    {
         if (thumbnail && ![[upload filtered] boolValue]) {
+            // Thumbnail present and ready
             [[cell spinner] stopAnimating];
             [[cell thumbnailView] setImage:thumbnail];
         } else if ([[upload filtered] boolValue]) {
+            // Upload is filtered
             [[cell spinner] stopAnimating];
             [[cell thumbnailView] setImage:[UIImage imageNamed:@"th-filtered"]];
         }
         if (![upload thumbURL]) {
+            // Upload has no thumbnail
             [[cell spinner] stopAnimating];
             CGRect thumbFrame = [[cell thumbnailView] frame];
             thumbFrame.size.width = 0;
             [[cell thumbnailView] setFrame:thumbFrame];
         }
-        
-        // Image stuff is potentially slow, so get off the main thread right away.
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            // Compute ideal thumbnail size in pixels (not points)
-            CGSize thumbsize = [[cell thumbnailView] bounds].size;
-            thumbsize.width *= [[UIScreen mainScreen] scale];
-            thumbsize.height *= [[UIScreen mainScreen] scale];
-            
-            if ([upload thumbURL] && (!thumbnail || [thumbnail size].height < thumbsize.height || [thumbnail size].width < thumbsize.width)) {
-                // Thumbnail is not good enough. Load another!
-                NSURL *thumbURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://thismight.be%@", [upload thumbURL]]];
-                NSURLRequest *req = [NSURLRequest requestWithURL:thumbURL cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:60.0];
-                
-                AFImageRequestOperation *afop = [AFImageRequestOperation imageRequestOperationWithRequest:req imageProcessingBlock:^UIImage *(UIImage *image){
-                        UIImage *thumb = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:thumbsize interpolationQuality:kCGInterpolationHigh];
-                        [upload setThumbnail:thumb];
-                        return thumb;
-                    }
-                    success:^(NSURLRequest *request , NSHTTPURLResponse *response , UIImage *image ) {
-                        TMBOImageListCell *validCell = [self cellForUpload:upload];
-                        
-                        if (validCell) {
-                            [[validCell spinner] stopAnimating];
-                            if (![[upload filtered] boolValue]) {
-                                [[validCell thumbnailView] setImage:image];
-                            }
-                            [validCell setNeedsDisplay];
-                        }
-                    }
-                    failure:^( NSURLRequest *request , NSHTTPURLResponse *response , NSError *error ){
-                        TMBOImageListCell *validCell = [self cellForUpload:upload];
-
-                        if (validCell) {
-                            [[cell spinner] stopAnimating];
-                            // TODO: failure?
-                            /* Plan:
-                             * Add a layer over the thumbnail that, if tapped and thumbnail is not set, causes a retry for the thumbnail. In the meantime, come up with an asset to put here that indicates that the load failed.
-                             */
-                            [cell setNeedsDisplay];
-                        }
-                    }];
-                
-                [afop start];
-            }
-        });
     }
-    @catch (NSException *exception) {
-        NSLog(@"Exception: %@", exception);
+    
+    // Compute ideal thumbnail size in pixels (not points)
+    CGSize thumbsize = [[cell thumbnailView] bounds].size;
+    thumbsize.width *= [[UIScreen mainScreen] scale];
+    thumbsize.height *= [[UIScreen mainScreen] scale];
+    
+    if ([upload thumbURL] && (!thumbnail || [thumbnail size].height < thumbsize.height || [thumbnail size].width < thumbsize.width)) {
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            // Thumbnail is not good enough. Load another!
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://thismight.be%@", [upload thumbURL]]];
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+            
+            [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                Assert([responseObject isKindOfClass:[NSData class]]);
+                if ([responseObject isKindOfClass:[NSData class]]) {
+                    UIImage *image = [UIImage imageWithData:responseObject];
+                    UIImage *thumb = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:thumbsize interpolationQuality:kCGInterpolationHigh];
+                    
+                    // Causes a KVO notification. If a cell is currently displaying this upload, it will be updated.
+                    [upload setThumbnail:thumb];
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                TMBOImageListCell *validCell = [self cellForUpload:upload];
+                [[validCell spinner] stopAnimating];
+                [validCell setNeedsDisplay];
+
+                // TODO: failure?
+                NSLog(@"%@ had error: %@", operation, error);
+                /* Plan:
+                 * Add a layer over the thumbnail that, if tapped and thumbnail is not set, causes a retry for the thumbnail. In the meantime, come up with an sset to put here that indicates that the load failed.
+                 */
+            }];
+            
+            [operation start];
+        });
     }
 }
 
@@ -288,6 +291,26 @@
 - (void)refreshControlEvent:(UIRefreshControl *)something;
 {
     [self refetchData];
+}
+
+#pragma mark KVO notifications for updating cells
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
+{
+    Assert([object isKindOfClass:[TMBOUpload class]]);
+    TMBOUpload *upload = (TMBOUpload *)object;
+    
+    id newObject = [change objectForKey:@"new"];
+    if (context == kUploadThumbnailContext && newObject && [newObject isKindOfClass:[UIImage class]]) {
+        TMBOImageListCell *cell = [self cellForUpload:upload];
+        
+        [[cell spinner] stopAnimating];
+        if (![[upload filtered] boolValue]) {
+            [[cell thumbnailView] setImage:newObject];
+        }
+        [cell setNeedsDisplay];
+        
+    }
 }
 
 // TODO: handle lazyloading at the bottom
