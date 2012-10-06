@@ -73,7 +73,10 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
             } else {
                 NotReached();
             }
-            [self.topRefresh endRefreshing];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.topRefresh endRefreshing];
+            });
         };
         
         if ([self.items count]) {
