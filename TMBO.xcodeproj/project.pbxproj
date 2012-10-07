@@ -58,6 +58,7 @@
 		BCB4EC031621FB6900048C42 /* TMBORange.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC021621FB6900048C42 /* TMBORange.m */; };
 		BCB4EC061622079500048C42 /* TMBOLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC051622079500048C42 /* TMBOLoadingCell.m */; };
 		BCB4EC08162207BB00048C42 /* TMBOLoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */; };
+		BCB4EC0F16220CB500048C42 /* UIImage+TMBOAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +154,8 @@
 		BCB4EC041622079500048C42 /* TMBOLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOLoadingCell.h; path = Views/TMBOLoadingCell.h; sourceTree = "<group>"; };
 		BCB4EC051622079500048C42 /* TMBOLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOLoadingCell.m; path = Views/TMBOLoadingCell.m; sourceTree = "<group>"; };
 		BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOLoadingCell.xib; path = Views/TMBOLoadingCell.xib; sourceTree = "<group>"; };
+		BCB4EC0D16220CB500048C42 /* UIImage+TMBOAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+TMBOAssets.h"; path = "lib/UIImage+TMBOAssets.h"; sourceTree = "<group>"; };
+		BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+TMBOAssets.m"; path = "lib/UIImage+TMBOAssets.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +197,8 @@
 		BC2F216B160C09EF00C28105 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				BCB4EC0D16220CB500048C42 /* UIImage+TMBOAssets.h */,
+				BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */,
 				BC97BDAE1613D36B00A3676A /* AFNetworking */,
 				BC2F21B3160D236D00C28105 /* UIImage+Alpha.h */,
 				BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */,
@@ -556,6 +561,7 @@
 				BC97BE221617D88D00A3676A /* TMBOUploadDetailViewController.m in Sources */,
 				BCB4EC031621FB6900048C42 /* TMBORange.m in Sources */,
 				BCB4EC061622079500048C42 /* TMBOLoadingCell.m in Sources */,
+				BCB4EC0F16220CB500048C42 /* UIImage+TMBOAssets.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
