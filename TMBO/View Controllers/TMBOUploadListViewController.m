@@ -16,6 +16,7 @@
 
 #import "TMBODataStore.h"
 #import "TMBOImageDetailViewController.h"
+#import "TMBOLoadingCell.h"
 #import "TMBORange.h"
 #import "TMBOUpload.h"
 #import "TMBOUploadCell.h"
@@ -26,6 +27,7 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
 static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
 
 static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
+static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 
 @interface TMBOUploadListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;
@@ -54,7 +56,7 @@ static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
     // TODO: new upload getting code, this stuff is CRUFTY!
     void (^completion)(NSArray *, NSError *) = ^(NSArray *results, NSError *error){
         if (results) {
-            NSUInteger max = 111;
+            NSUInteger max = kFirstUploadID - 1;
             max = ![self.items count] ?: [[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue];
                 
             // Add non-duplicate uploads
@@ -69,7 +71,12 @@ static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
             // Verify sort order
             [self.items sortUsingComparator:kUploadComparator];
             
-            // TODO: is updating the table going to jerk around the location of the viewport in relation to the uploads? maybe use -beginUpdates instead?
+            // TODO: remove this later
+            if (![[self.items lastObject] isKindOfClass:[TMBORange class]]) {
+                Assert([[self.items lastObject] isKindOfClass:[TMBOUpload class]]);
+                [self.items addObject:[TMBORange rangeWithFirst:kFirstUploadID last:[((TMBOUpload *)[self.items lastObject]).uploadid unsignedIntegerValue]]];
+            }
+            
             // reloadData must be sent on the main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
@@ -85,11 +92,7 @@ static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
         });
     };
     
-    if ([self.items count]) {
-        [[TMBODataStore sharedStore] uploadsWithType:kTMBOTypeImage since:[[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue] completion:completion];
-    } else {
-        [[TMBODataStore sharedStore] latestUploadsWithType:kTMBOTypeImage completion:completion];
-    }
+    [[TMBODataStore sharedStore] latestUploadsWithType:kTMBOTypeImage completion:completion];
 }
 
 #pragma mark - UITableViewController
@@ -125,6 +128,9 @@ static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
     UINib *nib = [UINib nibWithNibName:kTMBOUploadCellName bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:kTMBOUploadCellName];
     
+    nib = [UINib nibWithNibName:kTMBOLoadingCellName bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:kTMBOLoadingCellName];
+    
     self.topRefresh = [[UIRefreshControl alloc] init];
     [self.topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
     [self setRefreshControl:self.topRefresh];
@@ -151,10 +157,37 @@ static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTMBOUploadCellName];
-    if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTMBOUploadCellName];
+    UITableViewCell *cell = nil;
+    id rowData = [self.items objectAtIndex:indexPath.row];
     
-    [self initializeCell:cell atIndexPath:indexPath];
+    if ([rowData isKindOfClass:[TMBOUpload class]]) {
+        TMBOUploadCell *upCell;
+        TMBOUpload *upload = (TMBOUpload *)rowData;
+        
+        upCell = [tableView dequeueReusableCellWithIdentifier:kTMBOUploadCellName];
+        if (!upCell) upCell = [[TMBOUploadCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTMBOUploadCellName];
+    
+        [self initializeCell:upCell withUpload:upload];
+        
+        cell = upCell;
+    } else if ([rowData isKindOfClass:[TMBORange class]]) {
+        TMBOLoadingCell *loadCell;
+        TMBORange *range = (TMBORange *)rowData;
+        
+        loadCell = [tableView dequeueReusableCellWithIdentifier:kTMBOLoadingCellName];
+        if (!loadCell) loadCell = [[TMBOUploadCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTMBOLoadingCellName];
+        
+        if (range.first == kFirstUploadID) {
+            [loadCell.spinner startAnimating];
+            // TODO: Automatically load the next batch of uploads
+        } else {
+            // TODO: non-bottom ranges
+        }
+        
+        cell = loadCell;
+    } else {
+        NotReached();
+    }
     
     return cell;
 }
@@ -176,11 +209,45 @@ static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
     return nil;
 }
 
-- (void)displayThumbnailForUpload:(TMBOUpload *)upload onCell:(TMBOUploadCell *)cell;
+- (void)initializeCell:(TMBOUploadCell *)cell withUpload:(TMBOUpload *)upload;
 {
+    // Set up normal cell state
+    [self configureCell:cell withUpload:upload];
+    
+    // If there's no acceptible thumbnail, request one.
+    UIImage *thumbnail = [upload thumbnail];
+    CGSize thumbsize = [cell.thumbnailView bounds].size;
+    thumbsize.width *= [[UIScreen mainScreen] scale];
+    thumbsize.height *= [[UIScreen mainScreen] scale];
+    
+    if (upload.thumbURL && (!thumbnail || [thumbnail size].height < thumbsize.height || [thumbnail size].width < thumbsize.width)) {
+        [cell.spinner startAnimating];
+        [upload refreshThumbnailWithMinimumSize:thumbsize];
+    }
+}
+
+- (void)configureCell:(TMBOUploadCell *)cell withUpload:(TMBOUpload *)upload;
+{
+    [[cell filenameView] setText:[upload filename]];
+    // TODO: L10n
+    [[cell uploaderView] setText:[NSString stringWithFormat:@"uploaded by %@", [upload username]]];
+    
+    NSString *commentsLabel;
+    {
+        // TODO: L10n
+        if ([upload comments] == 0) {
+            commentsLabel = @"0 comments";
+        } else if ([[upload comments] unsignedIntegerValue] == 1) {
+            commentsLabel = @"1 comment";
+        } else {
+            commentsLabel = [NSString stringWithFormat:@"%@ comments", [upload comments]];
+        }
+    }
+    [[cell commentsView] setText:commentsLabel];
+    
     if (upload.thumbURL) {
         UIImage *thumbnail = [upload thumbnail];
-
+        
         if (thumbnail && ![[upload filtered] boolValue]) {
             // Thumbnail present and ready
             [[cell spinner] stopAnimating];
@@ -198,69 +265,6 @@ static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
         CGRect thumbFrame = [[cell thumbnailView] frame];
         thumbFrame.size.width = 0;
         [[cell thumbnailView] setFrame:thumbFrame];
-    }
-}
-
-- (void)initializeCell:(UITableViewCell *)uitvCell atIndexPath:(NSIndexPath *)indexPath;
-{
-    if ([uitvCell isKindOfClass:[TMBOUploadCell class]]) {
-        TMBOUploadCell *cell = (TMBOUploadCell *)uitvCell;
-        TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
-        Assert([upload isKindOfClass:[TMBOUpload class]]);
-        
-        // Set up normal cell state
-        [self configureCell:cell withData:upload];
-        
-        // Set up initial cell state
-        [cell.spinner startAnimating];
-        [self displayThumbnailForUpload:upload onCell:cell];
-        
-        // If there's no acceptible thumbnail, request one.
-        UIImage *thumbnail = [upload thumbnail];
-        CGSize thumbsize = [cell.thumbnailView bounds].size;
-        thumbsize.width *= [[UIScreen mainScreen] scale];
-        thumbsize.height *= [[UIScreen mainScreen] scale];
-        
-        if (upload.thumbURL && (!thumbnail || [thumbnail size].height < thumbsize.height || [thumbnail size].width < thumbsize.width)) {
-            [upload refreshThumbnailWithMinimumSize:thumbsize];
-        }
-    } else {
-        NotReached();
-    }
-}
-
-- (void)configureCell:(UITableViewCell *)uitvCell atIndexPath:(NSIndexPath *)indexPath;
-{
-    id data = [self.items objectAtIndex:[indexPath row]];
-
-    [self configureCell:uitvCell withData:data];
-}
-
-- (void)configureCell:(UITableViewCell *)uitvCell withData:(id)data;
-{
-    if ([uitvCell isKindOfClass:[TMBOUploadCell class]]) {
-        Assert([data isKindOfClass:[TMBOUpload class]]);
-        TMBOUpload *upload = (TMBOUpload *)data;
-        TMBOUploadCell *cell = (TMBOUploadCell *)uitvCell;
-        
-        [[cell filenameView] setText:[upload filename]];
-        // TODO: L10n
-        [[cell uploaderView] setText:[NSString stringWithFormat:@"uploaded by %@", [upload username]]];
-        
-        NSString *commentsLabel;
-        {
-            // TODO: L10n
-            if ([upload comments] == 0) {
-                commentsLabel = @"0 comments";
-            } else if ([[upload comments] unsignedIntegerValue] == 1) {
-                commentsLabel = @"1 comment";
-            } else {
-                commentsLabel = [NSString stringWithFormat:@"%@ comments", [upload comments]];
-            }
-        }
-        [[cell commentsView] setText:commentsLabel];
-    } else {
-        NotReached();
     }
 }
 
@@ -316,7 +320,7 @@ static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
             
             if (newObject) {
                 Assert([newObject isKindOfClass:[UIImage class]]);
-                [self displayThumbnailForUpload:upload onCell:cell];
+                [self configureCell:cell withUpload:upload];
             } else {
                 // TODO: Add a layer over the thumbnail that, if tapped and thumbnail is not set, causes a retry for the thumbnail. In the meantime, come up with an sset to put here that indicates that the load failed.
                 [[cell spinner] stopAnimating];
@@ -329,7 +333,10 @@ static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
     if (context == kUploadCommentsContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
             TMBOUploadCell *cell = [self cellForUpload:upload];
-            [self configureCell:cell withData:upload];
+            if (!cell) return;
+
+            [self configureCell:cell withUpload:upload];
+            [cell setNeedsDisplay];
         });
     }
 }
