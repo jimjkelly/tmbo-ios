@@ -23,6 +23,7 @@
 #import "UIImage+Resize.h"
 
 static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
+static NSString * const kTMBOUploadCellName = @"TMBOImageListCell";
 
 @interface TMBOUploadListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;
@@ -117,8 +118,8 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
 {
     [super viewDidLoad];
     
-    UINib *nib = [UINib nibWithNibName:@"TMBOImageListCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:@"TMBOImageListCell"];
+    UINib *nib = [UINib nibWithNibName:kTMBOUploadCellName bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:kTMBOUploadCellName];
     
     self.topRefresh = [[UIRefreshControl alloc] init];
     [self.topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
@@ -146,9 +147,8 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"TMBOImageListCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTMBOUploadCellName];
+    if (!cell) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTMBOUploadCellName];
     
     [self configureCell:cell atIndexPath:indexPath];
     
@@ -294,7 +294,7 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
     [self refetchData];
 }
 
-#pragma mark KVO notifications for updating cells
+#pragma mark KVO notifications for updating upload cells
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
 {
