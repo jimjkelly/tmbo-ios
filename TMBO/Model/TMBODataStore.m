@@ -19,23 +19,7 @@
 #import "AFHTTPRequestOperation.h"
 #import "ISO8601DateFormatter.h"
 #import "TMBOAPIClient.h"
-#import "TMBOUpload.h"
-
-#pragma mark - TMBORange function
-
-TMBORange TMBOMakeRange(NSUInteger first, NSUInteger last) {
-    TMBORange range;
-    Assert(first < last);
-    if (first < last) {
-        range.first = first;
-        range.last = last;
-    } else {
-        NotTested();
-        range.last = first;
-        range.first = last;
-    }
-    return range;
-}
+#import "TMBORange.h"
 
 @interface TMBODataStore ()
 {
@@ -268,7 +252,7 @@ static const NSUInteger kQueryLimit = 50;
     });
 }
 
-- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange)range completion:(void (^)(NSError *))block;
+- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange *)range completion:(void (^)(NSError *))block;
 {
     NotTested();
     Assert(range.first < range.last);

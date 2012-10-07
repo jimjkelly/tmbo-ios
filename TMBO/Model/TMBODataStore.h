@@ -16,6 +16,8 @@
 
 #import "TMBOUpload.h"
 
+@class TMBORange;
+
 /**
  `TMBODataStore` offers a simple programmatic interface to reading and writing data on TMBO.
  
@@ -37,13 +39,6 @@
  
  When DEBUG is defined, the model will fail fast and hard wherever possible. If a data getter/setter method is called and there is no token, an exception will be thrown. If `-updateUploadsWithType:inRange:completion:` is called with a range of uploads that is not within the set of uploads cached locally, an exception will be thrown. 
 */
-
-typedef struct {
-    NSUInteger first;
-    NSUInteger last;
-} TMBORange;
-
-TMBORange TMBOMakeRange(NSUInteger first, NSUInteger last);
 
 @interface TMBODataStore : NSObject
 
@@ -122,7 +117,7 @@ TMBORange TMBOMakeRange(NSUInteger first, NSUInteger last);
  @param range The range of uploads to update, inclusive
  @param block A block with an error argument that is called when all updates inside the range have been processed or the operation failed.
  */
-- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange)range completion:(void (^)(NSError *))block;
+- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange *)range completion:(void (^)(NSError *))block;
 
 
 ///---------------------------------
