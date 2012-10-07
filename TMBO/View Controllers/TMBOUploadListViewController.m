@@ -283,11 +283,13 @@ static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
     TMBOUpload *upload = (TMBOUpload *)object;
     
     id newObject = [change objectForKey:@"new"];
-    if (context == kUploadThumbnailContext && [newObject isKindOfClass:[UIImage class]]) {
+    if (context == kUploadThumbnailContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
             TMBOUploadCell *cell = [self cellForUpload:upload];
+            if (!cell) return;
             
             if (newObject) {
+                Assert([newObject isKindOfClass:[UIImage class]]);
                 [self displayThumbnailForUpload:upload onCell:cell];
             } else {
                 // TODO: Add a layer over the thumbnail that, if tapped and thumbnail is not set, causes a retry for the thumbnail. In the meantime, come up with an sset to put here that indicates that the load failed.
