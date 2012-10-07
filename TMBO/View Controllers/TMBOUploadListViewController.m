@@ -161,7 +161,7 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
 {
     // Get the upload's index in the array
     NSUInteger uploadIndex = [self.items indexOfObject:upload];
-    if (uploadIndex == NSNotFound) return nil; // TODO: explode?
+    if (uploadIndex == NSNotFound) NotReached();
     
     for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
         if ([path row] == uploadIndex) {
