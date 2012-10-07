@@ -40,6 +40,8 @@
  When DEBUG is defined, the model will fail fast and hard wherever possible. If a data getter/setter method is called and there is no token, an exception will be thrown. If `-updateUploadsWithType:inRange:completion:` is called with a range of uploads that is not within the set of uploads cached locally, an exception will be thrown. 
 */
 
+extern const NSUInteger kFirstUploadID;
+
 @interface TMBODataStore : NSObject
 
 ///----------------------

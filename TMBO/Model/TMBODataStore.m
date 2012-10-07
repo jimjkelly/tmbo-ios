@@ -21,6 +21,8 @@
 #import "TMBOAPIClient.h"
 #import "TMBORange.h"
 
+const NSUInteger kFirstUploadID = 112;
+
 @interface TMBODataStore ()
 {
     NSDictionary *keyRepresentationForUpload;
@@ -294,7 +296,7 @@ static const NSUInteger kQueryLimit = 50;
     int64_t delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        block(112, nil);
+        block(kFirstUploadID, nil);
     });
 }
 
