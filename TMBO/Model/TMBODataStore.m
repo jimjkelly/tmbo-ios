@@ -215,7 +215,7 @@ static const NSUInteger kQueryLimit = 50;
         id rawData = nil;
         {
             NSString *method = @"getuploads";
-            NSMutableDictionary *args = [@{@"before" : @(before), @"limit" : @(kQueryLimit)} mutableCopy];
+            NSMutableDictionary *args = [@{@"max" : @(before), @"limit" : @(kQueryLimit)} mutableCopy];
             if ([self typeStringForType:type]) {
                 [args setObject:[self typeStringForType:type] forKey:@"type"];
             }
