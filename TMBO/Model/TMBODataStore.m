@@ -109,7 +109,7 @@ static const NSUInteger kQueryLimit = 50;
 {
     if (_managedObjectModel) return _managedObjectModel;
     
-    @synchronized(_managedObjectModel) {
+    @synchronized(self) {
         if (_managedObjectModel) return _managedObjectModel;
         
         NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"TMBO" withExtension:@"momd"];
@@ -123,7 +123,7 @@ static const NSUInteger kQueryLimit = 50;
 {
     if (_persistentStoreCoordinator) return _persistentStoreCoordinator;
     
-    @synchronized(_persistentStoreCoordinator) {
+    @synchronized(self) {
         if (_persistentStoreCoordinator) return _persistentStoreCoordinator;
         
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -145,7 +145,7 @@ static const NSUInteger kQueryLimit = 50;
 {
     if (_context) return _context;
     
-    @synchronized(_context) {
+    @synchronized(self) {
         if (_context) return _context;
 
         _context = [[NSManagedObjectContext alloc] init];
@@ -159,7 +159,7 @@ static const NSUInteger kQueryLimit = 50;
 {
     if (_client) return _client;
     
-    @synchronized(_client) {
+    @synchronized(self) {
         if (_client) return _client;
         
         _client = [TMBOAPIClient sharedClient];
