@@ -186,7 +186,7 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
         TMBORange *range = (TMBORange *)rowData;
         
         loadCell = [tableView dequeueReusableCellWithIdentifier:kTMBOLoadingCellName];
-        if (!loadCell) loadCell = [[TMBOUploadCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTMBOLoadingCellName];
+        if (!loadCell) loadCell = [[TMBOLoadingCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTMBOLoadingCellName];
         
         if (range.first == kFirstUploadID) {
             [loadCell.spinner startAnimating];
