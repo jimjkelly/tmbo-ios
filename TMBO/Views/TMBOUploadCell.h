@@ -1,5 +1,5 @@
 //
-//  TMBOImageListCell.h
+//  TMBOUploadCell.h
 //  TMBO
 //
 //  Created by Scott Perry on 09/21/12.
@@ -15,10 +15,9 @@
 #import <UIKit/UIKit.h>
 
 @interface TMBOUploadCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *thumbnailView;
-@property (weak, nonatomic) IBOutlet UILabel *filenameView;
-@property (weak, nonatomic) IBOutlet UILabel *uploaderView;
 @property (weak, nonatomic) IBOutlet UILabel *commentsView;
+@property (weak, nonatomic) IBOutlet UILabel *filenameView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
-
+@property (weak, nonatomic) IBOutlet UIImageView *thumbnailView;
+@property (weak, nonatomic) IBOutlet UILabel *uploaderView;
 @end

@@ -1,5 +1,5 @@
 //
-//  TMBOImageListViewController.m
+//  TMBOUploadListViewController.m
 //  TMBO
 //
 //  Created by Scott Perry on 09/21/12.
@@ -14,12 +14,12 @@
 
 #import "TMBOUploadListViewController.h"
 
+#import "AFNetworking.h"
 #import "TMBODataStore.h"
-#import "TMBOUploadCell.h"
 #import "TMBOImageDetailViewController.h"
 #import "TMBOUpload.h"
+#import "TMBOUploadCell.h"
 #import "TMBOUploadDetailViewController.h"
-#import "AFNetworking.h"
 #import "UIImage+Resize.h"
 
 static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";

@@ -1,5 +1,5 @@
 //
-//  TMBOImageListCell.m
+//  TMBOUploadCell.m
 //  TMBO
 //
 //  Created by Scott Perry on 09/21/12.
@@ -14,14 +14,14 @@
 
 #import "TMBOUploadCell.h"
 
-@implementation TMBOUploadCell
-@synthesize thumbnailView;
-@synthesize filenameView;
-@synthesize uploaderView;
-@synthesize commentsView;
-@synthesize spinner;
+static const CGFloat kXPadding = 4.0f;
 
-#define kXPadding 4.0f
+@implementation TMBOUploadCell
+@synthesize commentsView;
+@synthesize filenameView;
+@synthesize spinner;
+@synthesize thumbnailView;
+@synthesize uploaderView;
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

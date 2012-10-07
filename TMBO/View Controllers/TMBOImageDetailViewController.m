@@ -14,10 +14,9 @@
 
 #import "TMBOImageDetailViewController.h"
 
-#import "UIImageView+AFNetworking.h"
-
 #import "TMBOImageScrollView.h"
 #import "TMBOUpload.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface TMBOImageDetailViewController ()
 - (void)fit;

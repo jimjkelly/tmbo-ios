@@ -16,8 +16,8 @@
 
 #import "TMBOUploadDetailViewController.h"
 
-@class TMBOUpload;
 @class TMBOImageScrollView;
+@class TMBOUpload;
 
 @interface TMBOImageDetailViewController : TMBOUploadDetailViewController <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet TMBOImageScrollView *scrollView;

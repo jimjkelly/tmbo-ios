@@ -1,5 +1,5 @@
 //
-//  TMBOImageListViewController.h
+//  TMBOUploadListViewController.h
 //  TMBO
 //
 //  Created by Scott Perry on 09/21/12.
@@ -15,5 +15,4 @@
 #import <UIKit/UIKit.h>
 
 @interface TMBOUploadListViewController : UITableViewController
-
 @end
