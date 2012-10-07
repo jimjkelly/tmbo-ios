@@ -172,81 +172,88 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
     return nil;
 }
 
-- (void)configureCell:(TMBOImageListCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)configureCell:(UITableViewCell *)uitvCell atIndexPath:(NSIndexPath *)indexPath;
 {
-    TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
-    
-    [[cell filenameView] setText:[upload filename]];
-    [[cell uploaderView] setText:[NSString stringWithFormat:@"uploaded by %@", [upload username]]];
-    
-    NSString *commentsLabel;
-    {
-        // TODO: L10n
-        if ([upload comments] == 0) {
-            commentsLabel = @"0 comments";
-        } else if ([[upload comments] unsignedIntegerValue] == 1) {
-            commentsLabel = @"1 comment";
-        } else {
-            commentsLabel = [NSString stringWithFormat:@"%@ comments", [upload comments]];
+    if ([uitvCell isKindOfClass:[TMBOImageListCell class]]) {
+        TMBOImageListCell *cell = (TMBOImageListCell *)uitvCell;
+        
+        TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
+        
+        [[cell filenameView] setText:[upload filename]];
+        [[cell uploaderView] setText:[NSString stringWithFormat:@"uploaded by %@", [upload username]]];
+        
+        NSString *commentsLabel;
+        {
+            // TODO: L10n
+            if ([upload comments] == 0) {
+                commentsLabel = @"0 comments";
+            } else if ([[upload comments] unsignedIntegerValue] == 1) {
+                commentsLabel = @"1 comment";
+            } else {
+                commentsLabel = [NSString stringWithFormat:@"%@ comments", [upload comments]];
+            }
         }
-    }
-    [[cell commentsView] setText:commentsLabel];
-    
-    UIImage *thumbnail = [upload thumbnail];
-    {
-        if (thumbnail && ![[upload filtered] boolValue]) {
-            // Thumbnail present and ready
-            [[cell spinner] stopAnimating];
-            [[cell thumbnailView] setImage:thumbnail];
-        } else if ([[upload filtered] boolValue]) {
-            // Upload is filtered
-            [[cell spinner] stopAnimating];
-            [[cell thumbnailView] setImage:[UIImage imageNamed:@"th-filtered"]];
+        [[cell commentsView] setText:commentsLabel];
+        
+        UIImage *thumbnail = [upload thumbnail];
+        {
+            if (thumbnail && ![[upload filtered] boolValue]) {
+                // Thumbnail present and ready
+                [[cell spinner] stopAnimating];
+                [[cell thumbnailView] setImage:thumbnail];
+            } else if ([[upload filtered] boolValue]) {
+                // Upload is filtered
+                [[cell spinner] stopAnimating];
+                [[cell thumbnailView] setImage:[UIImage imageNamed:@"th-filtered"]];
+            }
+            if (![upload thumbURL]) {
+                // Upload has no thumbnail
+                [[cell spinner] stopAnimating];
+                CGRect thumbFrame = [[cell thumbnailView] frame];
+                thumbFrame.size.width = 0;
+                [[cell thumbnailView] setFrame:thumbFrame];
+            }
         }
-        if (![upload thumbURL]) {
-            // Upload has no thumbnail
-            [[cell spinner] stopAnimating];
-            CGRect thumbFrame = [[cell thumbnailView] frame];
-            thumbFrame.size.width = 0;
-            [[cell thumbnailView] setFrame:thumbFrame];
-        }
-    }
-    
-    // Compute ideal thumbnail size in pixels (not points)
-    CGSize thumbsize = [[cell thumbnailView] bounds].size;
-    thumbsize.width *= [[UIScreen mainScreen] scale];
-    thumbsize.height *= [[UIScreen mainScreen] scale];
-    
-    if ([upload thumbURL] && (!thumbnail || [thumbnail size].height < thumbsize.height || [thumbnail size].width < thumbsize.width)) {
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            // Thumbnail is not good enough. Load another!
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://thismight.be%@", [upload thumbURL]]];
-            NSURLRequest *request = [NSURLRequest requestWithURL:url];
-            AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-            
-            [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                Assert([responseObject isKindOfClass:[NSData class]]);
-                if ([responseObject isKindOfClass:[NSData class]]) {
-                    UIImage *image = [UIImage imageWithData:responseObject];
-                    UIImage *thumb = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:thumbsize interpolationQuality:kCGInterpolationHigh];
+        
+        // Compute ideal thumbnail size in pixels (not points)
+        CGSize thumbsize = [[cell thumbnailView] bounds].size;
+        thumbsize.width *= [[UIScreen mainScreen] scale];
+        thumbsize.height *= [[UIScreen mainScreen] scale];
+        
+        if ([upload thumbURL] && (!thumbnail || [thumbnail size].height < thumbsize.height || [thumbnail size].width < thumbsize.width)) {
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                // Thumbnail is not good enough. Load another!
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://thismight.be%@", [upload thumbURL]]];
+                NSURLRequest *request = [NSURLRequest requestWithURL:url];
+                AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+                
+                [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    Assert([responseObject isKindOfClass:[NSData class]]);
+                    if ([responseObject isKindOfClass:[NSData class]]) {
+                        UIImage *image = [UIImage imageWithData:responseObject];
+                        UIImage *thumb = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:thumbsize interpolationQuality:kCGInterpolationHigh];
+                        
+                        // Causes a KVO notification. If a cell is currently displaying this upload, it will be updated.
+                        [upload setThumbnail:thumb];
+                    }
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    TMBOImageListCell *validCell = [self cellForUpload:upload];
+                    [[validCell spinner] stopAnimating];
+                    [validCell setNeedsDisplay];
                     
-                    // Causes a KVO notification. If a cell is currently displaying this upload, it will be updated.
-                    [upload setThumbnail:thumb];
-                }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                TMBOImageListCell *validCell = [self cellForUpload:upload];
-                [[validCell spinner] stopAnimating];
-                [validCell setNeedsDisplay];
-
-                // TODO: failure?
-                NSLog(@"%@ had error: %@", operation, error);
-                /* Plan:
-                 * Add a layer over the thumbnail that, if tapped and thumbnail is not set, causes a retry for the thumbnail. In the meantime, come up with an sset to put here that indicates that the load failed.
-                 */
-            }];
-            
-            [operation start];
-        });
+                    // TODO: failure?
+                    NSLog(@"%@ had error: %@", operation, error);
+                    /* Plan:
+                     * Add a layer over the thumbnail that, if tapped and thumbnail is not set, causes a retry for the thumbnail. In the meantime, come up with an sset to put here that indicates that the load failed.
+                     */
+                }];
+                
+                [operation start];
+            });
+        }
+    } else {
+        // We might have other cell types in the future, but we don't today.
+        NotReached();
     }
 }
 
