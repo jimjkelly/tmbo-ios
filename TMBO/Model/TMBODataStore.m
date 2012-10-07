@@ -209,7 +209,6 @@ static const NSUInteger kQueryLimit = 50;
 
 - (void)uploadsWithType:(kTMBOType)type before:(NSUInteger)before completion:(void (^)(NSArray *, NSError *))block;
 {
-    NotTested();
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         // Get the raw parsed data from the API call
         id rawData = nil;
