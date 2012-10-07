@@ -14,6 +14,9 @@
 
 #import "TMBOUpload.h"
 
+#import "AFNetworking.h"
+#import "UIImage+Resize.h"
+
 NSComparator kUploadComparator = ^(id a, id b) {
     Assert([a isKindOfClass:[TMBOUpload class]]);
     Assert([b isKindOfClass:[TMBOUpload class]]);
@@ -113,6 +116,34 @@ NSComparator kUploadComparator = ^(id a, id b) {
     }
     NotReached();
     return kTMBOTypeAny;
+}
+
+- (void)refreshThumbnailWithMinimumSize:(CGSize)thumbsize;
+{
+    // TODO: getting, resizing, and storing of the thumbnail belongs in the model, not the controller.
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // Thumbnail is not good enough. Load another!
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://thismight.be%@", self.thumbURL]];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            Assert([responseObject isKindOfClass:[NSData class]]);
+            if ([responseObject isKindOfClass:[NSData class]]) {
+                UIImage *image = [UIImage imageWithData:responseObject];
+                UIImage *thumb = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:thumbsize interpolationQuality:kCGInterpolationHigh];
+                
+                // Causes a KVO notification. If a cell is currently displaying this upload, it will be updated.
+                self.thumbnail = thumb;
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            // Causes a KVO notification. If a cell is currently displaying this upload, it will be updated.
+            self.thumbnail = nil;
+            NSLog(@"%@ encountered error: %@", operation, error);
+        }];
+        
+        [operation start];
+    });
 }
 
 @end

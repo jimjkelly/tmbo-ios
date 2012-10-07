@@ -56,6 +56,7 @@
 		BC97BDCD1613D48300A3676A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC97BDCC1613D48300A3676A /* CoreData.framework */; };
 		BC97BE221617D88D00A3676A /* TMBOUploadDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BE211617D88D00A3676A /* TMBOUploadDetailViewController.m */; };
 		BCB4EC031621FB6900048C42 /* TMBORange.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC021621FB6900048C42 /* TMBORange.m */; };
+		BCB4EC0F16220CB500048C42 /* UIImage+TMBOAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -148,6 +149,8 @@
 		BC97BE211617D88D00A3676A /* TMBOUploadDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOUploadDetailViewController.m; path = "View Controllers/TMBOUploadDetailViewController.m"; sourceTree = "<group>"; };
 		BCB4EC011621FB6900048C42 /* TMBORange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBORange.h; path = Classes/TMBORange.h; sourceTree = "<group>"; };
 		BCB4EC021621FB6900048C42 /* TMBORange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBORange.m; path = Classes/TMBORange.m; sourceTree = "<group>"; };
+		BCB4EC0D16220CB500048C42 /* UIImage+TMBOAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+TMBOAssets.h"; path = "lib/UIImage+TMBOAssets.h"; sourceTree = "<group>"; };
+		BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+TMBOAssets.m"; path = "lib/UIImage+TMBOAssets.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +192,8 @@
 		BC2F216B160C09EF00C28105 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				BCB4EC0D16220CB500048C42 /* UIImage+TMBOAssets.h */,
+				BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */,
 				BC97BDAE1613D36B00A3676A /* AFNetworking */,
 				BC2F21B3160D236D00C28105 /* UIImage+Alpha.h */,
 				BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */,
@@ -546,6 +551,7 @@
 				BC97BDCB1613D38500A3676A /* UIImageView+AFNetworking.m in Sources */,
 				BC97BE221617D88D00A3676A /* TMBOUploadDetailViewController.m in Sources */,
 				BCB4EC031621FB6900048C42 /* TMBORange.m in Sources */,
+				BCB4EC0F16220CB500048C42 /* UIImage+TMBOAssets.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

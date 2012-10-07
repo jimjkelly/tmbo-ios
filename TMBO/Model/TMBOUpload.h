@@ -57,4 +57,6 @@ typedef enum : NSUInteger {
 + (Class)typeFor:(NSString *)varname;
 - (kTMBOType)kindOfUpload;
 
+- (void)refreshThumbnailWithMinimumSize:(CGSize)thumbsize;
+
 @end
