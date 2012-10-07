@@ -56,6 +56,8 @@
 		BC97BDCD1613D48300A3676A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC97BDCC1613D48300A3676A /* CoreData.framework */; };
 		BC97BE221617D88D00A3676A /* TMBOUploadDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BE211617D88D00A3676A /* TMBOUploadDetailViewController.m */; };
 		BCB4EC031621FB6900048C42 /* TMBORange.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC021621FB6900048C42 /* TMBORange.m */; };
+		BCB4EC061622079500048C42 /* TMBOLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC051622079500048C42 /* TMBOLoadingCell.m */; };
+		BCB4EC08162207BB00048C42 /* TMBOLoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -148,6 +150,9 @@
 		BC97BE211617D88D00A3676A /* TMBOUploadDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOUploadDetailViewController.m; path = "View Controllers/TMBOUploadDetailViewController.m"; sourceTree = "<group>"; };
 		BCB4EC011621FB6900048C42 /* TMBORange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBORange.h; path = Classes/TMBORange.h; sourceTree = "<group>"; };
 		BCB4EC021621FB6900048C42 /* TMBORange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBORange.m; path = Classes/TMBORange.m; sourceTree = "<group>"; };
+		BCB4EC041622079500048C42 /* TMBOLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOLoadingCell.h; path = Views/TMBOLoadingCell.h; sourceTree = "<group>"; };
+		BCB4EC051622079500048C42 /* TMBOLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOLoadingCell.m; path = Views/TMBOLoadingCell.m; sourceTree = "<group>"; };
+		BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOLoadingCell.xib; path = Views/TMBOLoadingCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,6 +236,9 @@
 		BC2F2188160CF9A500C28105 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BCB4EC041622079500048C42 /* TMBOLoadingCell.h */,
+				BCB4EC051622079500048C42 /* TMBOLoadingCell.m */,
+				BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */,
 				BC2F21EC160E729200C28105 /* TMBOImageScrollView.h */,
 				BC2F21ED160E729200C28105 /* TMBOImageScrollView.m */,
 				BC2F2189160D0C7600C28105 /* TMBOUploadCell.h */,
@@ -459,6 +467,7 @@
 				5D40605E16112AAB00EA0F5E /* Icon-57.png in Resources */,
 				5D40606016112AB900EA0F5E /* Icon-144.png in Resources */,
 				5D40606216112ABF00EA0F5E /* Icon-72.png in Resources */,
+				BCB4EC08162207BB00048C42 /* TMBOLoadingCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,6 +555,7 @@
 				BC97BDCB1613D38500A3676A /* UIImageView+AFNetworking.m in Sources */,
 				BC97BE221617D88D00A3676A /* TMBOUploadDetailViewController.m in Sources */,
 				BCB4EC031621FB6900048C42 /* TMBORange.m in Sources */,
+				BCB4EC061622079500048C42 /* TMBOLoadingCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
