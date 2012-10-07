@@ -117,8 +117,6 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
 {
     [super viewDidLoad];
     
-    [self refetchData];
-    
     UINib *nib = [UINib nibWithNibName:@"TMBOImageListCell" bundle:nil];
     [[self tableView] registerNib:nib forCellReuseIdentifier:@"TMBOImageListCell"];
     
@@ -129,6 +127,8 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
     
     self.items = [[NSMutableArray alloc] init];
     //[self.items addObjectsFromArray:[[TMBODataStore sharedStore] cachedUploadsWithType:kTMBOTypeImage near:<#lastposition#>]];
+
+    [self refetchData];
 }
 
 - (void)didReceiveMemoryWarning
