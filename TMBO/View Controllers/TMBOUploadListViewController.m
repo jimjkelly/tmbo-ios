@@ -118,7 +118,7 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
     [super viewDidLoad];
     
     UINib *nib = [UINib nibWithNibName:@"TMBOImageListCell" bundle:nil];
-    [[self tableView] registerNib:nib forCellReuseIdentifier:@"TMBOImageListCell"];
+    [self.tableView registerNib:nib forCellReuseIdentifier:@"TMBOImageListCell"];
     
     self.topRefresh = [[UIRefreshControl alloc] init];
     [self.topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
