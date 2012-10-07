@@ -14,5 +14,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "TMBOUpload.h"
+
 @interface TMBOUploadListViewController : UITableViewController
+- (id)initWithType:(kTMBOType)type;
 @end

@@ -18,7 +18,6 @@
 #import "TMBOImageDetailViewController.h"
 #import "TMBOLoadingCell.h"
 #import "TMBORange.h"
-#import "TMBOUpload.h"
 #import "TMBOUploadCell.h"
 #import "TMBOUploadDetailViewController.h"
 #import "UIImage+TMBOAssets.h"
@@ -32,12 +31,24 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 @interface TMBOUploadListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;
 @property (nonatomic, strong) NSMutableArray *items;
+@property (nonatomic, assign) kTMBOType type;
 - (void)refetchData;
 @end
 
 @implementation TMBOUploadListViewController
 @synthesize topRefresh = _topRefresh;
 @synthesize items = _items;
+@synthesize type = _type;
+
+- (id)initWithType:(kTMBOType)type;
+{
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (!self) return nil;
+    
+    _type = type;
+    
+    return self;
+}
 
 - (void)dealloc;
 {
@@ -92,7 +103,7 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
         });
     };
     
-    [[TMBODataStore sharedStore] latestUploadsWithType:kTMBOTypeImage completion:completion];
+    [[TMBODataStore sharedStore] latestUploadsWithType:self.type completion:completion];
 }
 
 #pragma mark - UITableViewController
@@ -137,7 +148,7 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     [[self view] addSubview:self.topRefresh];
     
     self.items = [[NSMutableArray alloc] init];
-    //[self.items addObjectsFromArray:[[TMBODataStore sharedStore] cachedUploadsWithType:kTMBOTypeImage near:<#lastposition#>]];
+    //[self.items addObjectsFromArray:[[TMBODataStore sharedStore] cachedUploadsWithType:self.type near:<#lastposition#>]];
 
     [self refetchData];
 }

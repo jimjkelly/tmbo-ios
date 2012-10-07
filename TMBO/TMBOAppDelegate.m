@@ -20,6 +20,7 @@
 #import "AFNetworkActivityIndicatorManager.h"
 #import "TMBOUploadListViewController.h"
 #import "TMBODataStore.h"
+#import "TMBOUpload.h"
 
 @interface TMBOAppDelegate ()
 {
@@ -42,7 +43,7 @@
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
     // Set up the initial view(s)
-    TMBOUploadListViewController *ilvc = [[TMBOUploadListViewController alloc] init];
+    TMBOUploadListViewController *ilvc = [[TMBOUploadListViewController alloc] initWithType:kTMBOTypeImage];
     navController = [[UINavigationController alloc] initWithRootViewController:ilvc];
     [navController setNavigationBarHidden:YES];
     [[self window] setRootViewController:navController];
