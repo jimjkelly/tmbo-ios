@@ -19,7 +19,6 @@
 @synthesize filenameView;
 @synthesize uploaderView;
 @synthesize commentsView;
-@synthesize votesView;
 @synthesize spinner;
 
 #define kXPadding 4.0f
@@ -36,10 +35,10 @@
     CGSize cellSize = self.frame.size;
     CGRect frame, thumbFrame = [self.thumbnailView frame];
     
-    // votesView has height (as needed) and width (as needed) and anchors at (cellWidth - (votesViewWidth + padding), cellHeight - (votesViewHeight + padding)
-    UILabel *label = self.votesView;
+    // commentsView has height (as needed) and width (as needed) and anchors at (cellWidth - (commentsViewWidth + padding), cellHeight - (uploaderViewHeight + padding))
+    UILabel *label = self.commentsView;
     CGSize size = [[label text] sizeWithFont:[label font]];
-    
+
     frame.size = size;
     frame.size.height = 18.0f;
     frame.origin.x = cellSize.width - (frame.size.width + kXPadding);
@@ -47,20 +46,8 @@
     
     [label setFrame:frame];
     [label setContentMode:UIViewContentModeRedraw];
-
-    // commentsView has height (as needed) and width (as needed) and anchors at (cellWidth - (commentsViewWidth + padding), padding)
-    label = self.commentsView;
-    size = [[label text] sizeWithFont:[label font]];
-
-    frame.size = size;
-    frame.size.height = 18.0f;
-    frame.origin.x = cellSize.width - (frame.size.width + kXPadding);
-    frame.origin.y = 4.0f;
     
-    [label setFrame:frame];
-    [label setContentMode:UIViewContentModeRedraw];
-    
-    // uploaderView has height (as needed) and width (cellWidth - xAnchor - votesViewWidth - padding) and anchors at (thumbnailViewRightEdge + padding, cellHeight - (uploaderViewHeight + padding)
+    // uploaderView has height (as needed) and width (cellWidth - xAnchor - commentsViewWidth - padding) and anchors at (thumbnailViewRightEdge + padding, cellHeight - (uploaderViewHeight + padding))
     label = self.uploaderView;
     size = [[label text] sizeWithFont:[label font]];
 
@@ -68,12 +55,12 @@
     frame.origin.y = 23.0f;
     frame.size = size;
     frame.size.height = 18.0f;
-    frame.size.width = MIN(cellSize.width - (frame.origin.x + [self.votesView frame].size.width + kXPadding), frame.size.width);
+    frame.size.width = MIN(cellSize.width - (frame.origin.x + [self.commentsView frame].size.width + kXPadding), frame.size.width);
     
     [label setFrame:frame];
     [label setContentMode:UIViewContentModeRedraw];
     
-    // filenameView has height (as needed) and width (xAnchor - commentsViewXAnchor - padding) and anchors at (thumbnailViewWidth + padding, padding)
+    // filenameView has height (as needed) and width (cellWidth - (xAnchor + 2 * padding)) and anchors at (thumbnailViewWidth + padding, padding)
     label = self.filenameView;
     size = [[label text] sizeWithFont:[label font]];
 
@@ -81,7 +68,7 @@
     frame.origin.y = 3.0f;
     frame.size = size;
     frame.size.height = 20.0f;
-    frame.size.width = MIN(cellSize.width - (frame.origin.x + [self.commentsView frame].size.width + 5.0f), frame.size.width);
+    frame.size.width = MIN(cellSize.width - (frame.origin.x + 2.0f * kXPadding), frame.size.width);
     
     [label setFrame:frame];
     [label setContentMode:UIViewContentModeRedraw];

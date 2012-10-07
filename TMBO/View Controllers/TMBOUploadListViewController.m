@@ -192,15 +192,6 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
     }
     [[cell commentsView] setText:commentsLabel];
     
-    NSString *votesLabel;
-    {
-        votesLabel = [NSString stringWithFormat:@"+%@ -%@", [upload goodVotes], [upload badVotes]];
-        if ([[upload tmboVotes] integerValue]) {
-            votesLabel = [votesLabel stringByAppendingFormat:@" x%@", [upload tmboVotes]];
-        }
-        [[cell votesView] setText:votesLabel];
-    }
-    
     UIImage *thumbnail = [upload thumbnail];
     {
         if (thumbnail && ![[upload filtered] boolValue]) {

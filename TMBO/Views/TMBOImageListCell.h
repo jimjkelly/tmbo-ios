@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *filenameView;
 @property (weak, nonatomic) IBOutlet UILabel *uploaderView;
 @property (weak, nonatomic) IBOutlet UILabel *commentsView;
-@property (weak, nonatomic) IBOutlet UILabel *votesView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
 @end
