@@ -46,7 +46,6 @@
 								<int key="NSvFlags">300</int>
 								<string key="NSFrameSize">{58, 44}</string>
 								<reference key="NSSuperview" ref="436666529"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="806624907"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -57,8 +56,7 @@
 								<int key="NSvFlags">295</int>
 								<string key="NSFrame">{{63, 3}, {171, 20}}</string>
 								<reference key="NSSuperview" ref="436666529"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="469496628"/>
+								<reference key="NSNextKeyView" ref="528698610"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -92,8 +90,7 @@
 								<int key="NSvFlags">268</int>
 								<string key="NSFrame">{{63, 23}, {195, 18}}</string>
 								<reference key="NSSuperview" ref="436666529"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="469496628"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -120,11 +117,10 @@
 							</object>
 							<object class="IBUILabel" id="469496628">
 								<reference key="NSNextResponder" ref="436666529"/>
-								<int key="NSvFlags">289</int>
+								<int key="NSvFlags">265</int>
 								<string key="NSFrame">{{237, 23}, {78, 18}}</string>
 								<reference key="NSSuperview" ref="436666529"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="528698610"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -145,7 +141,6 @@
 								<int key="NSvFlags">300</int>
 								<string key="NSFrame">{{19, 12}, {20, 20}}</string>
 								<reference key="NSSuperview" ref="436666529"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="722458671"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -157,7 +152,6 @@
 						</array>
 						<string key="NSFrameSize">{320, 43}</string>
 						<reference key="NSSuperview" ref="865055105"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="428788433"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -173,7 +167,6 @@
 				</array>
 				<string key="NSFrameSize">{320, 44}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="436666529"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -303,52 +296,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">48</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">TMBOImageListCell</string>
-					<string key="superclassName">UITableViewCell</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="commentsView">UILabel</string>
-						<string key="filenameView">UILabel</string>
-						<string key="spinner">UIActivityIndicatorView</string>
-						<string key="thumbnailView">UIImageView</string>
-						<string key="uploaderView">UILabel</string>
-						<string key="votesView">UILabel</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="commentsView">
-							<string key="name">commentsView</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="filenameView">
-							<string key="name">filenameView</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="spinner">
-							<string key="name">spinner</string>
-							<string key="candidateClassName">UIActivityIndicatorView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="thumbnailView">
-							<string key="name">thumbnailView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="uploaderView">
-							<string key="name">uploaderView</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="votesView">
-							<string key="name">votesView</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/TMBOImageListCell.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

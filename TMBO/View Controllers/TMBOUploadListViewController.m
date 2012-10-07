@@ -296,14 +296,15 @@ static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
     
     id newObject = [change objectForKey:@"new"];
     if (context == kUploadThumbnailContext && newObject && [newObject isKindOfClass:[UIImage class]]) {
-        TMBOImageListCell *cell = [self cellForUpload:upload];
-        
-        [[cell spinner] stopAnimating];
-        if (![[upload filtered] boolValue]) {
-            [[cell thumbnailView] setImage:newObject];
-        }
-        [cell setNeedsDisplay];
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            TMBOImageListCell *cell = [self cellForUpload:upload];
+            
+            [[cell spinner] stopAnimating];
+            if (![[upload filtered] boolValue]) {
+                [[cell thumbnailView] setImage:newObject];
+            }
+            [cell setNeedsDisplay];
+        });
     }
 }
 
