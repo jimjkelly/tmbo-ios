@@ -18,5 +18,6 @@
 @property (nonatomic, assign) NSInteger first;
 @property (nonatomic, assign) NSInteger last;
 
++ (TMBORange *)rangeWithFirst:(NSInteger)first last:(NSInteger)last;
 - (id)initWithFirst:(NSInteger)first last:(NSInteger)last;
 @end

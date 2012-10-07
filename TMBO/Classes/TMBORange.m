@@ -18,6 +18,11 @@
 @synthesize first = _first;
 @synthesize last = _last;
 
++ (TMBORange *)rangeWithFirst:(NSInteger)first last:(NSInteger)last;
+{
+    return [[self alloc] initWithFirst:first last:last];
+}
+
 - (id)initWithFirst:(NSInteger)first last:(NSInteger)last;
 {
     self = [super init];
