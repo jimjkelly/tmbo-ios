@@ -15,7 +15,7 @@
 #import "TMBOUploadListViewController.h"
 
 #import "TMBODataStore.h"
-#import "TMBOImageListCell.h"
+#import "TMBOUploadCell.h"
 #import "TMBOImageDetailViewController.h"
 #import "TMBOUpload.h"
 #import "TMBOUploadDetailViewController.h"
@@ -23,7 +23,7 @@
 #import "UIImage+Resize.h"
 
 static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
-static NSString * const kTMBOUploadCellName = @"TMBOImageListCell";
+static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
 
 @interface TMBOUploadListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;
@@ -157,7 +157,7 @@ static NSString * const kTMBOUploadCellName = @"TMBOImageListCell";
 
 #pragma mark Helpers
 
-- (TMBOImageListCell *)cellForUpload:(TMBOUpload *)upload;
+- (TMBOUploadCell *)cellForUpload:(TMBOUpload *)upload;
 {
     // Get the upload's index in the array
     NSUInteger uploadIndex = [self.items indexOfObject:upload];
@@ -165,7 +165,7 @@ static NSString * const kTMBOUploadCellName = @"TMBOImageListCell";
     
     for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
         if ([path row] == uploadIndex) {
-            return (TMBOImageListCell *)[self.tableView cellForRowAtIndexPath:path];
+            return (TMBOUploadCell *)[self.tableView cellForRowAtIndexPath:path];
         }
     }
     
@@ -174,8 +174,8 @@ static NSString * const kTMBOUploadCellName = @"TMBOImageListCell";
 
 - (void)configureCell:(UITableViewCell *)uitvCell atIndexPath:(NSIndexPath *)indexPath;
 {
-    if ([uitvCell isKindOfClass:[TMBOImageListCell class]]) {
-        TMBOImageListCell *cell = (TMBOImageListCell *)uitvCell;
+    if ([uitvCell isKindOfClass:[TMBOUploadCell class]]) {
+        TMBOUploadCell *cell = (TMBOUploadCell *)uitvCell;
         
         TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
         
@@ -237,7 +237,7 @@ static NSString * const kTMBOUploadCellName = @"TMBOImageListCell";
                         [upload setThumbnail:thumb];
                     }
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    TMBOImageListCell *validCell = [self cellForUpload:upload];
+                    TMBOUploadCell *validCell = [self cellForUpload:upload];
                     [[validCell spinner] stopAnimating];
                     [validCell setNeedsDisplay];
                     
@@ -304,7 +304,7 @@ static NSString * const kTMBOUploadCellName = @"TMBOImageListCell";
     id newObject = [change objectForKey:@"new"];
     if (context == kUploadThumbnailContext && newObject && [newObject isKindOfClass:[UIImage class]]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            TMBOImageListCell *cell = [self cellForUpload:upload];
+            TMBOUploadCell *cell = [self cellForUpload:upload];
             
             [[cell spinner] stopAnimating];
             if (![[upload filtered] boolValue]) {

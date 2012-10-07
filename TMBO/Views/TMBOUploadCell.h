@@ -14,7 +14,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TMBOImageListCell : UITableViewCell
+@interface TMBOUploadCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailView;
 @property (weak, nonatomic) IBOutlet UILabel *filenameView;
 @property (weak, nonatomic) IBOutlet UILabel *uploaderView;

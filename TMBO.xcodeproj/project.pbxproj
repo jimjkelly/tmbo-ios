@@ -16,8 +16,8 @@
 		BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BC2F2173160CE41C00C28105 /* TMBOUploadListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2172160CE41C00C28105 /* TMBOUploadListViewController.m */; };
 		BC2F2181160CF57900C28105 /* debugger.c in Sources */ = {isa = PBXBuildFile; fileRef = BC2F217F160CF57900C28105 /* debugger.c */; };
-		BC2F218B160D0C7600C28105 /* TMBOImageListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F218A160D0C7600C28105 /* TMBOImageListCell.m */; };
-		BC2F218D160D0C8B00C28105 /* TMBOImageListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC2F218C160D0C8B00C28105 /* TMBOImageListCell.xib */; };
+		BC2F218B160D0C7600C28105 /* TMBOUploadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F218A160D0C7600C28105 /* TMBOUploadCell.m */; };
+		BC2F218D160D0C8B00C28105 /* TMBOUploadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC2F218C160D0C8B00C28105 /* TMBOUploadCell.xib */; };
 		BC2F21A3160D0EA800C28105 /* UIColor+TMBOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */; };
 		BC2F21B2160D221600C28105 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B1160D221600C28105 /* UIImage+Resize.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		BC2F21B7160D236D00C28105 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */; settings = {COMPILER_FLAGS = "-w"; }; };
@@ -80,9 +80,9 @@
 		BC2F2172160CE41C00C28105 /* TMBOUploadListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOUploadListViewController.m; path = "View Controllers/TMBOUploadListViewController.m"; sourceTree = "<group>"; };
 		BC2F217F160CF57900C28105 /* debugger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = debugger.c; path = lib/debugger.c; sourceTree = "<group>"; };
 		BC2F2180160CF57900C28105 /* debugger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = debugger.h; path = lib/debugger.h; sourceTree = "<group>"; };
-		BC2F2189160D0C7600C28105 /* TMBOImageListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOImageListCell.h; path = Views/TMBOImageListCell.h; sourceTree = "<group>"; };
-		BC2F218A160D0C7600C28105 /* TMBOImageListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOImageListCell.m; path = Views/TMBOImageListCell.m; sourceTree = "<group>"; };
-		BC2F218C160D0C8B00C28105 /* TMBOImageListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOImageListCell.xib; path = Views/TMBOImageListCell.xib; sourceTree = "<group>"; };
+		BC2F2189160D0C7600C28105 /* TMBOUploadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOUploadCell.h; path = Views/TMBOUploadCell.h; sourceTree = "<group>"; };
+		BC2F218A160D0C7600C28105 /* TMBOUploadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOUploadCell.m; path = Views/TMBOUploadCell.m; sourceTree = "<group>"; };
+		BC2F218C160D0C8B00C28105 /* TMBOUploadCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOUploadCell.xib; path = Views/TMBOUploadCell.xib; sourceTree = "<group>"; };
 		BC2F21A1160D0EA800C28105 /* UIColor+TMBOTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+TMBOTheme.h"; path = "lib/UIColor+TMBOTheme.h"; sourceTree = "<group>"; };
 		BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+TMBOTheme.m"; path = "lib/UIColor+TMBOTheme.m"; sourceTree = "<group>"; };
 		BC2F21B0160D221600C28105 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Resize.h"; path = "lib/UIImage+Resize.h"; sourceTree = "<group>"; };
@@ -230,9 +230,9 @@
 			children = (
 				BC2F21EC160E729200C28105 /* TMBOImageScrollView.h */,
 				BC2F21ED160E729200C28105 /* TMBOImageScrollView.m */,
-				BC2F2189160D0C7600C28105 /* TMBOImageListCell.h */,
-				BC2F218A160D0C7600C28105 /* TMBOImageListCell.m */,
-				BC2F218C160D0C8B00C28105 /* TMBOImageListCell.xib */,
+				BC2F2189160D0C7600C28105 /* TMBOUploadCell.h */,
+				BC2F218A160D0C7600C28105 /* TMBOUploadCell.m */,
+				BC2F218C160D0C8B00C28105 /* TMBOUploadCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -438,7 +438,7 @@
 				BC2FF5FB160AA21400FE4AA5 /* Default.png in Resources */,
 				BC2FF5FD160AA21400FE4AA5 /* Default@2x.png in Resources */,
 				BC2FF5FF160AA21400FE4AA5 /* Default-568h@2x.png in Resources */,
-				BC2F218D160D0C8B00C28105 /* TMBOImageListCell.xib in Resources */,
+				BC2F218D160D0C8B00C28105 /* TMBOUploadCell.xib in Resources */,
 				BC2F21BB160D432900C28105 /* th-filtered.png in Resources */,
 				BC2F21BC160D432900C28105 /* th-filtered@2x.png in Resources */,
 				BC2F21E7160E52ED00C28105 /* TMBOImageDetailViewController.xib in Resources */,
@@ -512,7 +512,7 @@
 				BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */,
 				BC2F2173160CE41C00C28105 /* TMBOUploadListViewController.m in Sources */,
 				BC2F2181160CF57900C28105 /* debugger.c in Sources */,
-				BC2F218B160D0C7600C28105 /* TMBOImageListCell.m in Sources */,
+				BC2F218B160D0C7600C28105 /* TMBOUploadCell.m in Sources */,
 				BC2F21A3160D0EA800C28105 /* UIColor+TMBOTheme.m in Sources */,
 				BC2F21B2160D221600C28105 /* UIImage+Resize.m in Sources */,
 				BC2F21B7160D236D00C28105 /* UIImage+Alpha.m in Sources */,
