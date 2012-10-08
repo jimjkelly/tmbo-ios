@@ -30,9 +30,10 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 
 @interface TMBOUploadListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;
+@property (nonatomic, strong) NSNumber *bottomRefresh;
+
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, assign) kTMBOType type;
-- (void)refetchData;
 @end
 
 @implementation TMBOUploadListViewController
@@ -58,54 +59,6 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     }
 }
 
-- (void)refetchData;
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.topRefresh beginRefreshing];
-    });
-    
-    // TODO: new upload getting code, this stuff is CRUFTY!
-    void (^completion)(NSArray *, NSError *) = ^(NSArray *results, NSError *error){
-        if (results) {
-            NSUInteger max = kFirstUploadID - 1;
-            max = ![self.items count] ?: [[[self.items objectAtIndex:0] uploadid] unsignedIntegerValue];
-                
-            // Add non-duplicate uploads
-            for (TMBOUpload *up in results) {
-                if ([[up uploadid] unsignedIntegerValue] > max) {
-                    [up addObserver:self forKeyPath:@"thumbnail" options:NSKeyValueObservingOptionNew context:kUploadThumbnailContext];
-                    [up addObserver:self forKeyPath:@"comments" options:NSKeyValueObservingOptionNew context:kUploadCommentsContext];
-                    [self.items insertObject:up atIndex:0];
-                }
-            }
-            
-            // Verify sort order
-            [self.items sortUsingComparator:kUploadComparator];
-            
-            // TODO: remove this later
-            if (![[self.items lastObject] isKindOfClass:[TMBORange class]]) {
-                Assert([[self.items lastObject] isKindOfClass:[TMBOUpload class]]);
-                [self.items addObject:[TMBORange rangeWithFirst:kFirstUploadID last:[((TMBOUpload *)[self.items lastObject]).uploadid unsignedIntegerValue]]];
-            }
-            
-            // reloadData must be sent on the main thread
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
-        } else if (error) {
-            NSLog(@"Refresh error: %@", [error localizedDescription]);
-        } else {
-            NotReached();
-        }
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.topRefresh endRefreshing];
-        });
-    };
-    
-    [[TMBODataStore sharedStore] latestUploadsWithType:self.type completion:completion];
-}
-
 #pragma mark - UITableViewController
 
 - (void)viewWillAppear:(BOOL)animated;
@@ -113,23 +66,6 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     [super viewWillAppear:animated];
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-}
-
-// HACK: this is part of the hack described above
-- (void)viewWillDisappear:(BOOL)animated;
-{
-    [super viewWillDisappear:animated];
-    // …
-}
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (!self) return nil;
-    
-    // …
-    
-    return self;
 }
 
 - (void)viewDidLoad
@@ -150,7 +86,7 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     self.items = [[NSMutableArray alloc] init];
     //[self.items addObjectsFromArray:[[TMBODataStore sharedStore] cachedUploadsWithType:self.type near:<#lastposition#>]];
 
-    [self refetchData];
+    [self refreshControlEvent:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -281,6 +217,35 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 
 #pragma mark - UITableViewDelegate
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)uitvc forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    // Only interested in LoadingListCells
+    if (![[self.items objectAtIndex:indexPath.row] isKindOfClass:[TMBORange class]]) return;
+
+    TMBORange *range = (TMBORange *)[self.items objectAtIndex:indexPath.row];
+    
+    // Only interested in the bottom-most loading cell
+    if (range.first != kFirstUploadID) return;
+    
+    // Only one request running at a time
+    @synchronized (self.bottomRefresh) {
+        if ([self.bottomRefresh boolValue]) return;
+        
+        // Fetch uploads
+        self.bottomRefresh = @(YES);
+    }
+    
+    [[TMBODataStore sharedStore] uploadsWithType:kTMBOTypeImage before:range.last completion:^(NSArray *results, NSError *error) {
+        Assert(!!results ^ !!error);
+        if (results) {
+            [self _addUploads:results];
+        } else if (error) {
+            NSLog(@"Refresh error: %@", [error localizedDescription]);
+        }
+        self.bottomRefresh = NO;
+    }];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
     TMBOUpload *upload = [self.items objectAtIndex:[indexPath row]];
@@ -311,9 +276,21 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 
 #pragma mark Target-action for UIRefreshControl
 
-- (void)refreshControlEvent:(UIRefreshControl *)something;
+- (void)refreshControlEvent:(UIRefreshControl *)refreshControl;
 {
-    [self refetchData];
+    [self.topRefresh beginRefreshing];
+    
+    [[TMBODataStore sharedStore] latestUploadsWithType:kTMBOTypeImage completion:^(NSArray *results, NSError *error) {
+        Assert(!!results ^ !!error);
+        if (results) {
+            [self _addUploads:results];
+        } else if (error) {
+            NSLog(@"Refresh error: %@", [error localizedDescription]);
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.topRefresh endRefreshing];
+        });
+    }];
 }
 
 #pragma mark KVO notifications for updating upload cells
@@ -352,6 +329,155 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     }
 }
 
-// TODO: handle lazyloading at the bottom
+#pragma mark - Private methods
+
+// Uploads array MUST BE CONTIGUOUS! Call multiple times for disparate uploads.
+- (void)_addUploads:(NSArray *)immutableUploads;
+{
+    if (![immutableUploads count]) return;
+    NSMutableArray *uploads = [immutableUploads mutableCopy];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [uploads sortUsingComparator:kUploadComparator];
+        
+        // Get the viewport scroll offset, to preserve when top/middle-loading
+        CGPoint offset = [self.tableView contentOffset];
+        
+        if (![self.items count]) {
+            // First population of table
+            for (TMBOUpload *up in uploads) {
+                // TODO: register as an observer for items as they get added? that would be much easier :(
+                [up addObserver:self forKeyPath:@"thumbnail" options:NSKeyValueObservingOptionNew context:kUploadThumbnailContext];
+                [up addObserver:self forKeyPath:@"comments" options:NSKeyValueObservingOptionNew context:kUploadCommentsContext];
+            }
+            [self.items setArray:uploads];
+            TMBORange *range = [[TMBORange alloc] initWithFirst:kFirstUploadID last:[[[self.items lastObject] uploadid] integerValue]];
+            [self.items addObject:range];
+        } else {
+            // Assumptions:
+            Assert([[self.items objectAtIndex:0] isKindOfClass:[TMBOUpload class]]); // TODO: not true if first loading failed?
+            Assert([[self.items lastObject] isKindOfClass:[TMBORange class]]);
+            
+            // Uploads newer than anything else in self.items
+            NSUInteger tableTop = [[[self.items objectAtIndex:0] uploadid] integerValue];
+            NSUInteger insertionIndex = 0;
+            
+            while ([uploads count] && [[[uploads objectAtIndex:0] uploadid] integerValue] > tableTop) {
+                // Add to top of items array
+                TMBOUpload *upload = [uploads objectAtIndex:0];
+                [uploads removeObjectAtIndex:0];
+                
+                [upload addObserver:self forKeyPath:@"thumbnail" options:NSKeyValueObservingOptionNew context:kUploadThumbnailContext];
+                [upload addObserver:self forKeyPath:@"comments" options:NSKeyValueObservingOptionNew context:kUploadCommentsContext];
+                [self.items insertObject:upload atIndex:insertionIndex++];
+                offset.y += self.tableView.rowHeight;
+            }
+            
+            if (![uploads count]) {
+                // Ran out of uploads before hitting pre-existing top of list, add a range
+                Assert([[self.items objectAtIndex:insertionIndex - 1] isKindOfClass:[TMBOUpload class]]);
+                Assert([[self.items objectAtIndex:insertionIndex] isKindOfClass:[TMBOUpload class]]);
+                NotTested();
+                
+                NSUInteger first = [[[self.items objectAtIndex:insertionIndex] uploadid] integerValue];
+                NSUInteger last = [[[self.items objectAtIndex:insertionIndex - 1] uploadid] integerValue];
+                [self.items insertObject:[TMBORange rangeWithFirst:first last:last] atIndex:insertionIndex];
+                offset.y += self.tableView.rowHeight;
+            }
+            
+            for (; insertionIndex < [self.items count] && [uploads count]; insertionIndex++) {
+                // Add new uploads to the range objects of the table
+                if (![[self.items objectAtIndex:insertionIndex] isKindOfClass:[TMBORange class]]) continue;
+                TMBORange *range = [self.items objectAtIndex:insertionIndex];
+                
+                // Remove objects outside of the range
+                while ([uploads count] && [[[uploads objectAtIndex:0] uploadid] integerValue] > range.last) {
+                    [uploads removeObjectAtIndex:0];
+                }
+                if (![uploads count]) break;
+                
+                NSUInteger newestUpload = [[[uploads objectAtIndex:0] uploadid] integerValue];
+                if (newestUpload < range.last) {
+                    // New Uploads are within range, but do not overlap on the newer side. Split the range.
+                    NotTested();
+                    // It shouldn't be possible for this to happen when loading at the bottom of the table
+                    Assert(range.first > kFirstUploadID);
+                    [self.items insertObject:[TMBORange rangeWithFirst:range.first last:newestUpload] atIndex:insertionIndex++];
+                    offset.y += self.tableView.rowHeight;
+                } else if (newestUpload == range.last) {
+                    [uploads removeObjectAtIndex:0];
+                }
+                if (![uploads count]) break;
+                
+                while ([uploads count] && [[[uploads objectAtIndex:0] uploadid] integerValue] > range.first) {
+                    TMBOUpload *upload = [uploads objectAtIndex:0];
+                    NSUInteger uploadid = [[upload uploadid] integerValue];
+                    [uploads removeObjectAtIndex:0];
+                    
+                    [upload addObserver:self forKeyPath:@"thumbnail" options:NSKeyValueObservingOptionNew context:kUploadThumbnailContext];
+                    [upload addObserver:self forKeyPath:@"comments" options:NSKeyValueObservingOptionNew context:kUploadCommentsContext];
+                    [self.items insertObject:upload atIndex:insertionIndex];
+                    // Add to offset only if not loading at the bottom
+                    if (range.first > kFirstUploadID) offset.y += self.tableView.rowHeight;
+                    
+                    // Consistency check: previous range should have been set by code above
+                    if ([[self.items objectAtIndex:insertionIndex - 1] isKindOfClass:[TMBORange class]]) {
+                        NotTested();
+                        Assert([[self.items objectAtIndex:insertionIndex - 1] last] == uploadid);
+                    }
+                    Assert([[self.items objectAtIndex:insertionIndex + 1] isKindOfClass:[TMBORange class]]);
+                    Assert([[self.items objectAtIndex:insertionIndex + 1] isEqual:range]);
+                    range.last = uploadid;
+                    insertionIndex++;
+                }
+                if (range.first == range.last) {
+                    Assert([[self.items objectAtIndex:insertionIndex] isKindOfClass:[TMBORange class]]);
+                    Assert([[self.items objectAtIndex:insertionIndex] isEqual:range]);
+                    [self.items removeObjectAtIndex:insertionIndex];
+                    // If a range is exhausted, we've either hit the beginning of time or (more likely) exhausted an interim range
+                    Assert(range.first == kFirstUploadID || [[self.items objectAtIndex:insertionIndex] isKindOfClass:[TMBOUpload class]]);
+                }
+            }
+        }
+        
+#ifdef DEBUG
+        for (int i = 1; i < [self.items count] - 1; i++) {
+            id item = [self.items objectAtIndex:i];
+            id higher = [self.items objectAtIndex:i - 1];
+            id lower = [self.items objectAtIndex:i + 1];
+            
+            if ([item isKindOfClass:[TMBOUpload class]]) {
+                if ([higher isKindOfClass:[TMBOUpload class]]) {
+                    Assert([[higher uploadid] integerValue] > [[item uploadid] integerValue]);
+                } else {
+                    Assert([higher isKindOfClass:[TMBORange class]]);
+                    Assert([higher first] == [[item uploadid] integerValue]);
+                }
+                
+                if ([lower isKindOfClass:[TMBOUpload class]]) {
+                    Assert([[lower uploadid] integerValue] < [[item uploadid] integerValue]);
+                } else {
+                    Assert([lower isKindOfClass:[TMBORange class]]);
+                    Assert([lower last] == [[item uploadid] integerValue]);
+                }
+            } else if ([item isKindOfClass:[TMBORange class]]) {
+                Assert([higher isKindOfClass:[TMBOUpload class]]);
+                Assert([lower isKindOfClass:[TMBOUpload class]]);
+                Assert([[higher uploadid] integerValue] == [item last]);
+                Assert([[lower uploadid] integerValue] == [item first]);
+            }
+        }
+#endif
+        
+        [self.tableView reloadData];
+        if (offset.y < 0) {
+            offset.y = 0;
+            [self.tableView setContentOffset:offset animated:YES];
+        } else {
+            // TODO: test this with animation
+            [self.tableView setContentOffset:offset animated:NO];
+        }
+    });
+}
 
 @end
