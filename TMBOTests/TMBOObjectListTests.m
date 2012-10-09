@@ -185,8 +185,29 @@ static NSArray *testObjects = nil;
 
 - (void)testAddToMiddleWithoutOverlap;
 {
-    // add objects 0…3, 8…11, 4…7
-    STFail(@"Not implemented");
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(8, 4)]; // 8…11
+    NSArray *addThird = [testObjects subarrayWithRange:NSMakeRange(4, 4)];  // 4…7
+    
+    // 0…3,3-4,4…7,7-8,8…11
+    NSMutableArray *equals = [[NSMutableArray alloc] initWithCapacity:[addFirst count] + 1 + [addSecond count] + 1 + [addThird count]];
+    [equals addObjectsFromArray:addFirst];
+    [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:4] objectid] last:[[testObjects objectAtIndex:3] objectid]]];
+    [equals addObjectsFromArray:addThird];
+    [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:8] objectid] last:[[testObjects objectAtIndex:7] objectid]]];
+    [equals addObjectsFromArray:addSecond];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];  // 0…3
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond]; // 0…3,3-8,8…11
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addThird];  // 0…3,3-4,4…7,7-8,8…11
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 - (void)testAddToMiddleWithLateOverlap;
