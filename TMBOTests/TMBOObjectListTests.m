@@ -40,9 +40,14 @@ static NSArray *testObjects = nil;
 
 // These test cases are IN ORDER! Fix them from top to bottom.
 
-#pragma mark All edge cases for object additions
+#pragma mark Basic tests
 
 - (void)testSingleAddition;
+{
+    STFail(@"Not implemented");
+}
+
+- (void)testOneAddition;
 {
     TMBOObjectList *ol = [[TMBOObjectList alloc] init];
     
@@ -56,6 +61,8 @@ static NSArray *testObjects = nil;
     
     STAssertEqualObjects(ol.items, equals, @"");
 }
+
+#pragma mark All edge cases for object additions
 
 - (void)testAddToTopWithOverlap;
 {
@@ -101,7 +108,7 @@ static NSArray *testObjects = nil;
     NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(4, 4)]; // 4…7
     
     // 0…3,3-4,4…7
-    NSMutableArray *equals = [[NSMutableArray alloc] initWithCapacity:[addFirst count] + 1 + [addSecond count]];
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
     [equals addObjectsFromArray:addFirst];
     [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:4] objectid] last:[[testObjects objectAtIndex:3] objectid]]];
     [equals addObjectsFromArray:addSecond];
@@ -123,7 +130,7 @@ static NSArray *testObjects = nil;
     NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(0, 4)]; // 0…3
     
     // 0…3,3-4,4…7
-    NSMutableArray *equals = [[NSMutableArray alloc] initWithCapacity:[addFirst count] + 1 + [addSecond count]];
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
     [equals addObjectsFromArray:addSecond];
     [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:4] objectid] last:[[testObjects objectAtIndex:3] objectid]]];
     [equals addObjectsFromArray:addFirst];
@@ -167,7 +174,7 @@ static NSArray *testObjects = nil;
     NSArray *addThird = [testObjects subarrayWithRange:NSMakeRange(3, 4)];  // 3…6
     
     // 0…6,6-7,7…10
-    NSMutableArray *equals = [[NSMutableArray alloc] initWithCapacity:[addFirst count] + 1 + [addSecond count] + [addThird count]];
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
     [equals addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(0, 7)]]; // 0…6
     [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:7] objectid] last:[[testObjects objectAtIndex:6] objectid]]];
     [equals addObjectsFromArray:addSecond];
@@ -192,7 +199,7 @@ static NSArray *testObjects = nil;
     NSArray *addThird = [testObjects subarrayWithRange:NSMakeRange(4, 4)];  // 4…7
     
     // 0…3,3-4,4…7,7-8,8…11
-    NSMutableArray *equals = [[NSMutableArray alloc] initWithCapacity:[addFirst count] + 1 + [addSecond count] + 1 + [addThird count]];
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
     [equals addObjectsFromArray:addFirst];
     [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:4] objectid] last:[[testObjects objectAtIndex:3] objectid]]];
     [equals addObjectsFromArray:addThird];
@@ -219,7 +226,7 @@ static NSArray *testObjects = nil;
     NSArray *addThird = [testObjects subarrayWithRange:NSMakeRange(4, 4)];  // 4…7
     
     // 0…3,3-4,4…10
-    NSMutableArray *equals = [[NSMutableArray alloc] initWithCapacity:[addFirst count] + 1 + [addSecond count] + [addThird count]];
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
     [equals addObjectsFromArray:addFirst];
     [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:4] objectid] last:[[testObjects objectAtIndex:3] objectid]]];
     [equals addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(4, 7)]]; // 4…10
@@ -239,7 +246,23 @@ static NSArray *testObjects = nil;
 
 - (void)testPreexistingMinimumAddToTopWithOverlap;
 {
-    STFail(@"Not implemented");
+    NSInteger minimumID = [[testObjects lastObject] objectid] - 1;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(0, 4)]; // 0…3
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(3, 4)];  // 3…6
+    
+    NSMutableArray *equals = [NSMutableArray arrayWithArray:[testObjects subarrayWithRange:NSMakeRange(0, 7)]];    // 0…6
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 - (void)testPreexistingMinimumAddToBottomWithOverlap;
