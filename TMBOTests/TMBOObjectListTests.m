@@ -267,7 +267,23 @@ static NSArray *testObjects = nil;
 
 - (void)testPreexistingMinimumAddToBottomWithOverlap;
 {
-    STFail(@"Not implemented");
+    NSInteger minimumID = [[testObjects lastObject] objectid] - 1;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(3, 4)]; // 3…6
+    
+    NSMutableArray *equals = [NSMutableArray arrayWithArray:[testObjects subarrayWithRange:NSMakeRange(0, 7)]];    // 0…6
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 - (void)testPreexistingMinimumAddToTopWithoutOverlap;
