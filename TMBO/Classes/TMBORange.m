@@ -36,6 +36,18 @@
     return self;
 }
 
+- (void)setFirst:(NSInteger)first;
+{
+    Assert(first < self.last);
+    _first = first;
+}
+
+- (void)setLast:(NSInteger)last;
+{
+    Assert(self.first < last);
+    _last = last;
+}
+
 - (BOOL)isEqual:(id)object;
 {
     if (![object isKindOfClass:[TMBORange class]]) return NO;
