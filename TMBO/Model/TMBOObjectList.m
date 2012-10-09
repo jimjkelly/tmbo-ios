@@ -55,144 +55,178 @@ static NSComparator kObjectComparator = ^(id a, id b) {
 
 - (void)addObjectsFromArray:(NSArray *)immutableObjects;
 {
-    if ([immutableObjects count] < 2) return;
+    if (![immutableObjects count]) return;
+
     NSMutableArray *objects = [immutableObjects mutableCopy];
     [objects sortUsingComparator:kObjectComparator];
     
-    if (![self.list count]) {
-        // First population of table
-        [self _addItemsFromArray:objects until:NSIntegerMin insertionIndex:NULL];
-    } else {
-        // Uploads newer than anything else in self.items
-        NSUInteger insertionIndex = 0;
-        NSInteger lastInserted = NSIntegerMin;
-        
-        NSInteger tableTop;
-        if ([[self.list objectAtIndex:0] isKindOfClass:[TMBORange class]]) {
-            // A TMBORange should only be at the top of the list if it is the only item in the list
-            Assert([self.list count] == 1);
-            // tableTop adding is exclusive, include the minimum value as a possible insertion
-            tableTop = ((TMBORange *)[self.list objectAtIndex:0]).first - 1;
-        } else {
-            Assert([[[self.list objectAtIndex:0] class] conformsToProtocol:@protocol(TMBOObject)]);
-            tableTop = [[self.list objectAtIndex:0] objectid];
-        }
-        
-        lastInserted = [self _addItemsFromArray:objects until:tableTop insertionIndex:&insertionIndex];
-        
-        if (insertionIndex && [[self.list objectAtIndex:insertionIndex] isKindOfClass:[TMBORange class]]) {
-            // We inserted *anything* and previously had a range leading the list (indicating a previously-empty list, other than the range)
-            Assert([[[self.list objectAtIndex:(insertionIndex - 1)] class] conformsToProtocol:@protocol(TMBOObject)]);
-            Assert(lastInserted >= ((TMBORange *)[self.list objectAtIndex:insertionIndex]).first);
-            
-            if (lastInserted == ((TMBORange *)[self.list objectAtIndex:insertionIndex]).first) {
-                // Satisfied lower end of range, remove range.
-                [self.list removeObjectAtIndex:insertionIndex];
-            } else {
-                // Update range
-                ((TMBORange *)[self.list objectAtIndex:insertionIndex]).last = lastInserted;
+    Assert([[objects objectAtIndex:0] objectid] < NSIntegerMax);
+    Assert([[objects lastObject] objectid] > NSIntegerMin);
+
+#define arrayObjectAtIndexAsObject(arr, x) ((id<TMBOObject>)[(arr) objectAtIndex:(x)])
+#define listObjectAtIndexIsObject(x) ((BOOL)([[[self.list objectAtIndex:(x)] class] conformsToProtocol:@protocol(TMBOObject)]))
+#define listObjectAtIndexIsRange(x) ((BOOL)([[self.list objectAtIndex:(x)] isKindOfClass:[TMBORange class]]))
+#define listObjectAtIndexAsObject(x) arrayObjectAtIndexAsObject(self.list, (x))
+#define listObjectAtIndexAsRange(x) ((TMBORange *)[self.list objectAtIndex:(x)])
+#define topObject() arrayObjectAtIndexAsObject(objects, 0)
+    
+    NSUInteger insertionIndex = 0;
+    NSInteger lastAdded = NSIntegerMin;
+    NSInteger startAfter = NSIntegerMax;
+    NSInteger max;
+    {   // Initial state:
+        // Add until end of known universe
+        max = NSIntegerMin;
+        if ([self.list count]) {
+            if (listObjectAtIndexIsObject(0)) {
+                // Add until reaching id of highest object
+                max = [listObjectAtIndexAsObject(0) objectid];
             }
-        } else if (![objects count]) {
-            // Ran out of uploads before hitting pre-existing top of list, add a range
-            Assert([[[self.list objectAtIndex:(insertionIndex - 1)] class] conformsToProtocol:@protocol(TMBOObject)]);
-            Assert([[[self.list objectAtIndex:insertionIndex] class] conformsToProtocol:@protocol(TMBOObject)]);
-            NotTested();
-            
-            NSUInteger first = [(id<TMBOObject>)[self.list objectAtIndex:insertionIndex] objectid];
-            NSUInteger last = [(id<TMBOObject>)[self.list objectAtIndex:(insertionIndex - 1)] objectid];
-            [self.list insertObject:[TMBORange rangeWithFirst:first last:last] atIndex:insertionIndex++];
-        }
-        
-        for (; insertionIndex < [self.list count] && [objects count]; insertionIndex++) {
-            // Add new uploads to the ranged gaps of the list
-            if (![[self.list objectAtIndex:insertionIndex] isKindOfClass:[TMBORange class]]) continue;
-            TMBORange *range = [self.items objectAtIndex:insertionIndex];
-            
-            // No objects fit inside this range.
-            if ([(id <TMBOObject>)[objects objectAtIndex:0] objectid] <= range.first) continue;
-            
-            // Remove objects above the range
-            NSUInteger lastRemoved = [self _removeItemsFromArray:objects until:(range.last + 1)];
-            if (![objects count]) break;
-            
-            // No objects were removed, no overlap with the higher side of the insertion range!
-            if (lastRemoved == NSIntegerMin) {
-                NotTested();
-                // It shouldn't be possible for this to happen when loading at the bottom of the table
-                Assert(!self.minimumID || range.first > [self.minimumID integerValue]);
-                
-                [self.list insertObject:[TMBORange rangeWithFirst:range.first last:[(id <TMBOObject>)[objects objectAtIndex:0] objectid]] atIndex:insertionIndex++];
-            }
-            
-            // Insert objects in range
-            lastRemoved = [self _addItemsFromArray:objects until:range.first insertionIndex:&insertionIndex];
-            
-            if ([objects count] && [(id <TMBOObject>)[objects objectAtIndex:0] objectid] == range.first) {
-                // Objects satisfied entireity of range, remove range.
-                [self.list removeObjectAtIndex:insertionIndex];
-            } else {
-                Assert(lastRemoved != NSIntegerMin);
-                range.last = lastRemoved;
+            if (listObjectAtIndexIsRange(0)) {
+                // Add until reaching bottom of range. Range should only be object 0 if it is the only object in existence.
+                TMBORange *range = listObjectAtIndexAsRange(0);
+                Assert(range.last == NSIntegerMax);
+                Assert([self.list count] == 1);
+                max = range.first;
             }
         }
     }
     
-#ifdef DEBUG
-    for (int i = 1; i < [self.list count] - 1; i++) {
-        id item = [self.list objectAtIndex:i];
-        id higher = [self.list objectAtIndex:i - 1];
-        id lower = [self.list objectAtIndex:i + 1];
-        
-        if ([[item class] conformsToProtocol:@protocol(TMBOObject)]) {
-            if ([[higher  class] conformsToProtocol:@protocol(TMBOObject)]) {
-                Assert([higher objectid] > [item objectid]);
-            } else {
-                Assert([higher isKindOfClass:[TMBORange class]]);
-                Assert(((TMBORange *)higher).first == [item objectid]);
-            }
-            
-            if ([[lower class] conformsToProtocol:@protocol(TMBOObject)]) {
-                Assert([lower objectid] < [item objectid]);
-            } else {
-                Assert([lower isKindOfClass:[TMBORange class]]);
-                Assert(((TMBORange *)lower).last == [item objectid]);
-            }
-        } else if ([item isKindOfClass:[TMBORange class]]) {
-            Assert([[higher class] conformsToProtocol:@protocol(TMBOObject)]);
-            Assert([[lower class] conformsToProtocol:@protocol(TMBOObject)]);
-            Assert([higher objectid] == ((TMBORange *)item).last);
-            Assert([lower objectid] == ((TMBORange *)item).first);
+    do {
+        // Set appropriate floor for adding objects
+        if (self.minimumID && max == NSIntegerMin) {
+            max = [self.minimumID integerValue] - 1;
         }
-    }
-#endif
+        
+        lastAdded = [self _addItemsFromArray:objects until:max insertionIndex:&insertionIndex];
+        
+        // Forget about any objects that didn't get added due to being below the floor
+        if (self.minimumID && [objects count] && [topObject() objectid] < [self.minimumID integerValue]) {
+            [objects removeAllObjects];
+        }
+        
+        // Safe point: inserting into end of list
+        if ([self.list count] <= insertionIndex) {
+            Assert(insertionIndex == [self.list count]);
+            Assert(![objects count]);
+            return;
+        }
+        
+        if (insertionIndex) {
+            if (listObjectAtIndexIsRange(insertionIndex)) {
+                // Inserting ahead of a range, update or remove range as appropriate
+                if ([objects count] && [topObject() objectid] == max) {
+                    Assert(listObjectAtIndexAsRange(insertionIndex).first == max);
+                    [self.list removeObjectAtIndex:insertionIndex];
+                } else {
+                    // If the range was not completed, there can not be any more objects left
+                    Assert(![objects count]);
+                    Assert(insertionIndex);
+                    
+                    if (listObjectAtIndexAsRange(insertionIndex).first == [listObjectAtIndexAsObject(insertionIndex - 1) objectid]) {
+                        // Allowed to add first item of range inclusively iff the range is at the end of the list
+                        Assert(insertionIndex == [self.list count] - 1);
+                        [self.list removeObjectAtIndex:insertionIndex];
+                    } else {
+                        listObjectAtIndexAsRange(insertionIndex).last = [listObjectAtIndexAsObject(insertionIndex - 1) objectid];
+                    }
+                }
+            } else if (listObjectAtIndexIsObject(insertionIndex) && ![objects count]) {
+                // No overlap, ran out of objects to insert, insert a new range
+                TMBORange *range = [TMBORange rangeWithFirst:[listObjectAtIndexAsObject(insertionIndex) objectid] last:lastAdded];
+                [self.list insertObject:range atIndex:insertionIndex++];
+            }
+        }
+        
+        // Safe point: list is stable and no more objects to add
+        if (![objects count]) return;
+        
+        max = NSIntegerMin;
+        startAfter = NSIntegerMin;
+        if (listObjectAtIndexIsObject([self.list count] - 1)) {
+            startAfter = [listObjectAtIndexAsObject([self.list count] - 1) objectid];
+        }
+        for (; insertionIndex < [self.list count]; insertionIndex++) {
+            // Add into existing ranges
+            if (listObjectAtIndexIsObject(insertionIndex)) continue;
+            Assert(listObjectAtIndexIsRange(insertionIndex));
+            
+            // Nothing to contribute for this range
+            if ([topObject() objectid] <= listObjectAtIndexAsRange(insertionIndex).first) continue;
+            
+            max = listObjectAtIndexAsRange(insertionIndex).first;
+            startAfter = listObjectAtIndexAsRange(insertionIndex).last;
+            
+            if (insertionIndex == ([self.list count] - 1)) {
+                // This range is the last item in the list, allow inclusive addition
+                max--;
+            }
+            break;
+        }
+        // Either we've found a range, or we're inserting at the end of the list (or both)
+        Assert(insertionIndex == [self.list count] || listObjectAtIndexIsRange(insertionIndex));
+        // Something must have set startAfter, either the trailing range or the last object of the list.
+        Assert(startAfter > NSIntegerMin);
+        
+        // Remove duplicates. Note `until` is exclusive, so decrement to capture the last valid object id
+        {
+            NSInteger lastPopped = [self _removeItemsFromArray:objects until:(startAfter - 1)];
+            
+            // Safe point: list is stable and no more objects to add
+            if (![objects count]) return;
+            
+            if (lastPopped < startAfter) {
+                // No overlap at top of range, insert a new range
+                TMBORange *range = [TMBORange rangeWithFirst:[topObject() objectid] last:startAfter];
+                [self.list insertObject:range atIndex:insertionIndex++];
+            }
+        }
+        
+    } while([objects count]);
+    
+#undef listObjectAtIndexIsObject
+#undef listObjectAtIndexIsRange
+#undef listObjectAtIndexAsObject
+#undef listObjectAtIndexAsRange
+#undef arrayObjectAtIndexAsObject
 }
 
 #pragma mark - Synthetic properties
-@dynamic minimumID;
+@synthesize minimumID = _minimumID;
 @dynamic items;
 
 - (NSNumber *)minimumID;
 {
-    if ([self.list count] && [[self.list lastObject] isKindOfClass:[TMBORange class]]) {
-        return @(((TMBORange *)[self.list lastObject]).first);
-    }
-    return nil;
+    return _minimumID;
 }
 
 - (void)setMinimumID:(NSNumber *)minimumID;
 {
     // XXX: for now, you can only change the minimum ID once
-    Assert(!self.minimumID || [minimumID isEqualToNumber:self.minimumID]);
+    if (_minimumID && ![minimumID isEqualToNumber:_minimumID]) {
+        [NSException raise:@"TMBOObjectListInvalidMinimumIDException" format:@"Minimum ID %@ is different from already-existing minimum: %@", minimumID, _minimumID];
+    }
     
-    TMBORange *range;
+    if (_minimumID) return;
+    
+    TMBORange *range = nil;
     if ([self.list count]) {
         Assert([[[self.list lastObject] class] conformsToProtocol:@protocol(TMBOObject)]);
-        range = [TMBORange rangeWithFirst:[minimumID integerValue] last:[(id<TMBOObject>)[self.list lastObject] objectid]];
+        
+        if ([(id<TMBOObject>)[self.list lastObject] objectid] < [minimumID integerValue]) {
+            [NSException raise:@"TMBOObjectListInvalidMinimumIDException" format:@"Minimum ID %@ is larger than objects already in list: %@", minimumID, self.list];
+        }
+        
+        if ([(id<TMBOObject>)[self.list lastObject] objectid] > [minimumID integerValue]) {
+            range = [TMBORange rangeWithFirst:[minimumID integerValue] last:[(id<TMBOObject>)[self.list lastObject] objectid]];
+        }
     } else {
         range = [TMBORange rangeWithFirst:[minimumID integerValue] last:NSIntegerMax];
     }
 
-    [self.list insertObject:range atIndex:[self.list count]];
+    if (range) [self.list insertObject:range atIndex:[self.list count]];
+    
+    _minimumID = minimumID;
 }
 
 - (NSArray *)items;
@@ -209,7 +243,7 @@ static NSComparator kObjectComparator = ^(id a, id b) {
     
     if (![objects count]) return last;
     
-    while ([objects count] && [(id<TMBOObject>)[objects objectAtIndex:0] objectid] < objectid) {
+    while ([objects count] && [(id<TMBOObject>)[objects objectAtIndex:0] objectid] > objectid) {
         last = [(id<TMBOObject>)[objects objectAtIndex:0] objectid];
         [objects removeObjectAtIndex:0];
     }

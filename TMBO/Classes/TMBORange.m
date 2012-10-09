@@ -25,6 +25,8 @@
 
 - (id)initWithFirst:(NSInteger)first last:(NSInteger)last;
 {
+    Assert(first < last);
+
     self = [super init];
     if (!self) return nil;
     
@@ -32,6 +34,31 @@
     _last = last;
     
     return self;
+}
+
+- (void)setFirst:(NSInteger)first;
+{
+    Assert(first < self.last);
+    _first = first;
+}
+
+- (void)setLast:(NSInteger)last;
+{
+    Assert(self.first < last);
+    _last = last;
+}
+
+- (BOOL)isEqual:(id)object;
+{
+    if (![object isKindOfClass:[TMBORange class]]) return NO;
+    
+    TMBORange *other = (TMBORange *)object;
+    return other.last == self.last && other.first == self.first;
+}
+
+- (NSString *)description;
+{
+    return [NSString stringWithFormat:@"range:(%d, %d)", self.first, self.last];
 }
 
 @end
