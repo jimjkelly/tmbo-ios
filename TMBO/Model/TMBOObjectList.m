@@ -59,8 +59,8 @@ static NSComparator kObjectComparator = ^(id a, id b) {
     NSMutableArray *objects = [immutableObjects mutableCopy];
     [objects sortUsingComparator:kObjectComparator];
     
-    // TODO: Assert first object objectid < NSIntegerMax
-    // TODO: Assert last object objectid > NSIntegerMin
+    Assert([[objects objectAtIndex:0] objectid] < NSIntegerMax);
+    Assert([[objects lastObject] objectid] > NSIntegerMin);
 
 #define arrayObjectAtIndexAsObject(arr, x) ((id<TMBOObject>)[(arr) objectAtIndex:(x)])
 #define listObjectAtIndexIsObject(x) ((BOOL)([[[self.list objectAtIndex:(x)] class] conformsToProtocol:@protocol(TMBOObject)]))
