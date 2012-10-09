@@ -485,9 +485,17 @@ static NSArray *testObjects = nil;
 - (void)testBadRangeDay;
 {
     TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    // add objects 0…1, 2…3, 4…5, 6…7, …, and then coalesce with 1…2, 3…6, 7…8, 9…12, …
-    // Objects only
-    STFail(@"Not implemented");
+    
+    for (NSUInteger index = 0; index < [testObjects count]; index += 2) {
+        [ol addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(index, 2)]];
+        STAssertTrue([self sanityCheck:[ol items]], @"");
+    }
+    for (NSUInteger index = 1; index < [testObjects count] - 1; index += 2) {
+        [ol addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(index, 2)]];
+        STAssertTrue([self sanityCheck:[ol items]], @"");
+    }
+    
+    STAssertEqualObjects(ol.items, testObjects, @"");
 }
 
 #pragma mark Non-test methods
