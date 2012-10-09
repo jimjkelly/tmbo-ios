@@ -92,7 +92,17 @@ static NSComparator kObjectComparator = ^(id a, id b) {
     }
     
     do {
+        // Set appropriate floor for adding objects
+        if (self.minimumID && max == NSIntegerMin) {
+            max = [self.minimumID integerValue] - 1;
+        }
+        
         lastAdded = [self _addItemsFromArray:objects until:max insertionIndex:&insertionIndex];
+        
+        // Forget about any objects that didn't get added due to being below the floor
+        if (self.minimumID && [objects count] && [topObject() objectid] < [self.minimumID integerValue]) {
+            [objects removeAllObjects];
+        }
         
         // Safe point: inserting into end of list
         if ([self.list count] <= insertionIndex) {
@@ -101,28 +111,30 @@ static NSComparator kObjectComparator = ^(id a, id b) {
             return;
         }
         
-        if (listObjectAtIndexIsRange(insertionIndex)) {
-            // Inserting ahead of a range, update or remove range as appropriate
-            if ([objects count] && [topObject() objectid] == max) {
-                Assert(listObjectAtIndexAsRange(insertionIndex).first == max);
-                [self.list removeObjectAtIndex:insertionIndex];
-            } else {
-                // If the range was not completed, there can not be any more objects left
-                Assert(![objects count]);
-                Assert(insertionIndex);
-                
-                if (listObjectAtIndexAsRange(insertionIndex).first == [listObjectAtIndexAsObject(insertionIndex - 1) objectid]) {
-                    // Allowed to add first item of range inclusively iff the range is at the end of the list
-                    Assert(insertionIndex == [self.list count] - 1);
+        if (insertionIndex) {
+            if (listObjectAtIndexIsRange(insertionIndex)) {
+                // Inserting ahead of a range, update or remove range as appropriate
+                if ([objects count] && [topObject() objectid] == max) {
+                    Assert(listObjectAtIndexAsRange(insertionIndex).first == max);
                     [self.list removeObjectAtIndex:insertionIndex];
                 } else {
-                    listObjectAtIndexAsRange(insertionIndex).last = [listObjectAtIndexAsObject(insertionIndex - 1) objectid];
+                    // If the range was not completed, there can not be any more objects left
+                    Assert(![objects count]);
+                    Assert(insertionIndex);
+                    
+                    if (listObjectAtIndexAsRange(insertionIndex).first == [listObjectAtIndexAsObject(insertionIndex - 1) objectid]) {
+                        // Allowed to add first item of range inclusively iff the range is at the end of the list
+                        Assert(insertionIndex == [self.list count] - 1);
+                        [self.list removeObjectAtIndex:insertionIndex];
+                    } else {
+                        listObjectAtIndexAsRange(insertionIndex).last = [listObjectAtIndexAsObject(insertionIndex - 1) objectid];
+                    }
                 }
+            } else if (listObjectAtIndexIsObject(insertionIndex) && ![objects count]) {
+                // No overlap, ran out of objects to insert, insert a new range
+                TMBORange *range = [TMBORange rangeWithFirst:[listObjectAtIndexAsObject(insertionIndex) objectid] last:lastAdded];
+                [self.list insertObject:range atIndex:insertionIndex++];
             }
-        } else if (listObjectAtIndexIsObject(insertionIndex) && ![objects count]) {
-            // No overlap, ran out of objects to insert, insert a new range
-            TMBORange *range = [TMBORange rangeWithFirst:[listObjectAtIndexAsObject(insertionIndex) objectid] last:lastAdded];
-            [self.list insertObject:range atIndex:insertionIndex++];
         }
         
         // Safe point: list is stable and no more objects to add

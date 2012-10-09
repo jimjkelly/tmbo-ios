@@ -498,6 +498,67 @@ static NSArray *testObjects = nil;
     STAssertEqualObjects(ol.items, testObjects, @"");
 }
 
+- (void)testAddBelowMinimum;
+{
+    NSInteger minimumObject = 7;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@([[testObjects objectAtIndex:minimumObject] objectid])];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(3, [testObjects count] - 3)]; // 3…end
+    
+    // 0…7
+    NSArray *equals = [testObjects subarrayWithRange:NSMakeRange(0, minimumObject + 1)];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
+}
+
+- (void)testAddToMinimumThenBelow;
+{
+    NSInteger minimumObject = 7;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@([[testObjects objectAtIndex:minimumObject] objectid])];
+    
+    NSUInteger breakpoint = 3;
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, breakpoint + 1)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(breakpoint, minimumObject - (breakpoint - 1))]; // 3…7
+    NSArray *addThird = [testObjects subarrayWithRange:NSMakeRange(breakpoint, [testObjects count] - breakpoint)];
+    NSArray *addFourth = [testObjects subarrayWithRange:NSMakeRange(minimumObject + 1, [testObjects count] - (minimumObject + 1))];
+    
+    // 0…7
+    NSArray *equals = [testObjects subarrayWithRange:NSMakeRange(0, minimumObject + 1)];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    // Add a set of invalid objects
+    NSArray *firstState = [ol items];
+    [ol addObjectsFromArray:addFourth];
+    STAssertEqualObjects([ol items], firstState, @"");
+    
+    // Add bottom-overlapping including minimum
+    [ol addObjectsFromArray:addSecond];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, equals, @"");
+
+    // Add range overlapping minimum
+    [ol addObjectsFromArray:addThird];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, equals, @"");
+
+    // Add range below minimum
+    [ol addObjectsFromArray:addFourth];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, equals, @"");
+}
+
 #pragma mark Non-test methods
 
 + (void)initialize;
