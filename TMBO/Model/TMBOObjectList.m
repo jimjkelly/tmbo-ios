@@ -203,7 +203,9 @@ static NSComparator kObjectComparator = ^(id a, id b) {
 - (void)setMinimumID:(NSNumber *)minimumID;
 {
     // XXX: for now, you can only change the minimum ID once
-    Assert(!_minimumID || [minimumID isEqualToNumber:_minimumID]);
+    if (_minimumID && ![minimumID isEqualToNumber:_minimumID]) {
+        [NSException raise:@"TMBOObjectListInvalidMinimumIDException" format:@"Minimum ID %@ is different from already-existing minimum: %@", minimumID, _minimumID];
+    }
     
     if (_minimumID) return;
     

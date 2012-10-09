@@ -605,6 +605,111 @@ static NSArray *testObjects = nil;
     STAssertEqualObjects(ol.items, equals, @"");
 }
 
+- (void)testSettingValidMinimumLater;
+{
+    NSInteger minimumID = [[testObjects lastObject] objectid];
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(3, [testObjects count] - 3)]; // 3…end
+    NSMutableArray *equals;
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+
+    equals = [[NSMutableArray alloc] init];
+    [equals addObjectsFromArray:addFirst];
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    [ol setMinimumID:@(minimumID)];
+    STAssertEqualObjects([ol items], equals, @"");
+
+    [ol addObjectsFromArray:addSecond];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, testObjects, @"");
+}
+
+- (void)testSettingBorderlineMinimumLater;
+{
+    NSInteger minimumID = [[testObjects lastObject] objectid];
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    
+    NSArray *addFirst = testObjects;
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, testObjects, @"");
+
+    [ol setMinimumID:@(minimumID)];
+    STAssertEqualObjects(ol.items, testObjects, @"");
+}
+
+- (void)testSetInvalidMinimumMulti;
+{
+    NSInteger minimumID = [[testObjects lastObject] objectid];
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    
+    NSArray *addFirst = testObjects;
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, testObjects, @"");
+    
+    [ol setMinimumID:@(minimumID)];
+    STAssertEqualObjects(ol.items, testObjects, @"");
+    
+    // Otherwise valid minimum
+    STAssertThrows([ol setMinimumID:@(1)], @"");
+
+    // Outright invalid minimum
+    STAssertThrows([ol setMinimumID:@([[testObjects objectAtIndex:0] objectid])], @"");
+}
+
+- (void)testSetInvalidMinimum;
+{
+    NSInteger minimumID = [[testObjects objectAtIndex:0] objectid];
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    
+    NSArray *addFirst = testObjects;
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, testObjects, @"");
+    
+    STAssertThrows([ol setMinimumID:@(minimumID)], @"");
+}
+
+- (void)testSetMinimumMulti;
+{
+    NSInteger minimumID = [[testObjects lastObject] objectid];
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(3, [testObjects count] - 3)]; // 3…end
+
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
+    [equals addObjectsFromArray:addFirst];
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects([ol items], equals, @"");
+    
+    [ol setMinimumID:@(minimumID)];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects([ol items], equals, @"");
+    
+    [ol addObjectsFromArray:addSecond];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, testObjects, @"");
+
+    [ol setMinimumID:@(minimumID)];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, testObjects, @"");
+}
+
 #pragma mark Non-test methods
 
 + (void)initialize;
