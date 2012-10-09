@@ -212,8 +212,27 @@ static NSArray *testObjects = nil;
 
 - (void)testAddToMiddleWithLateOverlap;
 {
-    // add objects 0…3, 7…10, 4…7
-    STFail(@"Not implemented");
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(7, 4)]; // 7…10
+    NSArray *addThird = [testObjects subarrayWithRange:NSMakeRange(4, 4)];  // 4…7
+    
+    // 0…3,3-4,4…10
+    NSMutableArray *equals = [[NSMutableArray alloc] initWithCapacity:[addFirst count] + 1 + [addSecond count] + [addThird count]];
+    [equals addObjectsFromArray:addFirst];
+    [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:4] objectid] last:[[testObjects objectAtIndex:3] objectid]]];
+    [equals addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(4, 7)]]; // 4…10
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];  // 0…3
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond]; // 0…3,3-7,7…10
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addThird];  // 0…3,3-4,4…10
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 #pragma mark Same tests again, but with a minimum range set
