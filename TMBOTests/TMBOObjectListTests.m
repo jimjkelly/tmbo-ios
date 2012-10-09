@@ -524,6 +524,26 @@ static NSArray *testObjects = nil;
     STAssertEqualObjects(ol.items, testObjects, @"");
 }
 
+- (void)testBadSingleRangeDay;
+{
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    
+    for (NSUInteger index = 0; index < [testObjects count]; index++) {
+        [ol addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(index, 1)]];
+        STAssertTrue([self sanityCheck:[ol items]], @"");
+    }
+    for (NSUInteger index = 0; index < [testObjects count]; index += 2) {
+        [ol addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(index, 2)]];
+        STAssertTrue([self sanityCheck:[ol items]], @"");
+    }
+    for (NSUInteger index = 1; index < [testObjects count] - 1; index += 2) {
+        [ol addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(index, 2)]];
+        STAssertTrue([self sanityCheck:[ol items]], @"");
+    }
+    
+    STAssertEqualObjects(ol.items, testObjects, @"");
+}
+
 - (void)testAddBelowMinimum;
 {
     NSInteger minimumObject = 7;
