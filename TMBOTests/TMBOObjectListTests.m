@@ -185,19 +185,13 @@ static NSArray *testObjects = nil;
 
 - (void)testAddToMiddleWithoutOverlap;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    
     // add objects 0…3, 8…11, 4…7
-    // Should split range
     STFail(@"Not implemented");
 }
 
 - (void)testAddToMiddleWithLateOverlap;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    
     // add objects 0…3, 7…10, 4…7
-    // Should split range, then remove lower range
     STFail(@"Not implemented");
 }
 
@@ -205,112 +199,46 @@ static NSArray *testObjects = nil;
 
 - (void)testPreexistingMinimumAddToTopWithOverlap;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    ol.minimumID = @(1);
-    
-    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(0, 3)];
-    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(2, 3)];
-    // equals needs trailing range
-//    NSArray *equals = [testObjects subarrayWithRange:NSMakeRange(0, 5)];
-    
-    [ol addObjectsFromArray:addFirst];
-    STAssertTrue([self sanityCheck:[ol items]], @"");
-    [ol addObjectsFromArray:addSecond];
-    STAssertTrue([self sanityCheck:[ol items]], @"");
-    
-//    STAssertEqualObjects(ol.items, equals, @"");
-
-    // Objects only, followed by range
     STFail(@"Not implemented");
 }
 
 - (void)testPreexistingMinimumAddToBottomWithOverlap;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    ol.minimumID = @(1);
-    
-    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 3)];
-    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(2, 3)];
-    // equals needs trailing range
-//    NSArray *equals = [testObjects subarrayWithRange:NSMakeRange(0, 5)];
-    
-    [ol addObjectsFromArray:addFirst];
-    STAssertTrue([self sanityCheck:[ol items]], @"");
-    [ol addObjectsFromArray:addSecond];
-    STAssertTrue([self sanityCheck:[ol items]], @"");
-    
-//    STAssertEqualObjects(ol.items, equals, @"");
-
-    // Objects only, followed by range
     STFail(@"Not implemented");
 }
 
 - (void)testPreexistingMinimumAddToTopWithoutOverlap;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    ol.minimumID = @(1);
-    
-    // add objects 4…7, 0…3
-    // Should add range
     STFail(@"Not implemented");
 }
 
 - (void)testPreexistingMinimumAddToBottomWithoutOverlap;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    ol.minimumID = @(1);
-    
-    // add objects 0…3, 4…7
-    // Should add range
     STFail(@"Not implemented");
 }
 
 - (void)testPreexistingMinimumAddToMiddleWithOverlap;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    ol.minimumID = @(1);
-    
-    // add objects 0…3, 6…9, 3…6
-    // Objects only, followed by range
     STFail(@"Not implemented");
 }
 
 - (void)testPreexistingMinimumAddToMiddleWithEarlyOverlap;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    ol.minimumID = @(1);
-    
-    // add objects 0…3, 7…10, 3…6
-    // Should update range
     STFail(@"Not implemented");
 }
 
 - (void)testPreexistingMinimumAddToMiddleWithoutOverlap;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    ol.minimumID = @(1);
-    
-    // add objects 0…3, 8…11, 4…7
-    // Should split range
     STFail(@"Not implemented");
 }
 
 - (void)testPreexistingMinimumAddToMiddleWithLateOverlap;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    ol.minimumID = @(1);
-    
-    // add objects 0…3, 7…10, 4…7
-    // Should split range, then remove lower range
     STFail(@"Not implemented");
 }
 
 - (void)testPreexistingMinimumAddObjectsIncludingMinimum;
 {
-    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
-    ol.minimumID = @(2);
-    
-    // Objects only
     STFail(@"Not implemented");
 }
 
