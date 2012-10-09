@@ -146,4 +146,12 @@ NSComparator kUploadComparator = ^(id a, id b) {
     });
 }
 
+#pragma mark - TMBOObject
+
+- (NSInteger)objectid;
+{
+    Assert(self.uploadid);
+    return [self.uploadid integerValue];
+}
+
 @end

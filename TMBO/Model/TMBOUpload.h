@@ -15,6 +15,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import "TMBOObjectList.h"
+
 extern NSComparator kUploadComparator;
 
 typedef enum : NSUInteger {
@@ -25,7 +27,7 @@ typedef enum : NSUInteger {
     kTMBOTypeAny    = kTMBOTypeImage | kTMBOTypeTopic | kTMBOTypeAudio | kTMBOTypeAvatar
 } kTMBOType;
 
-@interface TMBOUpload : NSManagedObject
+@interface TMBOUpload : NSManagedObject <TMBOObject>
 
 @property (nonatomic, retain) NSNumber * badVotes;
 @property (nonatomic, retain) NSNumber * comments;
