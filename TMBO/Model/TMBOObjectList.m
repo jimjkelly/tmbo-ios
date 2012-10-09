@@ -109,7 +109,8 @@ static NSComparator kObjectComparator = ^(id a, id b) {
             } else {
                 // If the range was not completed, there can not be any more objects left
                 Assert(![objects count]);
-                listObjectAtIndexAsRange(insertionIndex).last = max;
+                Assert(insertionIndex);
+                listObjectAtIndexAsRange(insertionIndex).last = [listObjectAtIndexAsObject(insertionIndex - 1) objectid];
             }
         } else if (listObjectAtIndexIsObject(insertionIndex) && ![objects count]) {
             // No overlap, ran out of objects to insert, insert a new range
