@@ -44,7 +44,16 @@ static NSArray *testObjects = nil;
 
 - (void)testSingleAddition;
 {
-    STFail(@"Not implemented");
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    
+    NSArray *add = [testObjects subarrayWithRange:NSMakeRange(0, 1)];
+    
+    NSArray *equals = add;
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:add];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 - (void)testOneAddition;
@@ -243,6 +252,23 @@ static NSArray *testObjects = nil;
 }
 
 #pragma mark Same tests again, but with a minimum range set
+
+- (void)testPreexistingMinimumSingleAddition;
+{
+    NSInteger minimumID = [[testObjects lastObject] objectid] - 1;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *add = [testObjects subarrayWithRange:NSMakeRange(0, 1)];
+    
+    NSMutableArray *equals = [NSMutableArray arrayWithArray:[testObjects subarrayWithRange:NSMakeRange(0, 1)]];    // 0,0-min
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:add];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    STAssertEqualObjects(ol.items, equals, @"");
+}
 
 - (void)testPreexistingMinimumAddToTopWithOverlap;
 {
@@ -579,7 +605,7 @@ static NSArray *testObjects = nil;
 
 - (BOOL)sanityCheck:(NSArray *)objects;
 {
-    for (int i = 1; i < [objects count] - 1; i++) {
+    for (int i = 1; i < (int)[objects count] - 1; i++) {
         id item = [objects objectAtIndex:i];
         id higher = [objects objectAtIndex:i - 1];
         id lower = [objects objectAtIndex:i + 1];

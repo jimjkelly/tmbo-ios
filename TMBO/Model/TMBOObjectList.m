@@ -55,7 +55,8 @@ static NSComparator kObjectComparator = ^(id a, id b) {
 
 - (void)addObjectsFromArray:(NSArray *)immutableObjects;
 {
-    if ([immutableObjects count] < 2) return;
+    if (![immutableObjects count]) return;
+
     NSMutableArray *objects = [immutableObjects mutableCopy];
     [objects sortUsingComparator:kObjectComparator];
     
