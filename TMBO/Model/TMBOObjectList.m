@@ -110,7 +110,14 @@ static NSComparator kObjectComparator = ^(id a, id b) {
                 // If the range was not completed, there can not be any more objects left
                 Assert(![objects count]);
                 Assert(insertionIndex);
-                listObjectAtIndexAsRange(insertionIndex).last = [listObjectAtIndexAsObject(insertionIndex - 1) objectid];
+                
+                if (listObjectAtIndexAsRange(insertionIndex).first == [listObjectAtIndexAsObject(insertionIndex - 1) objectid]) {
+                    // Allowed to add first item of range inclusively iff the range is at the end of the list
+                    Assert(insertionIndex == [self.list count] - 1);
+                    [self.list removeObjectAtIndex:insertionIndex];
+                } else {
+                    listObjectAtIndexAsRange(insertionIndex).last = [listObjectAtIndexAsObject(insertionIndex - 1) objectid];
+                }
             }
         } else if (listObjectAtIndexIsObject(insertionIndex) && ![objects count]) {
             // No overlap, ran out of objects to insert, insert a new range
@@ -126,7 +133,7 @@ static NSComparator kObjectComparator = ^(id a, id b) {
         if (listObjectAtIndexIsObject([self.list count] - 1)) {
             startAfter = [listObjectAtIndexAsObject([self.list count] - 1) objectid];
         }
-        while (++insertionIndex < [self.list count]) {
+        for (; insertionIndex < [self.list count]; insertionIndex++) {
             // Add into existing ranges
             if (listObjectAtIndexIsObject(insertionIndex)) continue;
             Assert(listObjectAtIndexIsRange(insertionIndex));
@@ -136,6 +143,11 @@ static NSComparator kObjectComparator = ^(id a, id b) {
             
             max = listObjectAtIndexAsRange(insertionIndex).first;
             startAfter = listObjectAtIndexAsRange(insertionIndex).last;
+            
+            if (insertionIndex == ([self.list count] - 1)) {
+                // This range is the last item in the list, allow inclusive addition
+                max--;
+            }
             break;
         }
         // Either we've found a range, or we're inserting at the end of the list (or both)

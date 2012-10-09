@@ -253,7 +253,7 @@ static NSArray *testObjects = nil;
     NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(0, 4)]; // 0…3
     NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(3, 4)];  // 3…6
     
-    NSMutableArray *equals = [NSMutableArray arrayWithArray:[testObjects subarrayWithRange:NSMakeRange(0, 7)]];    // 0…6
+    NSMutableArray *equals = [NSMutableArray arrayWithArray:[testObjects subarrayWithRange:NSMakeRange(0, 7)]];    // 0…6,6-min
     [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
     STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
     
@@ -274,7 +274,7 @@ static NSArray *testObjects = nil;
     NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
     NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(3, 4)]; // 3…6
     
-    NSMutableArray *equals = [NSMutableArray arrayWithArray:[testObjects subarrayWithRange:NSMakeRange(0, 7)]];    // 0…6
+    NSMutableArray *equals = [NSMutableArray arrayWithArray:[testObjects subarrayWithRange:NSMakeRange(0, 7)]];    // 0…6,6-min
     [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
     STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
     
@@ -288,37 +288,180 @@ static NSArray *testObjects = nil;
 
 - (void)testPreexistingMinimumAddToTopWithoutOverlap;
 {
-    STFail(@"Not implemented");
+    NSInteger minimumID = [[testObjects lastObject] objectid] - 1;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(4, 4)]; // 4…7
+    
+    // 0…3,3-4,4…7,7-min
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
+    [equals addObjectsFromArray:addFirst];
+    [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:4] objectid] last:[[testObjects objectAtIndex:3] objectid]]];
+    [equals addObjectsFromArray:addSecond];
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 - (void)testPreexistingMinimumAddToBottomWithoutOverlap;
 {
-    STFail(@"Not implemented");
+    NSInteger minimumID = [[testObjects lastObject] objectid] - 1;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(4, 4)];  // 4…7
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(0, 4)]; // 0…3
+    
+    // 0…3,3-4,4…7,7-min
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
+    [equals addObjectsFromArray:addSecond];
+    [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:4] objectid] last:[[testObjects objectAtIndex:3] objectid]]];
+    [equals addObjectsFromArray:addFirst];
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];  // 4…7
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond]; // 0…3,3-4,4…7
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 - (void)testPreexistingMinimumAddToMiddleWithOverlap;
 {
-    STFail(@"Not implemented");
+    NSInteger minimumID = [[testObjects lastObject] objectid] - 1;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(6, 4)]; // 6…9
+    NSArray *addThird = [testObjects subarrayWithRange:NSMakeRange(3, 4)];  // 3…6
+    
+    // 0…9,9-min
+    NSMutableArray *equals = [[testObjects subarrayWithRange:NSMakeRange(0, 10)] mutableCopy];
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];  // 0…3
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond]; // 0…3,3-6,6…9
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addThird];  // 0…9
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 - (void)testPreexistingMinimumAddToMiddleWithEarlyOverlap;
 {
-    STFail(@"Not implemented");
+    NSInteger minimumID = [[testObjects lastObject] objectid] - 1;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(7, 4)]; // 7…10
+    NSArray *addThird = [testObjects subarrayWithRange:NSMakeRange(3, 4)];  // 3…6
+    
+    // 0…6,6-7,7…10,10-min
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
+    [equals addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(0, 7)]]; // 0…6
+    [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:7] objectid] last:[[testObjects objectAtIndex:6] objectid]]];
+    [equals addObjectsFromArray:addSecond];
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];  // 0…3
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond]; // 0…3,3-7,7…10
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addThird];  // 0…6,6-7,7…10
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 - (void)testPreexistingMinimumAddToMiddleWithoutOverlap;
 {
-    STFail(@"Not implemented");
+    NSInteger minimumID = [[testObjects lastObject] objectid] - 1;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(8, 4)]; // 8…11
+    NSArray *addThird = [testObjects subarrayWithRange:NSMakeRange(4, 4)];  // 4…7
+    
+    // 0…3,3-4,4…7,7-8,8…11,11-min
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
+    [equals addObjectsFromArray:addFirst];
+    [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:4] objectid] last:[[testObjects objectAtIndex:3] objectid]]];
+    [equals addObjectsFromArray:addThird];
+    [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:8] objectid] last:[[testObjects objectAtIndex:7] objectid]]];
+    [equals addObjectsFromArray:addSecond];
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];  // 0…3
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond]; // 0…3,3-8,8…11
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addThird];  // 0…3,3-4,4…7,7-8,8…11
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 - (void)testPreexistingMinimumAddToMiddleWithLateOverlap;
 {
-    STFail(@"Not implemented");
+    NSInteger minimumID = [[testObjects lastObject] objectid] - 1;
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(7, 4)]; // 7…10
+    NSArray *addThird = [testObjects subarrayWithRange:NSMakeRange(4, 4)];  // 4…7
+    
+    // 0…3,3-4,4…10,10-min
+    NSMutableArray *equals = [[NSMutableArray alloc] init];
+    [equals addObjectsFromArray:addFirst];
+    [equals addObject:[TMBORange rangeWithFirst:[[testObjects objectAtIndex:4] objectid] last:[[testObjects objectAtIndex:3] objectid]]];
+    [equals addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(4, 7)]]; // 4…10
+    [equals addObject:[TMBORange rangeWithFirst:minimumID last:[[equals lastObject] objectid]]];
+    STAssertTrue([self sanityCheck:equals], @"BAD TEST: Equals doesn't make sense!");
+    
+    [ol addObjectsFromArray:addFirst];  // 0…3
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond]; // 0…3,3-7,7…10
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addThird];  // 0…3,3-4,4…10
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, equals, @"");
 }
 
 - (void)testPreexistingMinimumAddObjectsIncludingMinimum;
 {
-    STFail(@"Not implemented");
+    NSInteger minimumID = [[testObjects lastObject] objectid];
+    TMBOObjectList *ol = [[TMBOObjectList alloc] init];
+    [ol setMinimumID:@(minimumID)];
+    
+    NSArray *addFirst = [testObjects subarrayWithRange:NSMakeRange(0, 4)];  // 0…3
+    NSArray *addSecond = [testObjects subarrayWithRange:NSMakeRange(3, [testObjects count] - 3)]; // 3…end
+    
+    [ol addObjectsFromArray:addFirst];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    [ol addObjectsFromArray:addSecond];
+    STAssertTrue([self sanityCheck:[ol items]], @"");
+    
+    STAssertEqualObjects(ol.items, testObjects, @"");
 }
 
 #pragma mark Extra edge cases
