@@ -471,11 +471,11 @@ static NSArray *testObjects = nil;
     TMBOObjectList *ol = [[TMBOObjectList alloc] init];
     
     for (NSUInteger index = 0; index < [testObjects count] / 2; index++) {
-        [ol addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(index, 2)]];
+        [ol addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(index, 3)]];
         STAssertTrue([self sanityCheck:[ol items]], @"");
     }
     for (NSUInteger index = [testObjects count] - 1; index > [testObjects count] / 2; index--) {
-        [ol addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(index - 1, 2)]];
+        [ol addObjectsFromArray:[testObjects subarrayWithRange:NSMakeRange(index - 2, 3)]];
         STAssertTrue([self sanityCheck:[ol items]], @"");
     }
     
