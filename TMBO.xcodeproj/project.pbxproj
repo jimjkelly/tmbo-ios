@@ -41,6 +41,7 @@
 		BC2FF609160AA21500FE4AA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
 		BC2FF611160AA21500FE4AA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC2FF60F160AA21500FE4AA5 /* InfoPlist.strings */; };
 		BC2FF614160AA21500FE4AA5 /* TMBOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2FF613160AA21500FE4AA5 /* TMBOTests.m */; };
+		BC6662201623D986007EB031 /* TMBOObjectList.m in Sources */ = {isa = PBXBuildFile; fileRef = BC66621F1623D986007EB031 /* TMBOObjectList.m */; };
 		BC97BD9B161372E100A3676A /* TMBODataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BD9A161372E100A3676A /* TMBODataStore.m */; };
 		BC97BD9E1613A2D300A3676A /* TMBOUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BD9D1613A2D300A3676A /* TMBOUpload.m */; };
 		BC97BDA11613AAE400A3676A /* TMBOAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BDA01613AAE400A3676A /* TMBOAPIClient.m */; };
@@ -121,6 +122,8 @@
 		BC2FF610160AA21500FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC2FF612160AA21500FE4AA5 /* TMBOTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TMBOTests.h; sourceTree = "<group>"; };
 		BC2FF613160AA21500FE4AA5 /* TMBOTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBOTests.m; sourceTree = "<group>"; };
+		BC66621E1623D986007EB031 /* TMBOObjectList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOObjectList.h; path = Model/TMBOObjectList.h; sourceTree = "<group>"; };
+		BC66621F1623D986007EB031 /* TMBOObjectList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOObjectList.m; path = Model/TMBOObjectList.m; sourceTree = "<group>"; };
 		BC97BD99161372D800A3676A /* TMBODataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBODataStore.h; path = Model/TMBODataStore.h; sourceTree = "<group>"; };
 		BC97BD9A161372E100A3676A /* TMBODataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBODataStore.m; path = Model/TMBODataStore.m; sourceTree = "<group>"; };
 		BC97BD9C1613A2D300A3676A /* TMBOUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOUpload.h; path = Model/TMBOUpload.h; sourceTree = "<group>"; };
@@ -190,6 +193,8 @@
 				BC97BD9C1613A2D300A3676A /* TMBOUpload.h */,
 				BC97BD99161372D800A3676A /* TMBODataStore.h */,
 				BC97BD94161371B800A3676A /* Private */,
+				BC66621E1623D986007EB031 /* TMBOObjectList.h */,
+				BC66621F1623D986007EB031 /* TMBOObjectList.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -562,6 +567,7 @@
 				BCB4EC031621FB6900048C42 /* TMBORange.m in Sources */,
 				BCB4EC061622079500048C42 /* TMBOLoadingCell.m in Sources */,
 				BCB4EC0F16220CB500048C42 /* UIImage+TMBOAssets.m in Sources */,
+				BC6662201623D986007EB031 /* TMBOObjectList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
