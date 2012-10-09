@@ -179,31 +179,39 @@ static NSComparator kObjectComparator = ^(id a, id b) {
 }
 
 #pragma mark - Synthetic properties
-@dynamic minimumID;
+@synthesize minimumID = _minimumID;
 @dynamic items;
 
 - (NSNumber *)minimumID;
 {
-    if ([self.list count] && [[self.list lastObject] isKindOfClass:[TMBORange class]]) {
-        return @(((TMBORange *)[self.list lastObject]).first);
-    }
-    return nil;
+    return _minimumID;
 }
 
 - (void)setMinimumID:(NSNumber *)minimumID;
 {
     // XXX: for now, you can only change the minimum ID once
-    Assert(!self.minimumID || [minimumID isEqualToNumber:self.minimumID]);
+    Assert(!_minimumID || [minimumID isEqualToNumber:_minimumID]);
     
-    TMBORange *range;
+    if (_minimumID) return;
+    
+    TMBORange *range = nil;
     if ([self.list count]) {
         Assert([[[self.list lastObject] class] conformsToProtocol:@protocol(TMBOObject)]);
-        range = [TMBORange rangeWithFirst:[minimumID integerValue] last:[(id<TMBOObject>)[self.list lastObject] objectid]];
+        
+        if ([(id<TMBOObject>)[self.list lastObject] objectid] < [minimumID integerValue]) {
+            [NSException raise:@"TMBOObjectListInvalidMinimumIDException" format:@"Minimum ID %@ is larger than objects already in list: %@", minimumID, self.list];
+        }
+        
+        if ([(id<TMBOObject>)[self.list lastObject] objectid] > [minimumID integerValue]) {
+            range = [TMBORange rangeWithFirst:[minimumID integerValue] last:[(id<TMBOObject>)[self.list lastObject] objectid]];
+        }
     } else {
         range = [TMBORange rangeWithFirst:[minimumID integerValue] last:NSIntegerMax];
     }
 
-    [self.list insertObject:range atIndex:[self.list count]];
+    if (range) [self.list insertObject:range atIndex:[self.list count]];
+    
+    _minimumID = minimumID;
 }
 
 - (NSArray *)items;
