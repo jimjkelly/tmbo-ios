@@ -18,6 +18,7 @@ typedef enum : NSUInteger {
 @property (weak, nonatomic) IBOutlet UIImageView *topBanner;
 @property (weak, nonatomic) IBOutlet UIImageView *bottomBanner;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
+@property (weak, nonatomic) IBOutlet UIImageView *border;
 
 @property (nonatomic, assign) BOOL bottom;
 @property (nonatomic, assign) TMBOLoadingCellMode mode;

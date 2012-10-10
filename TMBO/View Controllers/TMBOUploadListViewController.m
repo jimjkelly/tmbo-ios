@@ -94,6 +94,9 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     nib = [UINib nibWithNibName:kTMBOLoadingCellName bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:kTMBOLoadingCellName];
     
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.rowHeight = 45.0f;
+    
     // TODO: persistent store
     //[self _addUploads:[[TMBODataStore sharedStore] cachedUploadsWithType:self.type near:<#lastposition#>]];
 
@@ -386,14 +389,19 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     Assert([immutableUploads count]);
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        // First time, set up pull-to-refresh
+        // TODO: first time should be extra special. Special error screen on load fail, special all kinds of things
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             Assert([self.uploads.items count] == 1);
+
+            // Set up pull-to-refresh
             self.topRefresh = [[UIRefreshControl alloc] init];
             [self.topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
             [self setRefreshControl:self.topRefresh];
             [[self view] addSubview:self.topRefresh];
+            
+            // Set up row borders
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
         });
 
         // Get the viewport scroll offset, to preserve when top/middle-loading

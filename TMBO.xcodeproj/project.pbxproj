@@ -47,6 +47,8 @@
 		BC66623E1624E884007EB031 /* tornBottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC66623A1624E884007EB031 /* tornBottom@2x.png */; };
 		BC66623F1624E884007EB031 /* tornTop.png in Resources */ = {isa = PBXBuildFile; fileRef = BC66623B1624E884007EB031 /* tornTop.png */; };
 		BC6662401624E884007EB031 /* tornTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC66623C1624E884007EB031 /* tornTop@2x.png */; };
+		BC6662481625038D007EB031 /* cellSeparator.png in Resources */ = {isa = PBXBuildFile; fileRef = BC6662461625038D007EB031 /* cellSeparator.png */; };
+		BC6662491625038D007EB031 /* cellSeparator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC6662471625038D007EB031 /* cellSeparator@2x.png */; };
 		BC97BD9B161372E100A3676A /* TMBODataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BD9A161372E100A3676A /* TMBODataStore.m */; };
 		BC97BD9E1613A2D300A3676A /* TMBOUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BD9D1613A2D300A3676A /* TMBOUpload.m */; };
 		BC97BDA11613AAE400A3676A /* TMBOAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BDA01613AAE400A3676A /* TMBOAPIClient.m */; };
@@ -135,6 +137,8 @@
 		BC66623A1624E884007EB031 /* tornBottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tornBottom@2x.png"; path = "Resources/LoadingCellAssets/tornBottom@2x.png"; sourceTree = "<group>"; };
 		BC66623B1624E884007EB031 /* tornTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tornTop.png; path = Resources/LoadingCellAssets/tornTop.png; sourceTree = "<group>"; };
 		BC66623C1624E884007EB031 /* tornTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tornTop@2x.png"; path = "Resources/LoadingCellAssets/tornTop@2x.png"; sourceTree = "<group>"; };
+		BC6662461625038D007EB031 /* cellSeparator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cellSeparator.png; path = Resources/cellSeparator.png; sourceTree = "<group>"; };
+		BC6662471625038D007EB031 /* cellSeparator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cellSeparator@2x.png"; path = "Resources/cellSeparator@2x.png"; sourceTree = "<group>"; };
 		BC97BD99161372D800A3676A /* TMBODataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBODataStore.h; path = Model/TMBODataStore.h; sourceTree = "<group>"; };
 		BC97BD9A161372E100A3676A /* TMBODataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBODataStore.m; path = Model/TMBODataStore.m; sourceTree = "<group>"; };
 		BC97BD9C1613A2D300A3676A /* TMBOUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOUpload.h; path = Model/TMBOUpload.h; sourceTree = "<group>"; };
@@ -323,6 +327,7 @@
 		BC2FF5EF160AA21400FE4AA5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BC66624516250381007EB031 /* Cell Assets */,
 				BC6662371624E85C007EB031 /* LoadingCell Assets */,
 				BC2F21B9160D432900C28105 /* th-filtered.png */,
 				BC2F21BA160D432900C28105 /* th-filtered@2x.png */,
@@ -367,6 +372,15 @@
 				BC66623C1624E884007EB031 /* tornTop@2x.png */,
 			);
 			name = "LoadingCell Assets";
+			sourceTree = "<group>";
+		};
+		BC66624516250381007EB031 /* Cell Assets */ = {
+			isa = PBXGroup;
+			children = (
+				BC6662461625038D007EB031 /* cellSeparator.png */,
+				BC6662471625038D007EB031 /* cellSeparator@2x.png */,
+			);
+			name = "Cell Assets";
 			sourceTree = "<group>";
 		};
 		BC97BD94161371B800A3676A /* Private */ = {
@@ -507,6 +521,8 @@
 				BC66623E1624E884007EB031 /* tornBottom@2x.png in Resources */,
 				BC66623F1624E884007EB031 /* tornTop.png in Resources */,
 				BC6662401624E884007EB031 /* tornTop@2x.png in Resources */,
+				BC6662481625038D007EB031 /* cellSeparator.png in Resources */,
+				BC6662491625038D007EB031 /* cellSeparator@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

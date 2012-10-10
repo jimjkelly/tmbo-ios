@@ -85,6 +85,7 @@
 {
     self.topBanner.hidden = self.bottom;
     self.bottomBanner.hidden = self.bottom;
+    self.border.hidden = self.bottom;
 }
 
 @end
