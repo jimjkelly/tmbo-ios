@@ -31,12 +31,13 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 
 @interface TMBOUploadListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;
-@property (nonatomic, strong) NSNumber *bottomRefresh;
+@property (nonatomic, strong) NSMutableArray *loading;
 @property (nonatomic, strong) TMBOObjectList *uploads;
 @property (nonatomic, assign) kTMBOType type;
 @end
 
 @implementation TMBOUploadListViewController
+@synthesize loading = _loading;
 @synthesize topRefresh = _topRefresh;
 @synthesize type = _type;
 @synthesize uploads = _uploads;
@@ -63,6 +64,7 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
             [upload addObserver:this forKeyPath:@"comments" options:NSKeyValueObservingOptionNew context:kUploadCommentsContext];
         }];
     }
+    _loading = [[NSMutableArray alloc] init];
     
     return self;
 }
@@ -92,14 +94,12 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     nib = [UINib nibWithNibName:kTMBOLoadingCellName bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:kTMBOLoadingCellName];
     
-    self.topRefresh = [[UIRefreshControl alloc] init];
-    [self.topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
-    [self setRefreshControl:self.topRefresh];
-    [[self view] addSubview:self.topRefresh];
-    
-    //[self.items addObjectsFromArray:[[TMBODataStore sharedStore] cachedUploadsWithType:self.type near:<#lastposition#>]];
+    // TODO: persistent store
+    //[self _addUploads:[[TMBODataStore sharedStore] cachedUploadsWithType:self.type near:<#lastposition#>]];
 
-    [self refreshControlEvent:nil];
+    // Set up the lower limit
+    self.uploads.minimumID = @(kFirstUploadID);
+    [self.tableView setNeedsDisplay];
 }
 
 - (void)didReceiveMemoryWarning
@@ -137,12 +137,7 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
         loadCell = [tableView dequeueReusableCellWithIdentifier:kTMBOLoadingCellName];
         if (!loadCell) loadCell = [[TMBOLoadingCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTMBOLoadingCellName];
         
-        if (range.first == kFirstUploadID) {
-            [loadCell.spinner startAnimating];
-            // TODO: Automatically load the next batch of uploads
-        } else {
-            // TODO: non-bottom ranges
-        }
+        loadCell.bottom = (range.first == kFirstUploadID);
         
         cell = loadCell;
     } else {
@@ -154,15 +149,15 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 
 #pragma mark Helpers
 
-- (TMBOUploadCell *)cellForUpload:(TMBOUpload *)upload;
+- (UITableViewCell *)cellForObject:(id)object;
 {
     // Get the upload's index in the array
-    NSUInteger uploadIndex = [self.uploads.items indexOfObject:upload];
-    if (uploadIndex == NSNotFound) NotReached();
+    NSUInteger objectIndex = [self.uploads.items indexOfObject:object];
+    if (objectIndex == NSNotFound) NotReached();
     
     for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
-        if ([path row] == uploadIndex) {
-            return (TMBOUploadCell *)[self.tableView cellForRowAtIndexPath:path];
+        if ([path row] == objectIndex) {
+            return [self.tableView cellForRowAtIndexPath:path];
         }
     }
     
@@ -234,55 +229,52 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 {
     // Only interested in LoadingListCells
     if (![[self.uploads.items objectAtIndex:indexPath.row] isKindOfClass:[TMBORange class]]) return;
-
+    Assert([uitvc isKindOfClass:[TMBOLoadingCell class]]);
+    
     TMBORange *range = (TMBORange *)[self.uploads.items objectAtIndex:indexPath.row];
+    TMBOLoadingCell *cell = (TMBOLoadingCell *)uitvc;
     
     // Only interested in the bottom-most loading cell
-    if (range.first != kFirstUploadID) return;
-    
-    // Only one request running at a time
-    @synchronized (self.bottomRefresh) {
-        if ([self.bottomRefresh boolValue]) return;
-        
-        // Fetch uploads
-        self.bottomRefresh = @(YES);
+    if (range.first != kFirstUploadID) {
+        cell.mode = TMBOLoadingCellModeDefault;
+        [cell setNeedsDisplay];
+        return;
     }
-    
-    // TODO: handle last == NSIntegerMax as latestUploads
-    [[TMBODataStore sharedStore] uploadsWithType:kTMBOTypeImage before:range.last completion:^(NSArray *results, NSError *error) {
-        Assert(!!results ^ !!error);
-        if (results) {
-            [self _addUploads:results];
-        } else if (error) {
-            NSLog(@"Refresh error: %@", [error localizedDescription]);
-        }
-        self.bottomRefresh = NO;
-    }];
+
+    [self _loadUploadsForRange:range];
+    cell.mode = TMBOLoadingCellModeLoading;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // TODO: handle selecting of loadingCells
-    // TODO: handle selecting of loadingCells with last == NSIntegerMax
-    
-    // Navigation logic may go here. Create and push another view controller.
-    TMBOUpload *upload = [self.uploads.items objectAtIndex:[indexPath row]];
-    TMBOUploadDetailViewController *detailView = nil;
-    switch ([upload kindOfUpload]) {
-        case kTMBOTypeImage:
-            detailView = [[TMBOImageDetailViewController alloc] init];
-            break;
-            
-        // Other upload types go here…
-            
-        default:
-            break;
-    }
+    if ([[self.uploads.items objectAtIndex:indexPath.row] isKindOfClass:[TMBORange class]]) {
+        TMBORange *range = (TMBORange *)[self.uploads.items objectAtIndex:indexPath.row];
+        TMBOLoadingCell *cell = (TMBOLoadingCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        Assert([cell isKindOfClass:[TMBOLoadingCell class]]);
 
-    if (detailView) {
-        [detailView setUpload:upload];
-        [self.navigationController pushViewController:detailView animated:YES];
-    } else {
+        [self _loadUploadsForRange:range];
+        cell.mode = TMBOLoadingCellModeLoading;
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    } else {
+        Assert([[self.uploads.items objectAtIndex:indexPath.row] isKindOfClass:[TMBOUpload class]]);
+        TMBOUpload *upload = [self.uploads.items objectAtIndex:[indexPath row]];
+        TMBOUploadDetailViewController *detailView = nil;
+        switch ([upload kindOfUpload]) {
+            case kTMBOTypeImage:
+                detailView = [[TMBOImageDetailViewController alloc] init];
+                break;
+                
+            // Other upload types go here…
+                
+            default:
+                break;
+        }
+
+        if (detailView) {
+            [detailView setUpload:upload];
+            [self.navigationController pushViewController:detailView animated:YES];
+        } else {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
     }
 }
 
@@ -306,12 +298,6 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
             NSLog(@"Refresh error: %@", [error localizedDescription]);
         }
 
-        // First time running, whether success or failure, show the bottom loader
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            self.uploads.minimumID = @(kFirstUploadID);
-        });
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.topRefresh endRefreshing];
         });
@@ -328,8 +314,8 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     id newObject = [change objectForKey:@"new"];
     if (context == kUploadThumbnailContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            TMBOUploadCell *cell = [self cellForUpload:upload];
-            if (!cell) return;
+            TMBOUploadCell *cell = (TMBOUploadCell *)[self cellForObject:upload];
+            if (!cell || ![cell isKindOfClass:[TMBOUploadCell class]]) return;
             
             if (newObject) {
                 Assert([newObject isKindOfClass:[UIImage class]]);
@@ -345,8 +331,8 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     
     if (context == kUploadCommentsContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            TMBOUploadCell *cell = [self cellForUpload:upload];
-            if (!cell) return;
+            TMBOUploadCell *cell = (TMBOUploadCell *)[self cellForObject:upload];
+            if (!cell || ![cell isKindOfClass:[TMBOUploadCell class]]) return;
 
             [self configureCell:cell withUpload:upload];
             [cell setNeedsDisplay];
@@ -356,10 +342,60 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 
 #pragma mark - Private methods
 
+- (void)_loadUploadsForRange:(TMBORange *)range;
+{
+    void (^completion)(NSArray *,NSError *) = ^(NSArray *results, NSError *error) {
+        Assert(!!results ^ !!error);
+        if (results) {
+            [self _addUploads:results];
+        } else if (error) {
+            TMBOLoadingCell *cell = (TMBOLoadingCell *)[self cellForObject:range];
+            if (cell && [cell isKindOfClass:[TMBOLoadingCell class]]) {
+                cell.mode = TMBOLoadingCellModeError;
+            }
+            NSLog(@"Refresh error: %@", [error localizedDescription]);
+        }
+        
+        // Finished loading this range
+        @synchronized (self.loading) {
+            [self.loading removeObject:range];
+        }
+    };
+    
+    // Avoid dogpiling requests for this range
+    @synchronized (self.loading) {
+        if ([self.loading containsObject:range]) return;
+        [self.loading addObject:range];
+    }
+    
+    if (range.last == NSIntegerMax) {
+        // Top loading can only mean one thing: no uploads yet! Oh no!
+        [[TMBODataStore sharedStore] latestUploadsWithType:self.type completion:completion];
+    } else if (range.first == kFirstUploadID) {
+        // Bottom loading: load last -> first
+        [[TMBODataStore sharedStore] uploadsWithType:self.type before:range.last completion:completion];
+    } else {
+        // Middle loading: load first -> last
+        [[TMBODataStore sharedStore] uploadsWithType:self.type since:range.first completion:completion];
+    }
+}
+
 // Uploads array MUST BE CONTIGUOUS! Call multiple times for disparate uploads.
 - (void)_addUploads:(NSArray *)immutableUploads;
 {
+    Assert([immutableUploads count]);
+    
     dispatch_async(dispatch_get_main_queue(), ^{
+        // First time, set up pull-to-refresh
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            Assert([self.uploads.items count] == 1);
+            self.topRefresh = [[UIRefreshControl alloc] init];
+            [self.topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
+            [self setRefreshControl:self.topRefresh];
+            [[self view] addSubview:self.topRefresh];
+        });
+
         // Get the viewport scroll offset, to preserve when top/middle-loading
         // TODO: caller should figure out offset.y (+= self.tableView.rowHeight)
         // Get the offset to the nearest visible upload, and we'll use that as the basis for our math
@@ -372,7 +408,6 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
             offset.y = 0;
             [self.tableView setContentOffset:offset animated:YES];
         } else {
-            // TODO: test this with animation
             [self.tableView setContentOffset:offset animated:NO];
         }
     });

@@ -23,6 +23,8 @@ static const CGFloat kXPadding = 4.0f;
 @synthesize thumbnailView;
 @synthesize uploaderView;
 
+// TODO: border between cells
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
