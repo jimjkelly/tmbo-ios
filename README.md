@@ -11,6 +11,7 @@ Submodules
 ----------
 * Peter Hosey's [ISO 8601 Date Formatter](https://github.com/boredzo/iso-8601-date-formatter)
 * Mattt Thompson's [AFNetworking](https://github.com/AFNetworking/AFNetworking)
+* Scott Perry's [Debugger](https://github.com/numist/Debugger)
 
 License
 =======
