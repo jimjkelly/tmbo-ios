@@ -315,6 +315,10 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     TMBOUpload *upload = (TMBOUpload *)object;
     
     id newObject = [change objectForKey:@"new"];
+    if ([newObject isKindOfClass:[NSNull class]]) {
+        newObject = nil;
+    }
+    
     if (context == kUploadThumbnailContext) {
         dispatch_async(dispatch_get_main_queue(), ^{
             TMBOUploadCell *cell = (TMBOUploadCell *)[self cellForObject:upload];
@@ -404,12 +408,15 @@ static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
             self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
         });
 
-        // Get the viewport scroll offset, to preserve when top/middle-loading
-        // TODO: caller should figure out offset.y (+= self.tableView.rowHeight)
         // Get the offset to the nearest visible upload, and we'll use that as the basis for our math
+        // TODO: get highest visible upload index
+        // TODO: get offset to highest visible upload cell
         CGPoint offset = [self.tableView contentOffset];
 
         [self.uploads addObjectsFromArray:immutableUploads];
+        
+        // TODO: get delta between previous index and current index of upload, times self.tableView.rowHeight
+        // TODO: caller should figure out offset.y (+= self.tableView.rowHeight)
         
         [self.tableView reloadData];
         if (offset.y < 0) {

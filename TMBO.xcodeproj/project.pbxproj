@@ -328,7 +328,6 @@
 			isa = PBXGroup;
 			children = (
 				BC66624516250381007EB031 /* Cell Assets */,
-				BC6662371624E85C007EB031 /* LoadingCell Assets */,
 				BC2F21B9160D432900C28105 /* th-filtered.png */,
 				BC2F21BA160D432900C28105 /* th-filtered@2x.png */,
 				BC2FF5F0160AA21400FE4AA5 /* TMBO-Info.plist */,
@@ -377,6 +376,7 @@
 		BC66624516250381007EB031 /* Cell Assets */ = {
 			isa = PBXGroup;
 			children = (
+				BC6662371624E85C007EB031 /* LoadingCell Assets */,
 				BC6662461625038D007EB031 /* cellSeparator.png */,
 				BC6662471625038D007EB031 /* cellSeparator@2x.png */,
 			);
