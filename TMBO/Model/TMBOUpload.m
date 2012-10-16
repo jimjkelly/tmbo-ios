@@ -120,7 +120,6 @@ NSComparator kUploadComparator = ^(id a, id b) {
 
 - (void)refreshThumbnailWithMinimumSize:(CGSize)thumbsize;
 {
-    // TODO: getting, resizing, and storing of the thumbnail belongs in the model, not the controller.
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         // Thumbnail is not good enough. Load another!
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://thismight.be%@", self.thumbURL]];
