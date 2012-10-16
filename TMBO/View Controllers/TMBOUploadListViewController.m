@@ -94,6 +94,12 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = 45.0f;
     
+    UIImage *background = [UIImage imageNamed:@"linenbackground"];
+    Assert(background);
+    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:background];
+    backgroundView.contentMode = UIViewContentModeCenter;
+    self.tableView.backgroundView = backgroundView;
+    
     // TODO: persistent store
     //[self _addUploads:[[TMBODataStore sharedStore] cachedUploadsWithType:self.type near:<#lastposition#>]];
 
@@ -227,6 +233,9 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)uitvc forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
+    // TODO: why doesn't this work for loading cells, but it does for upload cells?
+    uitvc.backgroundColor = [UIColor whiteColor];
+    
     // Only interested in LoadingListCells
     if (![[self.uploads.items objectAtIndex:indexPath.row] isKindOfClass:[TMBORange class]]) return;
     Assert([uitvc isKindOfClass:[TMBOLoadingCell class]]);
@@ -237,7 +246,6 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
     // Only interested in the bottom-most loading cell
     if (range.first != kFirstUploadID) {
         cell.mode = TMBOLoadingCellModeDefault;
-        [cell setNeedsDisplay];
         return;
     }
 
