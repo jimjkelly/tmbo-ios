@@ -79,7 +79,6 @@ NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 
     self.spinner.hidden = NO;
     [self.spinner startAnimating];
-    self.backgroundColor = [UIColor clearColor];
 }
 
 - (void)defaultMode;
@@ -87,7 +86,6 @@ NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     [self _styleCell];
     
     self.spinner.hidden = YES;
-    self.backgroundColor = [UIColor clearColor];
 }
 
 - (void)errorMode;
@@ -95,8 +93,8 @@ NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
     [self _styleCell];
     
     self.spinner.hidden = YES;
-    // TODO: need error image
     
+    // TODO: need error image
     if (!self.bottom) {
         self.backgroundColor = [UIColor redColor];
     }
