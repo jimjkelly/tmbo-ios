@@ -8,6 +8,8 @@
 
 #import "TMBOLoadingCell.h"
 
+NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
+
 @implementation TMBOLoadingCell
 @synthesize spinner = _spinner;
 @synthesize bottom = _bottom;

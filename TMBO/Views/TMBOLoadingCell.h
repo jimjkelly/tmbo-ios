@@ -14,6 +14,8 @@ typedef enum : NSUInteger {
     TMBOLoadingCellModeError
 } TMBOLoadingCellMode;
 
+extern NSString * const kTMBOLoadingCellName;
+
 @interface TMBOLoadingCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *topBanner;
 @property (weak, nonatomic) IBOutlet UIImageView *bottomBanner;

@@ -16,21 +16,14 @@
 
 static const CGFloat kXPadding = 4.0f;
 
+NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
+
 @implementation TMBOUploadCell
 @synthesize commentsView;
 @synthesize filenameView;
 @synthesize spinner;
 @synthesize thumbnailView;
 @synthesize uploaderView;
-
-// TODO: border between cells
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
 
 - (void)layoutSubviews;
 {

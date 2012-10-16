@@ -14,6 +14,8 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString * const kTMBOUploadCellName;
+
 @interface TMBOUploadCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *commentsView;
 @property (weak, nonatomic) IBOutlet UILabel *filenameView;

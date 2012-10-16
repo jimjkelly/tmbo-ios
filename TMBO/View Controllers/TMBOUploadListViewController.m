@@ -26,9 +26,6 @@
 static void *kUploadThumbnailContext = (void *)"TMBOUploadThumbnailContext";
 static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
 
-static NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
-static NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
-
 @interface TMBOUploadListViewController ()
 @property (nonatomic, strong) UIRefreshControl *topRefresh;
 @property (nonatomic, strong) NSMutableArray *loading;
