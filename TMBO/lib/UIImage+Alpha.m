@@ -42,6 +42,7 @@
                                                           kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedFirst);
     
     // If the context failed, abort
+    // http://stackoverflow.com/questions/2457116/iphone-changing-cgimagealphainfo-of-cgimage
     if (!offscreenContext) return nil;
     
     // Draw the image into the context and retrieve the new image, which will now have an alpha layer

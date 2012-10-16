@@ -31,6 +31,7 @@
                                                  CGImageGetBitmapInfo(image.CGImage));
 
     // If the context failed, abort
+    // http://stackoverflow.com/questions/2457116/iphone-changing-cgimagealphainfo-of-cgimage
     if (!context) return nil;
     
     // Create a clipping path with rounded corners
