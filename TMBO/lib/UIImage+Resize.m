@@ -125,6 +125,9 @@
                                                 CGImageGetColorSpace(imageRef),
                                                 CGImageGetBitmapInfo(imageRef));
     
+    // If the context failed, abort
+    if (!bitmap) return nil;
+    
     // Rotate and/or flip the image if required by its orientation
     CGContextConcatCTM(bitmap, transform);
     

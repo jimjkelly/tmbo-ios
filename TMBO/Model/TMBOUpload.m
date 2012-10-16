@@ -133,8 +133,14 @@ NSComparator kUploadComparator = ^(id a, id b) {
                 UIImage *image = [UIImage imageWithData:responseObject];
                 UIImage *thumb = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:thumbsize interpolationQuality:kCGInterpolationHigh];
                 
+                if (!thumb) {
+                    // TODO: this works, but it sucks.
+                    Log(@"Failed to resize thumbnail image! Falling back to using the upload directly.");
+                    DebugBreak();
+                }
+                
                 // Causes a KVO notification. If a cell is currently displaying this upload, it will be updated.
-                self.thumbnail = thumb;
+                self.thumbnail = thumb ?: image;
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             // Causes a KVO notification. If a cell is currently displaying this upload, it will be updated.
