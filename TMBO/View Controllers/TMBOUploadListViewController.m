@@ -414,14 +414,39 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
         });
 
         // Get the offset to the nearest visible upload, and we'll use that as the basis for our math
-        // TODO: get highest visible upload index
-        // TODO: get offset to highest visible upload cell
         CGPoint offset = [self.tableView contentOffset];
 
-        [self.uploads addObjectsFromArray:immutableUploads];
+        id data = nil;
+        for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows) {
+            id iteratedItem = [self.uploads.items objectAtIndex:indexPath.row];
+            if ([iteratedItem isKindOfClass:[TMBOUpload class]]) {
+                data = iteratedItem;
+                break;
+            }
+        }
         
-        // TODO: get delta between previous index and current index of upload, times self.tableView.rowHeight
-        // TODO: caller should figure out offset.y (+= self.tableView.rowHeight)
+        if (data) {
+            NSInteger previousCellRow = [self.uploads.items indexOfObject:data];
+            id data = [self.uploads.items objectAtIndex:previousCellRow];
+            
+            // Distance from top of topmost visible upload to top of viewport
+            CGFloat previousCellDistanceFromOrigin = (CGFloat)previousCellRow * self.tableView.rowHeight;
+            
+            [self.uploads addObjectsFromArray:immutableUploads];
+            
+            // Did the row for this item move?
+            NSInteger subsequentCellRow = [self.uploads.items indexOfObject:data];
+            // How far?
+            CGFloat subsequentCellDistanceFromOrigin = (CGFloat)subsequentCellRow * self.tableView.rowHeight;
+            // Offset gets updated with the new offset
+            offset.y += (subsequentCellDistanceFromOrigin - previousCellDistanceFromOrigin);
+            
+            if (subsequentCellRow != previousCellRow) {
+                NotTested();
+            }
+        } else {
+            [self.uploads addObjectsFromArray:immutableUploads];
+        }
         
         [self.tableView reloadData];
         if (offset.y < 0) {
