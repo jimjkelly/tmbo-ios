@@ -135,7 +135,6 @@ NSComparator kUploadComparator = ^(id a, id b) {
                 if (!thumb) {
                     // TODO: this works, but it sucks.
                     Log(@"Failed to resize thumbnail image! Falling back to using the upload directly.");
-                    DebugBreak();
                 }
                 
                 // Causes a KVO notification. If a cell is currently displaying this upload, it will be updated.

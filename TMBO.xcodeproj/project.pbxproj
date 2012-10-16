@@ -15,7 +15,6 @@
 		BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */; };
 		BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BC2F2173160CE41C00C28105 /* TMBOUploadListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2172160CE41C00C28105 /* TMBOUploadListViewController.m */; };
-		BC2F2181160CF57900C28105 /* debugger.c in Sources */ = {isa = PBXBuildFile; fileRef = BC2F217F160CF57900C28105 /* debugger.c */; };
 		BC2F218B160D0C7600C28105 /* TMBOUploadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F218A160D0C7600C28105 /* TMBOUploadCell.m */; };
 		BC2F218D160D0C8B00C28105 /* TMBOUploadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC2F218C160D0C8B00C28105 /* TMBOUploadCell.xib */; };
 		BC2F21A3160D0EA800C28105 /* UIColor+TMBOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */; };
@@ -49,6 +48,7 @@
 		BC59915A162D1C970044BC63 /* tornTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC599156162D1C970044BC63 /* tornTop@2x.png */; };
 		BC59915E162D23950044BC63 /* linenbackground.png in Resources */ = {isa = PBXBuildFile; fileRef = BC59915C162D23950044BC63 /* linenbackground.png */; };
 		BC59915F162D23950044BC63 /* linenbackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC59915D162D23950044BC63 /* linenbackground@2x.png */; };
+		BC599174162D4B420044BC63 /* debugger.c in Sources */ = {isa = PBXBuildFile; fileRef = BC599172162D4B420044BC63 /* debugger.c */; };
 		BC6662201623D986007EB031 /* TMBOObjectList.m in Sources */ = {isa = PBXBuildFile; fileRef = BC66621F1623D986007EB031 /* TMBOObjectList.m */; };
 		BC6662241623F7A9007EB031 /* TMBOObjectListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6662231623F7A9007EB031 /* TMBOObjectListTests.m */; };
 		BC97BD9B161372E100A3676A /* TMBODataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97BD9A161372E100A3676A /* TMBODataStore.m */; };
@@ -92,8 +92,6 @@
 		BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ISO8601DateFormatter.m; path = "lib/iso-8601-date-formatter/ISO8601DateFormatter.m"; sourceTree = "<group>"; };
 		BC2F2171160CE41C00C28105 /* TMBOUploadListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOUploadListViewController.h; path = "View Controllers/TMBOUploadListViewController.h"; sourceTree = "<group>"; };
 		BC2F2172160CE41C00C28105 /* TMBOUploadListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOUploadListViewController.m; path = "View Controllers/TMBOUploadListViewController.m"; sourceTree = "<group>"; };
-		BC2F217F160CF57900C28105 /* debugger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = debugger.c; path = lib/debugger.c; sourceTree = "<group>"; };
-		BC2F2180160CF57900C28105 /* debugger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = debugger.h; path = lib/debugger.h; sourceTree = "<group>"; };
 		BC2F2189160D0C7600C28105 /* TMBOUploadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOUploadCell.h; path = Views/TMBOUploadCell.h; sourceTree = "<group>"; };
 		BC2F218A160D0C7600C28105 /* TMBOUploadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOUploadCell.m; path = Views/TMBOUploadCell.m; sourceTree = "<group>"; };
 		BC2F218C160D0C8B00C28105 /* TMBOUploadCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOUploadCell.xib; path = Views/TMBOUploadCell.xib; sourceTree = "<group>"; };
@@ -139,6 +137,8 @@
 		BC599156162D1C970044BC63 /* tornTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tornTop@2x.png"; path = "Resources/Cell Assets/LoadingCellAssets/tornTop@2x.png"; sourceTree = "<group>"; };
 		BC59915C162D23950044BC63 /* linenbackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = linenbackground.png; path = Resources/linenbackground.png; sourceTree = "<group>"; };
 		BC59915D162D23950044BC63 /* linenbackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "linenbackground@2x.png"; path = "Resources/linenbackground@2x.png"; sourceTree = "<group>"; };
+		BC599172162D4B420044BC63 /* debugger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debugger.c; sourceTree = "<group>"; };
+		BC599173162D4B420044BC63 /* debugger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debugger.h; sourceTree = "<group>"; };
 		BC66621E1623D986007EB031 /* TMBOObjectList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOObjectList.h; path = Model/TMBOObjectList.h; sourceTree = "<group>"; };
 		BC66621F1623D986007EB031 /* TMBOObjectList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOObjectList.m; path = Model/TMBOObjectList.m; sourceTree = "<group>"; };
 		BC6662221623F7A9007EB031 /* TMBOObjectListTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMBOObjectListTests.h; sourceTree = "<group>"; };
@@ -221,20 +221,19 @@
 		BC2F216B160C09EF00C28105 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				BCB4EC0D16220CB500048C42 /* UIImage+TMBOAssets.h */,
-				BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */,
 				BC97BDAE1613D36B00A3676A /* AFNetworking */,
+				BC599171162D4B420044BC63 /* debugger */,
+				BC2F216C160C09F600C28105 /* iso-8601-date-formatter */,
+				BC2F21A1160D0EA800C28105 /* UIColor+TMBOTheme.h */,
+				BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */,
 				BC2F21B3160D236D00C28105 /* UIImage+Alpha.h */,
 				BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */,
 				BC2F21B5160D236D00C28105 /* UIImage+RoundedCorner.h */,
 				BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */,
 				BC2F21B0160D221600C28105 /* UIImage+Resize.h */,
 				BC2F21B1160D221600C28105 /* UIImage+Resize.m */,
-				BC2F21A1160D0EA800C28105 /* UIColor+TMBOTheme.h */,
-				BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */,
-				BC2F2180160CF57900C28105 /* debugger.h */,
-				BC2F217F160CF57900C28105 /* debugger.c */,
-				BC2F216C160C09F600C28105 /* iso-8601-date-formatter */,
+				BCB4EC0D16220CB500048C42 /* UIImage+TMBOAssets.h */,
+				BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */,
 			);
 			name = lib;
 			sourceTree = "<group>";
@@ -374,6 +373,16 @@
 				BC66624516250381007EB031 /* Cell Assets */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		BC599171162D4B420044BC63 /* debugger */ = {
+			isa = PBXGroup;
+			children = (
+				BC599173162D4B420044BC63 /* debugger.h */,
+				BC599172162D4B420044BC63 /* debugger.c */,
+			);
+			name = debugger;
+			path = lib/debugger;
 			sourceTree = "<group>";
 		};
 		BC6662371624E85C007EB031 /* LoadingCell Assets */ = {
@@ -604,7 +613,6 @@
 				BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */,
 				BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */,
 				BC2F2173160CE41C00C28105 /* TMBOUploadListViewController.m in Sources */,
-				BC2F2181160CF57900C28105 /* debugger.c in Sources */,
 				BC2F218B160D0C7600C28105 /* TMBOUploadCell.m in Sources */,
 				BC2F21A3160D0EA800C28105 /* UIColor+TMBOTheme.m in Sources */,
 				BC2F21B2160D221600C28105 /* UIImage+Resize.m in Sources */,
@@ -629,6 +637,7 @@
 				BCB4EC061622079500048C42 /* TMBOLoadingCell.m in Sources */,
 				BCB4EC0F16220CB500048C42 /* UIImage+TMBOAssets.m in Sources */,
 				BC6662201623D986007EB031 /* TMBOObjectList.m in Sources */,
+				BC599174162D4B420044BC63 /* debugger.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
