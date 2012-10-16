@@ -34,6 +34,8 @@ static const CGFloat kXPadding = 4.0f;
 
 - (void)layoutSubviews;
 {
+    [super layoutSubviews];
+    
     CGSize cellSize = self.frame.size;
     CGRect frame, thumbFrame = [self.thumbnailView frame];
     
