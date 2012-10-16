@@ -378,8 +378,8 @@
 		BC599171162D4B420044BC63 /* debugger */ = {
 			isa = PBXGroup;
 			children = (
-				BC599172162D4B420044BC63 /* debugger.c */,
 				BC599173162D4B420044BC63 /* debugger.h */,
+				BC599172162D4B420044BC63 /* debugger.c */,
 			);
 			name = debugger;
 			path = lib/debugger;
