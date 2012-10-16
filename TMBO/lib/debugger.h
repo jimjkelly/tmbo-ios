@@ -3,6 +3,7 @@
 //  TagLib
 //
 //  Created by Scott Perry on 8/11/11.
+//  Public domain.
 //
 
 #ifndef _TagLib_debugger_h_
