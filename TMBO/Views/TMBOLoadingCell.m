@@ -14,15 +14,30 @@ NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 @synthesize spinner = _spinner;
 @synthesize bottom = _bottom;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithCoder:(NSCoder *)aDecoder;
+{
+    self = [super initWithCoder:aDecoder];
+    if (!self) return nil;
+    
+    [self _init];
+    
+    return self;
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (!self) return nil;
     
-    // Cell does not highlight on selection, but it does change state (see: -setSelected:animated:)
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    [self _init];
     
     return self;
+}
+
+- (void)_init;
+{
+    // Cell does not highlight on selection, but it does change state (see: -setSelected:animated:)
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
