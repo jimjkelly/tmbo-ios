@@ -11,7 +11,8 @@ Submodules
 ----------
 * Peter Hosey's [ISO 8601 Date Formatter](https://github.com/boredzo/iso-8601-date-formatter)
 * Mattt Thompson's [AFNetworking](https://github.com/AFNetworking/AFNetworking)
-* Scott Perry's [Debugger](https://github.com/numist/Debugger)
+* [Debugger](https://github.com/numist/Debugger)
+* [UIImageView-NDVAnimatedGIFSupport](https://github.com/numist/UIImageView-NDVAnimatedGIFSupport), as made famous by [Nathan de Vries](https://github.com/atnan/UIImageView-NDVAnimatedGIFSupport)
 
 License
 =======
