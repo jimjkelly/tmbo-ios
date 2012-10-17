@@ -80,8 +80,8 @@ NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
 {
     CGRect thumbFrame;
     thumbFrame.origin = CGPointZero;
-    thumbFrame.size.height = self.frame.size.height;
-    thumbFrame.size.width = 133.0f / 100.0f * self.frame.size.height;
+    thumbFrame.size.height = self.frame.size.height - 1.f;
+    thumbFrame.size.width = floor(133.0f / 100.0f * (self.frame.size.height - 1.f));
     [self.thumbnailView setFrame:thumbFrame];
     [self.thumbnailView setImage:nil];
     [self.spinner startAnimating];
