@@ -14,7 +14,7 @@
 
 #import "TMBOUpload.h"
 
-#import "AFNetworking.h"
+#import "TMBOAPIClient.h"
 #import "UIImage+Resize.h"
 
 NSComparator kUploadComparator = ^(id a, id b) {
@@ -122,7 +122,7 @@ NSComparator kUploadComparator = ^(id a, id b) {
 {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         // Thumbnail is not good enough. Load another!
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://thismight.be%@", self.thumbURL]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kTMBOBaseURLString, self.thumbURL]];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         
@@ -145,6 +145,33 @@ NSComparator kUploadComparator = ^(id a, id b) {
             self.thumbnail = nil;
             NSLog(@"%@ encountered error: %@", operation, error);
         }];
+        
+        [operation start];
+    });
+}
+
+- (void)getFileWithSuccess:(void ( ^ ) ( AFHTTPRequestOperation *operation , id responseObject ))success
+                   failure:(void ( ^ ) ( AFHTTPRequestOperation *operation , NSError *error ))failure
+                  progress:(void ( ^ ) ( NSUInteger bytesRead , long long totalBytesRead , long long totalBytesExpectedToRead ))progress;
+{
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        void(^bail)(void) = ^{
+            // TODO:
+            if (failure)
+                failure(nil, [NSError errorWithDomain:@"FIXMEDomain" code:42 userInfo:@{ @"FIXME" : @"please" }]);
+        };
+        
+        BailWithBlockUnless([self kindOfUpload] & ~kTMBOTypeTopic, bail);
+        BailWithBlockUnless(self.fileURL, bail);
+        
+        NSURLRequest *request = [[TMBOAPIClient sharedClient] requestWithMethod:@"GET" path:self.fileURL parameters:nil];
+        BailWithBlockUnless(request, bail);
+        
+        NSLog(@"%@", request);
+        
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        [operation setCompletionBlockWithSuccess:success failure:failure];
+        [operation setDownloadProgressBlock:progress];
         
         [operation start];
     });

@@ -16,7 +16,7 @@
 
 #import <CoreData/CoreData.h>
 
-#import "AFHTTPRequestOperation.h"
+#import "AFNetworking.h"
 #import "ISO8601DateFormatter.h"
 #import "TMBOAPIClient.h"
 #import "TMBORange.h"

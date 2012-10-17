@@ -14,9 +14,10 @@
 
 #import "TMBOImageDetailViewController.h"
 
+#import "AFNetworking.h"
 #import "TMBOImageScrollView.h"
 #import "TMBOUpload.h"
-#import "UIImageView+AFNetworking.h"
+#import "UIImageView+NDVAnimatedGIFSupport.h"
 
 @interface TMBOImageDetailViewController ()
 - (void)fit;
@@ -32,13 +33,13 @@
 // Called in the image load success completion block and viewWillAppear
 - (void)fit;
 {
-    if (![self.imageView image]) return;
+    if (!self.imageView.image) return;
     
-    CGFloat minScale = [self minScaleForImage:[self.imageView image] inContainer:[self.scrollView frame].size];
+    CGFloat minScale = [self minScaleForImage:self.imageView.image inContainer:self.scrollView.frame.size];
     [self.scrollView setMinimumZoomScale:minScale];
     [self.scrollView setMaximumZoomScale:[[UIScreen mainScreen] scale]];
     
-    [self.scrollView setZoomScale:[self.scrollView minimumZoomScale] animated:NO];
+    [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:NO];
 }
 
 #pragma mark - UIView overloaded methods
@@ -61,19 +62,30 @@
     [self.scrollView setDelegate:self];
     [self.scrollView setImageView:self.imageView];
     
-    NSURL *fileURL = [NSURL URLWithString:[self.upload fileURL] relativeToURL:kTMBOBaseURL];
-    
-    // TODO: 1) get image with progress 2) get image via model, so model can update thumbnail/cache
-    [imageView setImageWithURLRequest:[NSURLRequest requestWithURL:fileURL] placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
+    [self.upload getFileWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // TODO: maybe be less fatalistic about this
+        Assert([responseObject isKindOfClass:[NSData class]]);
+        NSData *responseData = (NSData *)responseObject;
         
-        [self.scrollView setContentSize:[image size]];
-        [self.imageView setFrame:CGRectMake(0.0, 0.0, [image size].width, [image size].height)];
+        UIImage *image = [UIImage imageWithData:responseData];
+        self.imageView.image = image;
+        // TODO: maybe be less fatalistic about this
+        Assert(image);
         
+        [self.scrollView setContentSize:image.size];
+        [self.imageView setFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
+
         [self fit];
-        
+
         [spinner stopAnimating];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error){
+        
+        // If this is an animated image, set up the animation
+        [self.imageView setupAnimationWithData:responseData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // TODO: Failure *is* an option
+    } progress:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+        // TODO: progress feedback!
+        NSLog(@"Read %d bytes since last update, %lld / %lld (%0.2f%%)", bytesRead, totalBytesRead, totalBytesExpectedToRead, 100 * (CGFloat)totalBytesRead / (CGFloat)totalBytesExpectedToRead);
     }];
 }
 

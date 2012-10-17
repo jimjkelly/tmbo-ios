@@ -15,6 +15,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import "AFNetworking.h"
 #import "TMBOObjectList.h"
 
 extern NSComparator kUploadComparator;
@@ -60,5 +61,7 @@ typedef enum : NSUInteger {
 - (kTMBOType)kindOfUpload;
 
 - (void)refreshThumbnailWithMinimumSize:(CGSize)thumbsize;
-
+- (void)getFileWithSuccess:(void ( ^ ) ( AFHTTPRequestOperation *operation , id responseObject ))success
+                   failure:(void ( ^ ) ( AFHTTPRequestOperation *operation , NSError *error ))failure
+                  progress:(void ( ^ ) ( NSUInteger bytesRead , long long totalBytesRead , long long totalBytesExpectedToRead ))progress;
 @end
