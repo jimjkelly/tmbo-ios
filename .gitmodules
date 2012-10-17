@@ -7,3 +7,6 @@
 [submodule "TMBO/lib/debugger"]
 	path = TMBO/lib/debugger
 	url = git@github.com:numist/Debugger.git
+[submodule "TMBO/lib/UIImageView-NDVAnimatedGIFSSupport"]
+	path = TMBO/lib/UIImageView-NDVAnimatedGIFSSupport
+	url = git://github.com/atnan/UIImageView-NDVAnimatedGIFSupport.git
