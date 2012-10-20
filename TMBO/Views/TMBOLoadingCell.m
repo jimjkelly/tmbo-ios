@@ -17,8 +17,6 @@
 NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 
 @implementation TMBOLoadingCell
-@synthesize spinner = _spinner;
-@synthesize bottom = _bottom;
 
 - (id)initWithCoder:(NSCoder *)aDecoder;
 {
@@ -55,8 +53,6 @@ NSString * const kTMBOLoadingCellName = @"TMBOLoadingCell";
 }
 
 #pragma mark Display modes
-@synthesize mode = _mode;
-
 - (void)setMode:(TMBOLoadingCellMode)mode;
 {
     switch (mode) {

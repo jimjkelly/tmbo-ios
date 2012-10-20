@@ -15,19 +15,18 @@
 #import "TMBOImageScrollView.h"
 
 @implementation TMBOImageScrollView
-@synthesize imageView;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
     
     CGSize bounds = self.bounds.size;
-    CGRect frame = imageView.frame;
+    CGRect frame = self.imageView.frame;
     
     // center the image as it becomes smaller than the size of the screen. If it is larger, set the origin to (0,0).
     frame.origin.x = MAX(((bounds.width - frame.size.width) / 2), 0);
     frame.origin.y = MAX(((bounds.height - frame.size.height) / 2), 0);
 
-    [imageView setFrame:frame];
+    [self.imageView setFrame:frame];
 }
 
 @end

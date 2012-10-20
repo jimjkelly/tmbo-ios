@@ -24,9 +24,6 @@
 @end
 
 @implementation TMBOImageDetailViewController
-@synthesize scrollView;
-@synthesize imageView;
-@synthesize spinner;
 
 #pragma mark Factored functionality
 
@@ -54,7 +51,7 @@
     [self.view addGestureRecognizer:swipe];
     
     // Loading!
-    [spinner startAnimating];
+    [self.spinner startAnimating];
     
     // Default configuration for zooming scrollview
     [self.scrollView setMinimumZoomScale:1.0];
@@ -77,7 +74,7 @@
 
         [self fit];
 
-        [spinner stopAnimating];
+        [self.spinner stopAnimating];
         
         // If this is an animated image, set up the animation
         [self.imageView setupAnimationWithData:responseData];
@@ -100,7 +97,7 @@
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView;
 {
-    return imageView;
+    return self.imageView;
 }
 
 #pragma mark - Rotation resizing

@@ -23,7 +23,7 @@
 @end
 
 @implementation TestObject
-@synthesize objectid = _objectid;
+
 - (id)initWithID:(NSInteger)objectid;
 {
     self = [super init];

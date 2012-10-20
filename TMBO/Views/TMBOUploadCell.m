@@ -19,11 +19,6 @@ static const CGFloat kXPadding = 4.0f;
 NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
 
 @implementation TMBOUploadCell
-@synthesize commentsView;
-@synthesize filenameView;
-@synthesize spinner;
-@synthesize thumbnailView;
-@synthesize uploaderView;
 
 - (void)layoutSubviews;
 {

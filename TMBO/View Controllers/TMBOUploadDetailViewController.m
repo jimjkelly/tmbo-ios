@@ -17,5 +17,4 @@
 #import "TMBOUpload.h"
 
 @implementation TMBOUploadDetailViewController
-@synthesize upload;
 @end

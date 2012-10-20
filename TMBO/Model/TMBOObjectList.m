@@ -29,7 +29,6 @@ static NSComparator kObjectComparator = ^(id a, id b) {
 @end
 
 @implementation TMBOObjectList
-@synthesize list = _list;
 
 - (id)init;
 {

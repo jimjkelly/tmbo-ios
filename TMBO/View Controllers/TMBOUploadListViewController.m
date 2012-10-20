@@ -34,10 +34,6 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
 @end
 
 @implementation TMBOUploadListViewController
-@synthesize loading = _loading;
-@synthesize topRefresh = _topRefresh;
-@synthesize type = _type;
-@synthesize uploads = _uploads;
 
 - (id)initWithType:(kTMBOType)type;
 {

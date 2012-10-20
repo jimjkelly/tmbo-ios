@@ -47,9 +47,8 @@ static TMBODataStore *shared = nil;
 static const NSUInteger kQueryLimit = 50;
 
 @implementation TMBODataStore
-
-@synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize managedObjectModel = _managedObjectModel;
 @synthesize context = _context;
 @synthesize client = _client;
 
