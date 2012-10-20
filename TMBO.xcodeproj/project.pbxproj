@@ -289,9 +289,6 @@
 		BC2FF5D9160AA21400FE4AA5 = {
 			isa = PBXGroup;
 			children = (
-				BCFD22A2162E65B8006B60FA /* QuartzCore.framework */,
-				BCFD22A0162E6527006B60FA /* ImageIO.framework */,
-				BC97BDCC1613D48300A3676A /* CoreData.framework */,
 				5D40606116112ABF00EA0F5E /* Icon-72.png */,
 				5D40605F16112AB900EA0F5E /* Icon-144.png */,
 				5D40605D16112AAB00EA0F5E /* Icon-57.png */,
@@ -315,6 +312,9 @@
 		BC2FF5E7160AA21400FE4AA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BCFD22A2162E65B8006B60FA /* QuartzCore.framework */,
+				BCFD22A0162E6527006B60FA /* ImageIO.framework */,
+				BC97BDCC1613D48300A3676A /* CoreData.framework */,
 				BC2F210D160B8DB900C28105 /* Crashlytics.framework */,
 				BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */,
 				BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */,
