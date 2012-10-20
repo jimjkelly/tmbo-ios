@@ -448,6 +448,7 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
             [self.uploads addObjectsFromArray:immutableUploads];
         }
         
+        // TODO: do not mess with the contentOffset if the table is being dragged?
         [self.tableView reloadData];
         if (offset.y < 0) {
             offset.y = 0;
