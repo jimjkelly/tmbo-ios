@@ -20,6 +20,5 @@
 
 @interface TMBOImageDetailViewController : TMBOUploadDetailViewController <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet TMBOImageScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @end
