@@ -65,6 +65,7 @@
     
     // Background layer
 	CGContextSetRGBFillColor(context, 1.0f, 1.0f, 1.0f, 0.2f);
+    CGContextAddEllipseInRect(context, rect);
     CGContextEOFillPath(context);
     
     // Progress bar

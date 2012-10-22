@@ -665,10 +665,10 @@ static NSArray *testObjects = nil;
     STAssertEqualObjects(ol.items, testObjects, @"");
     
     // Otherwise valid minimum
-//    STAssertThrows([ol setMinimumID:@(1)], @"");
+    STAssertThrows([ol setMinimumID:@(1)], @"");
 
     // Outright invalid minimum
-//    STAssertThrows([ol setMinimumID:@([[testObjects objectAtIndex:0] objectid])], @"");
+    STAssertThrows([ol setMinimumID:@([[testObjects objectAtIndex:0] objectid])], @"");
 }
 
 - (void)testSetInvalidMinimum;
@@ -682,7 +682,7 @@ static NSArray *testObjects = nil;
     STAssertTrue([self sanityCheck:[ol items]], @"");
     STAssertEqualObjects(ol.items, testObjects, @"");
     
-//    STAssertThrows([ol setMinimumID:@(minimumID)], @"");
+    STAssertThrows([ol setMinimumID:@(minimumID)], @"");
 }
 
 - (void)testSetMinimumMulti;
