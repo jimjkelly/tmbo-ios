@@ -40,6 +40,7 @@
 		BC2FF609160AA21500FE4AA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
 		BC2FF611160AA21500FE4AA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC2FF60F160AA21500FE4AA5 /* InfoPlist.strings */; };
 		BC2FF614160AA21500FE4AA5 /* TMBOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2FF613160AA21500FE4AA5 /* TMBOTests.m */; };
+		BC4F5967162FE05500836F18 /* NNAnimatedGIFView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4F5966162FE05500836F18 /* NNAnimatedGIFView.m */; };
 		BC599151162D1C900044BC63 /* cellSeparator.png in Resources */ = {isa = PBXBuildFile; fileRef = BC59914F162D1C900044BC63 /* cellSeparator.png */; };
 		BC599152162D1C900044BC63 /* cellSeparator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC599150162D1C900044BC63 /* cellSeparator@2x.png */; };
 		BC599157162D1C970044BC63 /* tornBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = BC599153162D1C970044BC63 /* tornBottom.png */; };
@@ -133,6 +134,8 @@
 		BC2FF610160AA21500FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC2FF612160AA21500FE4AA5 /* TMBOTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TMBOTests.h; sourceTree = "<group>"; };
 		BC2FF613160AA21500FE4AA5 /* TMBOTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBOTests.m; sourceTree = "<group>"; };
+		BC4F5965162FE05500836F18 /* NNAnimatedGIFView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNAnimatedGIFView.h; path = "lib/UIImageView-NDVAnimatedGIFSSupport/NNAnimatedGIFView.h"; sourceTree = "<group>"; };
+		BC4F5966162FE05500836F18 /* NNAnimatedGIFView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNAnimatedGIFView.m; path = "lib/UIImageView-NDVAnimatedGIFSSupport/NNAnimatedGIFView.m"; sourceTree = "<group>"; };
 		BC59914F162D1C900044BC63 /* cellSeparator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cellSeparator.png; path = "Resources/Cell Assets/cellSeparator.png"; sourceTree = "<group>"; };
 		BC599150162D1C900044BC63 /* cellSeparator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cellSeparator@2x.png"; path = "Resources/Cell Assets/cellSeparator@2x.png"; sourceTree = "<group>"; };
 		BC599153162D1C970044BC63 /* tornBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tornBottom.png; path = "Resources/Cell Assets/LoadingCellAssets/tornBottom.png"; sourceTree = "<group>"; };
@@ -234,19 +237,10 @@
 			isa = PBXGroup;
 			children = (
 				BC97BDAE1613D36B00A3676A /* AFNetworking */,
+				BC4F5982163466C700836F18 /* Categories */,
 				BC599171162D4B420044BC63 /* debugger */,
 				BC2F216C160C09F600C28105 /* iso-8601-date-formatter */,
 				BCFD229B162E62D5006B60FA /* UIImageView-NDVAnimatedGIFSupport */,
-				BC2F21A1160D0EA800C28105 /* UIColor+TMBOTheme.h */,
-				BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */,
-				BC2F21B3160D236D00C28105 /* UIImage+Alpha.h */,
-				BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */,
-				BC2F21B5160D236D00C28105 /* UIImage+RoundedCorner.h */,
-				BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */,
-				BC2F21B0160D221600C28105 /* UIImage+Resize.h */,
-				BC2F21B1160D221600C28105 /* UIImage+Resize.m */,
-				BCB4EC0D16220CB500048C42 /* UIImage+TMBOAssets.h */,
-				BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */,
 			);
 			name = lib;
 			sourceTree = "<group>";
@@ -377,6 +371,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		BC4F5982163466C700836F18 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				BC2F21A1160D0EA800C28105 /* UIColor+TMBOTheme.h */,
+				BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */,
+				BC2F21B3160D236D00C28105 /* UIImage+Alpha.h */,
+				BC2F21B4160D236D00C28105 /* UIImage+Alpha.m */,
+				BC2F21B5160D236D00C28105 /* UIImage+RoundedCorner.h */,
+				BC2F21B6160D236D00C28105 /* UIImage+RoundedCorner.m */,
+				BC2F21B0160D221600C28105 /* UIImage+Resize.h */,
+				BC2F21B1160D221600C28105 /* UIImage+Resize.m */,
+				BCB4EC0D16220CB500048C42 /* UIImage+TMBOAssets.h */,
+				BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		BC59915B162D237C0044BC63 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -481,6 +492,8 @@
 		BCFD229B162E62D5006B60FA /* UIImageView-NDVAnimatedGIFSupport */ = {
 			isa = PBXGroup;
 			children = (
+				BC4F5965162FE05500836F18 /* NNAnimatedGIFView.h */,
+				BC4F5966162FE05500836F18 /* NNAnimatedGIFView.m */,
 				BCFD229D162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.h */,
 				BCFD229E162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.m */,
 			);
@@ -673,6 +686,7 @@
 				BC6662201623D986007EB031 /* TMBOObjectList.m in Sources */,
 				BC599174162D4B420044BC63 /* debugger.c in Sources */,
 				BCFD229F162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.m in Sources */,
+				BC4F5967162FE05500836F18 /* NNAnimatedGIFView.m in Sources */,
 				BCE84F491634D2FD0074C0FE /* NNProgressCircleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
