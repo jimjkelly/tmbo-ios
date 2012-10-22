@@ -182,7 +182,7 @@ static const NSUInteger kQueryLimit = 50;
         // Handle error in API call or parsing
         if ([result isKindOfClass:[NSError class]]) {
             NSError *error = (NSError *)result;
-            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            Log(@"API call returned error: %@", [error localizedDescription]);
             block(nil, error);
             return;
         }
@@ -212,7 +212,7 @@ static const NSUInteger kQueryLimit = 50;
         // Handle error in API call or parsing
         if ([result isKindOfClass:[NSError class]]) {
             NSError *error = (NSError *)result;
-            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            Log(@"API call returned error: %@", [error localizedDescription]);
             block(nil, error);
             return;
         }
@@ -279,7 +279,7 @@ static const NSUInteger kQueryLimit = 50;
         // Handle error in API call or parsing
         if ([result isKindOfClass:[NSError class]]) {
             NSError *error = (NSError *)result;
-            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            Log(@"API call returned error: %@", [error localizedDescription]);
             block(error);
             return;
         }
@@ -318,7 +318,7 @@ static const NSUInteger kQueryLimit = 50;
         // Handle error in API call or parsing
         if ([result isKindOfClass:[NSError class]]) {
             NSError *error = (NSError *)result;
-            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            Log(@"API call returned error: %@", [error localizedDescription]);
             block(error);
             return;
         }
@@ -334,7 +334,7 @@ static const NSUInteger kQueryLimit = 50;
          "last_used":"0000-00-00 00:00:00"
          }
          */
-        NSLog(@"Successfully generated token %@ for userid %@ for application \"%@\" on %@",
+        Log(@"Successfully generated token %@ for userid %@ for application \"%@\" on %@",
               [dict objectForKey:@"tokenid"], [dict objectForKey:@"userid"], [dict objectForKey:@"issued_to"], [dict objectForKey:@"issue_date"]);
         
         [[NSUserDefaults standardUserDefaults] setValue:[dict objectForKey:@"tokenid"] forKey:@"TMBOToken"];
@@ -403,7 +403,7 @@ static const NSUInteger kQueryLimit = 50;
              
              Error Domain=NSURLErrorDomain Code=-1009 "The Internet connection appears to be offline." UserInfo=0x1d0611a0 {NSErrorFailingURLStringKey=https://thismight.be/offensive/api.php/getuploads.json?token=w9hcc1pvxalgwghgi85c0ddhrqviydsv&type=image&limit=50, NSErrorFailingURLKey=https://thismight.be/offensive/api.php/getuploads.json?token=w9hcc1pvxalgwghgi85c0ddhrqviydsv&type=image&limit=50, NSLocalizedDescription=The Internet connection appears to be offline., NSUnderlyingError=0x1c56d4e0 "The Internet connection appears to be offline."}
              */
-            NSLog(@"Error: %@ -> %@", operation, error);
+            Log(@"Error: %@ -> %@", operation, error);
             NotTested();
         }
         result = error;
@@ -442,7 +442,7 @@ static const NSUInteger kQueryLimit = 50;
         NSArray *array = [self.context executeFetchRequest:request error:&error];
         if (array == nil) {
             // Deal with error...
-            NSLog(@"array was nil?");
+            Log(@"array was nil?");
             NotTested();
         } else if ([array count]) {
             Assert([array count] == 1);
@@ -487,12 +487,12 @@ static const NSUInteger kQueryLimit = 50;
                 // do we need to save the device's current time zone?
                 NSDate *date = [[[ISO8601DateFormatter alloc] init] dateFromString:value];
                 if ([date compare:kDawnOfTime] == NSOrderedAscending) {
-                    NSLog(@"Parsed key %@ (%@) as date, got %@", varname, value, date);
+                    Log(@"Parsed key %@ (%@) as date, got %@", varname, value, date);
                     NotTested();
                 }
                 value = date;
             } else {
-                NSLog(@"Not handled: %@ should be of type %@, but is actually type %@", varname, [TMBOUpload typeFor:varname], [value class]);
+                Log(@"Not handled: %@ should be of type %@, but is actually type %@", varname, [TMBOUpload typeFor:varname], [value class]);
                 NotTested();
                 // The setter below will throw an exception.
             }

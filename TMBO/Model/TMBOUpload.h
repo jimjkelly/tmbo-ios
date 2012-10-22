@@ -54,9 +54,6 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, retain) UIImage *thumbnail;
 
-// TODO: - (TMBOUpload *)prev;
-// TODO: - (TMBOUpload *)next;
-
 + (Class)typeFor:(NSString *)varname;
 - (kTMBOType)kindOfUpload;
 

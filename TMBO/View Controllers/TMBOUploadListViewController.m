@@ -361,7 +361,7 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
             if (cell && [cell isKindOfClass:[TMBOLoadingCell class]]) {
                 cell.mode = TMBOLoadingCellModeError;
             }
-            NSLog(@"Refresh error: %@", [error localizedDescription]);
+            Log(@"Refresh error: %@", [error localizedDescription]);
         }
         
         // Finished loading this range

@@ -140,8 +140,6 @@
 {
     if ([swipe direction] == UISwipeGestureRecognizerDirectionUp) {
         [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        NSLog(@"%@", swipe);
     }
 }
 

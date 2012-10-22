@@ -143,7 +143,7 @@ NSComparator kUploadComparator = ^(id a, id b) {
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             // Causes a KVO notification. If a cell is currently displaying this upload, it will be updated.
             self.thumbnail = nil;
-            NSLog(@"%@ encountered error: %@", operation, error);
+            Log(@"%@ encountered error: %@", operation, error);
         }];
         
         [operation start];
@@ -155,19 +155,19 @@ NSComparator kUploadComparator = ^(id a, id b) {
                   progress:(void ( ^ ) ( NSUInteger bytesRead , long long totalBytesRead , long long totalBytesExpectedToRead ))progress;
 {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSString *errorString;
         void(^bail)(void) = ^{
-            // TODO:
             if (failure)
-                failure(nil, [NSError errorWithDomain:@"FIXMEDomain" code:42 userInfo:@{ @"FIXME" : @"please" }]);
+                failure(nil, [NSError errorWithDomain:@"FIXMEDomain" code:42 userInfo:@{ @"FIXME" : errorString }]);
         };
         
+        errorString = @"Upload type does not have a backing file";
         BailWithBlockUnless([self kindOfUpload] & ~kTMBOTypeTopic, bail);
+        errorString = @"Upload does not have a backing file";
         BailWithBlockUnless(self.fileURL, bail);
         
         NSURLRequest *request = [[TMBOAPIClient sharedClient] requestWithMethod:@"GET" path:self.fileURL parameters:nil];
-        BailWithBlockUnless(request, bail);
-        
-        NSLog(@"%@", request);
+        Assert(request);
         
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         [operation setCompletionBlockWithSuccess:success failure:failure];
