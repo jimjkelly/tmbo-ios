@@ -27,6 +27,12 @@
 @property (nonatomic, strong) NSNumber *minimumID;
 @property (nonatomic, readonly) NSArray *items;
 
+// Iterative access
+- (id<TMBOObject>)objectAfterObject:(id<TMBOObject>)object;
+- (id<TMBOObject>)objectBeforeObject:(id<TMBOObject>)object;
+
+// Collection mutation
 - (void)addObjectsFromArray:(NSArray *)array;
 - (void)destroy;
+
 @end
