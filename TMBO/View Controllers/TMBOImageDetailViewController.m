@@ -15,6 +15,7 @@
 #import "TMBOImageDetailViewController.h"
 
 #import "AFNetworking.h"
+#import "NNProgressCircleView.h"
 #import "TMBOImageScrollView.h"
 #import "TMBOUpload.h"
 #import "NNAnimatedGIFView.h"
@@ -50,6 +51,7 @@
     
     // Loading!
     [self.spinner startAnimating];
+    self.progressCircle.hidden = YES;
     
     // Default configuration for zooming scrollview
     [self.scrollView setMinimumZoomScale:1.0];
@@ -57,19 +59,30 @@
     [self.scrollView setDelegate:self];
     
     [self.upload getFileWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        // TODO: maybe be less fatalistic about this?
-        Assert([responseObject isKindOfClass:[NSData class]]);
-        NSData *responseData = (NSData *)responseObject;
-        
-        self.scrollView.contentView = [NNAnimatedGIFView imageViewForData:responseData];
-        [self fit];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.progressCircle.hidden = YES;
+            
+            // TODO: maybe be less fatalistic about this?
+            Assert([responseObject isKindOfClass:[NSData class]]);
+            NSData *responseData = (NSData *)responseObject;
+            
+            self.scrollView.contentView = [NNAnimatedGIFView imageViewForData:responseData];
+            [self fit];
 
-        [self.spinner stopAnimating];
+            [self.spinner stopAnimating];
+        });
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // TODO: Failure *is* an option
     } progress:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
-        // TODO: progress feedback!
-        NSLog(@"Read %d bytes since last update, %lld / %lld (%0.2f%%)", bytesRead, totalBytesRead, totalBytesExpectedToRead, 100 * (CGFloat)totalBytesRead / (CGFloat)totalBytesExpectedToRead);
+        [self.spinner stopAnimating];
+        self.spinner.hidden = YES;
+        self.progressCircle.hidden = NO;
+        
+        if (totalBytesRead == totalBytesExpectedToRead) {
+            self.progressCircle.progress = 1.0f;
+        } else {
+            [self.progressCircle setProgress:((CGFloat)totalBytesRead / (CGFloat)totalBytesExpectedToRead) animated:YES];
+        }
     }];
 }
 

@@ -243,7 +243,7 @@ static const NSUInteger kQueryLimit = 50;
         // Handle error in API call or parsing
         if ([result isKindOfClass:[NSError class]]) {
             NSError *error = (NSError *)result;
-            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            Log(@"API call returned error: %@", [error localizedDescription]);
             block(nil, error);
             return;
         }
@@ -400,6 +400,8 @@ static const NSUInteger kQueryLimit = 50;
              500 Internal Server Error - kaboom. Please report if reproducible.
              502 Bad Gateway - TMBO is down for maintenance. Please wait a few minutes and try your call again.
              503 Service Unavailable - Refusal. You have attempted to log in too many times in a rolling 30 minute period and you are blocked from any more attempts. Wait and try again later.
+             
+             Error Domain=NSURLErrorDomain Code=-1009 "The Internet connection appears to be offline." UserInfo=0x1d0611a0 {NSErrorFailingURLStringKey=https://thismight.be/offensive/api.php/getuploads.json?token=w9hcc1pvxalgwghgi85c0ddhrqviydsv&type=image&limit=50, NSErrorFailingURLKey=https://thismight.be/offensive/api.php/getuploads.json?token=w9hcc1pvxalgwghgi85c0ddhrqviydsv&type=image&limit=50, NSLocalizedDescription=The Internet connection appears to be offline., NSUnderlyingError=0x1c56d4e0 "The Internet connection appears to be offline."}
              */
             NSLog(@"Error: %@ -> %@", operation, error);
             NotTested();
