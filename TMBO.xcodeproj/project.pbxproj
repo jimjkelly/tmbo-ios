@@ -11,6 +11,22 @@
 		5D40605E16112AAB00EA0F5E /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605D16112AAB00EA0F5E /* Icon-57.png */; };
 		5D40606016112AB900EA0F5E /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605F16112AB900EA0F5E /* Icon-144.png */; };
 		5D40606216112ABF00EA0F5E /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40606116112ABF00EA0F5E /* Icon-72.png */; };
+		BC2B7B441634FEA90056325D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */; };
+		BC2B7B451634FEA90056325D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
+		BC2B7B461634FEA90056325D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */; };
+		BC2B7B4C1634FEA90056325D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC2B7B4A1634FEA90056325D /* InfoPlist.strings */; };
+		BC2B7B4E1634FEA90056325D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7B4D1634FEA90056325D /* main.m */; };
+		BC2B7B541634FEA90056325D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2B7B531634FEA90056325D /* Default.png */; };
+		BC2B7B561634FEA90056325D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2B7B551634FEA90056325D /* Default@2x.png */; };
+		BC2B7B581634FEA90056325D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2B7B571634FEA90056325D /* Default-568h@2x.png */; };
+		BC2B7B5D1634FEEC0056325D /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2B7B5C1634FEEC0056325D /* GHUnitIOS.framework */; };
+		BC2B7B601634FFDE0056325D /* TMBOObjectListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6662231623F7A9007EB031 /* TMBOObjectListTests.m */; };
+		BC2B7B611634FFF80056325D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF606160AA21500FE4AA5 /* SenTestingKit.framework */; };
+		BC2B7B62163500370056325D /* TMBORange.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC021621FB6900048C42 /* TMBORange.m */; };
+		BC2B7B631635003E0056325D /* TMBOObjectList.m in Sources */ = {isa = PBXBuildFile; fileRef = BC66621F1623D986007EB031 /* TMBOObjectList.m */; };
+		BC2B7B64163500700056325D /* debugger.c in Sources */ = {isa = PBXBuildFile; fileRef = BC599172162D4B420044BC63 /* debugger.c */; };
+		BC2B7B681635089E0056325D /* NNProgressCircleViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7B671635089E0056325D /* NNProgressCircleViewTests.m */; };
+		BC2B7B6916350B220056325D /* NNProgressCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE84F481634D2FD0074C0FE /* NNProgressCircleView.m */; };
 		BC2F210E160B8DB900C28105 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2F210D160B8DB900C28105 /* Crashlytics.framework */; };
 		BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */; };
 		BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -91,6 +107,17 @@
 		5D40605D16112AAB00EA0F5E /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-57.png"; sourceTree = "<group>"; };
 		5D40605F16112AB900EA0F5E /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-144.png"; sourceTree = "<group>"; };
 		5D40606116112ABF00EA0F5E /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		BC2B7B421634FEA90056325D /* TMBO-GHUnit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TMBO-GHUnit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC2B7B491634FEA90056325D /* TMBO-GHUnit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TMBO-GHUnit-Info.plist"; sourceTree = "<group>"; };
+		BC2B7B4B1634FEA90056325D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BC2B7B4D1634FEA90056325D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BC2B7B4F1634FEA90056325D /* TMBO-GHUnit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TMBO-GHUnit-Prefix.pch"; sourceTree = "<group>"; };
+		BC2B7B531634FEA90056325D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		BC2B7B551634FEA90056325D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		BC2B7B571634FEA90056325D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		BC2B7B5C1634FEEC0056325D /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = Frameworks/GHUnitIOS.framework; sourceTree = "<group>"; };
+		BC2B7B661635089E0056325D /* NNProgressCircleViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNProgressCircleViewTests.h; path = Tests/NNProgressCircleViewTests.h; sourceTree = "<group>"; };
+		BC2B7B671635089E0056325D /* NNProgressCircleViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNProgressCircleViewTests.m; path = Tests/NNProgressCircleViewTests.m; sourceTree = "<group>"; };
 		BC2F210D160B8DB900C28105 /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
 		BC2F2159160BF9CB00C28105 /* TMBO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMBO.xcdatamodel; sourceTree = "<group>"; };
 		BC2F216D160C0A0C00C28105 /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ISO8601DateFormatter.h; path = "lib/iso-8601-date-formatter/ISO8601DateFormatter.h"; sourceTree = "<group>"; };
@@ -194,6 +221,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BC2B7B3F1634FEA90056325D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC2B7B5D1634FEEC0056325D /* GHUnitIOS.framework in Frameworks */,
+				BC2B7B611634FFF80056325D /* SenTestingKit.framework in Frameworks */,
+				BC2B7B441634FEA90056325D /* UIKit.framework in Frameworks */,
+				BC2B7B451634FEA90056325D /* Foundation.framework in Frameworks */,
+				BC2B7B461634FEA90056325D /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BC2FF5E1160AA21400FE4AA5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -221,14 +260,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BC2B7B471634FEA90056325D /* TMBO-GHUnit */ = {
+			isa = PBXGroup;
+			children = (
+				BC2B7B481634FEA90056325D /* Supporting Files */,
+				BC2B7B661635089E0056325D /* NNProgressCircleViewTests.h */,
+				BC2B7B671635089E0056325D /* NNProgressCircleViewTests.m */,
+			);
+			path = "TMBO-GHUnit";
+			sourceTree = "<group>";
+		};
+		BC2B7B481634FEA90056325D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BC2B7B491634FEA90056325D /* TMBO-GHUnit-Info.plist */,
+				BC2B7B4A1634FEA90056325D /* InfoPlist.strings */,
+				BC2B7B4D1634FEA90056325D /* main.m */,
+				BC2B7B4F1634FEA90056325D /* TMBO-GHUnit-Prefix.pch */,
+				BC2B7B531634FEA90056325D /* Default.png */,
+				BC2B7B551634FEA90056325D /* Default@2x.png */,
+				BC2B7B571634FEA90056325D /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		BC2F2156160BF9B500C28105 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				BC97BD9C1613A2D300A3676A /* TMBOUpload.h */,
 				BC97BD99161372D800A3676A /* TMBODataStore.h */,
-				BC97BD94161371B800A3676A /* Private */,
 				BC66621E1623D986007EB031 /* TMBOObjectList.h */,
 				BC66621F1623D986007EB031 /* TMBOObjectList.m */,
+				BC97BD94161371B800A3676A /* Private */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -288,7 +351,8 @@
 				5D40605D16112AAB00EA0F5E /* Icon-57.png */,
 				5D40605A16112A9C00EA0F5E /* Icon-114.png */,
 				BC2FF5EE160AA21400FE4AA5 /* TMBO */,
-				BC2FF60C160AA21500FE4AA5 /* TMBOTests */,
+				BC2FF60C160AA21500FE4AA5 /* TMBO-OCUnit */,
+				BC2B7B471634FEA90056325D /* TMBO-GHUnit */,
 				BC2FF5E7160AA21400FE4AA5 /* Frameworks */,
 				BC2FF5E5160AA21400FE4AA5 /* Products */,
 			);
@@ -299,6 +363,7 @@
 			children = (
 				BC2FF5E4160AA21400FE4AA5 /* TMBO.app */,
 				BC2FF605160AA21500FE4AA5 /* TMBOTests.octest */,
+				BC2B7B421634FEA90056325D /* TMBO-GHUnit.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -306,6 +371,7 @@
 		BC2FF5E7160AA21400FE4AA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BC2B7B5C1634FEEC0056325D /* GHUnitIOS.framework */,
 				BCFD22A2162E65B8006B60FA /* QuartzCore.framework */,
 				BCFD22A0162E6527006B60FA /* ImageIO.framework */,
 				BC97BDCC1613D48300A3676A /* CoreData.framework */,
@@ -350,7 +416,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		BC2FF60C160AA21500FE4AA5 /* TMBOTests */ = {
+		BC2FF60C160AA21500FE4AA5 /* TMBO-OCUnit */ = {
 			isa = PBXGroup;
 			children = (
 				BC2FF612160AA21500FE4AA5 /* TMBOTests.h */,
@@ -359,6 +425,7 @@
 				BC6662221623F7A9007EB031 /* TMBOObjectListTests.h */,
 				BC6662231623F7A9007EB031 /* TMBOObjectListTests.m */,
 			);
+			name = "TMBO-OCUnit";
 			path = TMBOTests;
 			sourceTree = "<group>";
 		};
@@ -503,6 +570,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BC2B7B411634FEA90056325D /* TMBO-GHUnit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC2B7B591634FEA90056325D /* Build configuration list for PBXNativeTarget "TMBO-GHUnit" */;
+			buildPhases = (
+				BC2B7B3E1634FEA90056325D /* Sources */,
+				BC2B7B3F1634FEA90056325D /* Frameworks */,
+				BC2B7B401634FEA90056325D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TMBO-GHUnit";
+			productName = "TMBO-GHUnit";
+			productReference = BC2B7B421634FEA90056325D /* TMBO-GHUnit.app */;
+			productType = "com.apple.product-type.application";
+		};
 		BC2FF5E3160AA21400FE4AA5 /* TMBO */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BC2FF617160AA21500FE4AA5 /* Build configuration list for PBXNativeTarget "TMBO" */;
@@ -522,9 +606,9 @@
 			productReference = BC2FF5E4160AA21400FE4AA5 /* TMBO.app */;
 			productType = "com.apple.product-type.application";
 		};
-		BC2FF604160AA21500FE4AA5 /* TMBOTests */ = {
+		BC2FF604160AA21500FE4AA5 /* TMBO-OCUnit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BC2FF61A160AA21500FE4AA5 /* Build configuration list for PBXNativeTarget "TMBOTests" */;
+			buildConfigurationList = BC2FF61A160AA21500FE4AA5 /* Build configuration list for PBXNativeTarget "TMBO-OCUnit" */;
 			buildPhases = (
 				BC2FF600160AA21500FE4AA5 /* Sources */,
 				BC2FF601160AA21500FE4AA5 /* Frameworks */,
@@ -536,7 +620,7 @@
 			dependencies = (
 				BC2FF60B160AA21500FE4AA5 /* PBXTargetDependency */,
 			);
-			name = TMBOTests;
+			name = "TMBO-OCUnit";
 			productName = TMBOTests;
 			productReference = BC2FF605160AA21500FE4AA5 /* TMBOTests.octest */;
 			productType = "com.apple.product-type.bundle";
@@ -564,12 +648,24 @@
 			projectRoot = "";
 			targets = (
 				BC2FF5E3160AA21400FE4AA5 /* TMBO */,
-				BC2FF604160AA21500FE4AA5 /* TMBOTests */,
+				BC2FF604160AA21500FE4AA5 /* TMBO-OCUnit */,
+				BC2B7B411634FEA90056325D /* TMBO-GHUnit */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BC2B7B401634FEA90056325D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC2B7B4C1634FEA90056325D /* InfoPlist.strings in Resources */,
+				BC2B7B541634FEA90056325D /* Default.png in Resources */,
+				BC2B7B561634FEA90056325D /* Default@2x.png in Resources */,
+				BC2B7B581634FEA90056325D /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BC2FF5E2160AA21400FE4AA5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -651,6 +747,20 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BC2B7B3E1634FEA90056325D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC2B7B6916350B220056325D /* NNProgressCircleView.m in Sources */,
+				BC2B7B64163500700056325D /* debugger.c in Sources */,
+				BC2B7B631635003E0056325D /* TMBOObjectList.m in Sources */,
+				BC2B7B62163500370056325D /* TMBORange.m in Sources */,
+				BC2B7B601634FFDE0056325D /* TMBOObjectListTests.m in Sources */,
+				BC2B7B4E1634FEA90056325D /* main.m in Sources */,
+				BC2B7B681635089E0056325D /* NNProgressCircleViewTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BC2FF5E0160AA21400FE4AA5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -711,6 +821,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		BC2B7B4A1634FEA90056325D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC2B7B4B1634FEA90056325D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		BC2FF5F1160AA21400FE4AA5 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -730,10 +848,56 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		BC2B7B5A1634FEA90056325D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(inherited)",
+					"\"$(SRCROOT)/Frameworks\"",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TMBO-GHUnit/TMBO-GHUnit-Prefix.pch";
+				INFOPLIST_FILE = "TMBO-GHUnit/TMBO-GHUnit-Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		BC2B7B5B1634FEA90056325D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(inherited)",
+					"\"$(SRCROOT)/Frameworks\"",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TMBO-GHUnit/TMBO-GHUnit-Prefix.pch";
+				INFOPLIST_FILE = "TMBO-GHUnit/TMBO-GHUnit-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		BC2FF615160AA21500FE4AA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -761,7 +925,6 @@
 		BC2FF616160AA21500FE4AA5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -850,6 +1013,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BC2B7B591634FEA90056325D /* Build configuration list for PBXNativeTarget "TMBO-GHUnit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC2B7B5A1634FEA90056325D /* Debug */,
+				BC2B7B5B1634FEA90056325D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		BC2FF5DE160AA21400FE4AA5 /* Build configuration list for PBXProject "TMBO" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -868,7 +1039,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BC2FF61A160AA21500FE4AA5 /* Build configuration list for PBXNativeTarget "TMBOTests" */ = {
+		BC2FF61A160AA21500FE4AA5 /* Build configuration list for PBXNativeTarget "TMBO-OCUnit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BC2FF61B160AA21500FE4AA5 /* Debug */,
