@@ -20,59 +20,46 @@
 - (BOOL)shouldRunOnMainThread { return YES; }
 
 - (void)testNNProgressCircleViewZero {
-    CGRect superFrame = CGRectMake(0.0f, 0.0f, 47.0f, 47.0f);
-    CGRect subFrame = CGRectInset(superFrame, 5.0f, 5.0f);
-    UIView *view = [[UIView alloc] initWithFrame:superFrame];
-    view.backgroundColor = [UIColor blackColor];
-
     NNProgressCircleView *circle = [[NNProgressCircleView alloc] init];
+    UIView *view = [self prepareViewWithCircle:circle];
     circle.progress = 0.0f;
-    [view addSubview:circle];
-    circle.frame = subFrame;
     
     GHVerifyView(view);
 }
 
 - (void)testNNProgressCircleViewOneThird {
-    CGRect superFrame = CGRectMake(0.0f, 0.0f, 47.0f, 47.0f);
-    CGRect subFrame = CGRectInset(superFrame, 5.0f, 5.0f);
-    UIView *view = [[UIView alloc] initWithFrame:superFrame];
-    view.backgroundColor = [UIColor blackColor];
-    
     NNProgressCircleView *circle = [[NNProgressCircleView alloc] init];
+    UIView *view = [self prepareViewWithCircle:circle];
     circle.progress = 0.333333333f;
-    [view addSubview:circle];
-    circle.frame = subFrame;
     
     GHVerifyView(view);
 }
 
 - (void)testNNProgressCircleViewThreeQuarters {
-    CGRect superFrame = CGRectMake(0.0f, 0.0f, 47.0f, 47.0f);
-    CGRect subFrame = CGRectInset(superFrame, 5.0f, 5.0f);
-    UIView *view = [[UIView alloc] initWithFrame:superFrame];
-    view.backgroundColor = [UIColor blackColor];
-    
     NNProgressCircleView *circle = [[NNProgressCircleView alloc] init];
+    UIView *view = [self prepareViewWithCircle:circle];
     circle.progress = 0.75f;
-    [view addSubview:circle];
-    circle.frame = subFrame;
     
     GHVerifyView(view);
 }
 
 - (void)testNNProgressCircleViewFinished {
+    NNProgressCircleView *circle = [[NNProgressCircleView alloc] init];
+    UIView *view = [self prepareViewWithCircle:circle];
+    circle.progress = 1.0f;
+    
+    GHVerifyView(view);
+}
+
+- (UIView *)prepareViewWithCircle:(NNProgressCircleView *)circle;
+{
     CGRect superFrame = CGRectMake(0.0f, 0.0f, 47.0f, 47.0f);
     CGRect subFrame = CGRectInset(superFrame, 5.0f, 5.0f);
     UIView *view = [[UIView alloc] initWithFrame:superFrame];
     view.backgroundColor = [UIColor blackColor];
-    
-    NNProgressCircleView *circle = [[NNProgressCircleView alloc] init];
-    circle.progress = 1.0f;
     [view addSubview:circle];
     circle.frame = subFrame;
-    
-    GHVerifyView(view);
+    return view;
 }
 
 @end
