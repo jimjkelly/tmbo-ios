@@ -27,6 +27,7 @@
 		BC2B7B64163500700056325D /* debugger.c in Sources */ = {isa = PBXBuildFile; fileRef = BC599172162D4B420044BC63 /* debugger.c */; };
 		BC2B7B681635089E0056325D /* NNProgressCircleViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7B671635089E0056325D /* NNProgressCircleViewTests.m */; };
 		BC2B7B6916350B220056325D /* NNProgressCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE84F481634D2FD0074C0FE /* NNProgressCircleView.m */; };
+		BC2B7B8516351BE10056325D /* UIImageView+ImageSize.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7B8416351BE10056325D /* UIImageView+ImageSize.m */; };
 		BC2F210E160B8DB900C28105 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2F210D160B8DB900C28105 /* Crashlytics.framework */; };
 		BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */; };
 		BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -118,6 +119,8 @@
 		BC2B7B5C1634FEEC0056325D /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = Frameworks/GHUnitIOS.framework; sourceTree = "<group>"; };
 		BC2B7B661635089E0056325D /* NNProgressCircleViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNProgressCircleViewTests.h; path = Tests/NNProgressCircleViewTests.h; sourceTree = "<group>"; };
 		BC2B7B671635089E0056325D /* NNProgressCircleViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNProgressCircleViewTests.m; path = Tests/NNProgressCircleViewTests.m; sourceTree = "<group>"; };
+		BC2B7B8316351BE10056325D /* UIImageView+ImageSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+ImageSize.h"; path = "lib/UIImageView+ImageSize.h"; sourceTree = "<group>"; };
+		BC2B7B8416351BE10056325D /* UIImageView+ImageSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+ImageSize.m"; path = "lib/UIImageView+ImageSize.m"; sourceTree = "<group>"; };
 		BC2F210D160B8DB900C28105 /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
 		BC2F2159160BF9CB00C28105 /* TMBO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMBO.xcdatamodel; sourceTree = "<group>"; };
 		BC2F216D160C0A0C00C28105 /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ISO8601DateFormatter.h; path = "lib/iso-8601-date-formatter/ISO8601DateFormatter.h"; sourceTree = "<group>"; };
@@ -155,7 +158,7 @@
 		BC2FF5FA160AA21400FE4AA5 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		BC2FF5FC160AA21400FE4AA5 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BC2FF5FE160AA21400FE4AA5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		BC2FF605160AA21500FE4AA5 /* TMBOTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TMBOTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC2FF605160AA21500FE4AA5 /* TMBOTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TMBOTests.octest; path = "TMBO-OCUnit.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2FF606160AA21500FE4AA5 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		BC2FF60E160AA21500FE4AA5 /* TMBOTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TMBOTests-Info.plist"; sourceTree = "<group>"; };
 		BC2FF610160AA21500FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -441,6 +444,8 @@
 		BC4F5982163466C700836F18 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				BC2B7B8316351BE10056325D /* UIImageView+ImageSize.h */,
+				BC2B7B8416351BE10056325D /* UIImageView+ImageSize.m */,
 				BC2F21A1160D0EA800C28105 /* UIColor+TMBOTheme.h */,
 				BC2F21A2160D0EA800C28105 /* UIColor+TMBOTheme.m */,
 				BC2F21B3160D236D00C28105 /* UIImage+Alpha.h */,
@@ -798,6 +803,7 @@
 				BCFD229F162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.m in Sources */,
 				BC4F5967162FE05500836F18 /* NNAnimatedGIFView.m in Sources */,
 				BCE84F491634D2FD0074C0FE /* NNProgressCircleView.m in Sources */,
+				BC2B7B8516351BE10056325D /* UIImageView+ImageSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1020,6 +1026,7 @@
 				BC2B7B5B1634FEA90056325D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BC2FF5DE160AA21400FE4AA5 /* Build configuration list for PBXProject "TMBO" */ = {
 			isa = XCConfigurationList;

@@ -15,12 +15,15 @@
 #import "TMBOImageDetailViewController.h"
 
 #import "AFNetworking.h"
+#import "NNAnimatedGIFView.h"
 #import "NNProgressCircleView.h"
 #import "TMBOImageScrollView.h"
 #import "TMBOUpload.h"
-#import "NNAnimatedGIFView.h"
+#import "UIImageView+ImageSize.h"
 
 @interface TMBOImageDetailViewController ()
+@property (nonatomic, assign) CGSize imageSize;
+
 - (void)fit;
 @end
 
@@ -31,7 +34,7 @@
 // Called in the image load success completion block and viewWillAppear
 - (void)fit;
 {
-    CGFloat minScale = [self minScaleForImage:self.scrollView.contentView.frame inContainer:self.scrollView.frame.size];
+    CGFloat minScale = [self minScaleForImage:self.imageSize inContainer:self.scrollView.frame.size];
     [self.scrollView setMinimumZoomScale:minScale];
     [self.scrollView setMaximumZoomScale:[[UIScreen mainScreen] scale]];
     
@@ -62,11 +65,13 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             self.progressCircle.hidden = YES;
             
-            // TODO: maybe be less fatalistic about this?
             Assert([responseObject isKindOfClass:[NSData class]]);
             NSData *responseData = (NSData *)responseObject;
-            
-            self.scrollView.contentView = [NNAnimatedGIFView imageViewForData:responseData];
+            UIView *contentView = [NNAnimatedGIFView imageViewForData:responseData];
+            Assert([contentView isKindOfClass:[UIImageView class]] || [contentView isKindOfClass:[NNAnimatedGIFView class]]);
+            self.imageSize = [(id<TMBOImageSize>)contentView imageSize];
+            self.scrollView.contentView = contentView;
+
             [self fit];
 
             [self.spinner stopAnimating];
@@ -102,9 +107,9 @@
 
 #pragma mark - Rotation resizing
 
-- (CGFloat)minScaleForImage:(CGRect)frame inContainer:(CGSize)container;
+- (CGFloat)minScaleForImage:(CGSize)size inContainer:(CGSize)container;
 {
-    CGFloat minScale = MIN((container.width / frame.size.width), (container.height / frame.size.height));
+    CGFloat minScale = MIN((container.width / size.width), (container.height / size.height));
     
     return MIN(minScale, 1.0);
 }
@@ -115,7 +120,7 @@
     BOOL resize = minScale == [self.scrollView zoomScale];
     
     // Set new minScale
-    minScale = [self minScaleForImage:[self.scrollView.contentView frame] inContainer:[self.scrollView frame].size];
+    minScale = [self minScaleForImage:self.imageSize inContainer:[self.scrollView frame].size];
     [self.scrollView setMinimumZoomScale:minScale];
     
     if (resize || minScale > [self.scrollView zoomScale]) {
