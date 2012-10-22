@@ -69,6 +69,7 @@
 		BCB4EC061622079500048C42 /* TMBOLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC051622079500048C42 /* TMBOLoadingCell.m */; };
 		BCB4EC08162207BB00048C42 /* TMBOLoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */; };
 		BCB4EC0F16220CB500048C42 /* UIImage+TMBOAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */; };
+		BCE84F491634D2FD0074C0FE /* NNProgressCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE84F481634D2FD0074C0FE /* NNProgressCircleView.m */; };
 		BCFD229F162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFD229E162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.m */; };
 		BCFD22A1162E6527006B60FA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFD22A0162E6527006B60FA /* ImageIO.framework */; };
 		BCFD22A3162E65B8006B60FA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFD22A2162E65B8006B60FA /* QuartzCore.framework */; };
@@ -181,6 +182,8 @@
 		BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOLoadingCell.xib; path = Views/TMBOLoadingCell.xib; sourceTree = "<group>"; };
 		BCB4EC0D16220CB500048C42 /* UIImage+TMBOAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+TMBOAssets.h"; path = "lib/UIImage+TMBOAssets.h"; sourceTree = "<group>"; };
 		BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+TMBOAssets.m"; path = "lib/UIImage+TMBOAssets.m"; sourceTree = "<group>"; };
+		BCE84F471634D2FD0074C0FE /* NNProgressCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNProgressCircleView.h; path = Views/NNProgressCircleView.h; sourceTree = "<group>"; };
+		BCE84F481634D2FD0074C0FE /* NNProgressCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNProgressCircleView.m; path = Views/NNProgressCircleView.m; sourceTree = "<group>"; };
 		BCFD229D162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+NDVAnimatedGIFSupport.h"; path = "lib/UIImageView-NDVAnimatedGIFSSupport/UIImageView+NDVAnimatedGIFSupport.h"; sourceTree = "<group>"; };
 		BCFD229E162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+NDVAnimatedGIFSupport.m"; path = "lib/UIImageView-NDVAnimatedGIFSSupport/UIImageView+NDVAnimatedGIFSupport.m"; sourceTree = "<group>"; };
 		BCFD22A0162E6527006B60FA /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -274,14 +277,11 @@
 		BC2F2188160CF9A500C28105 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				BCB4EC041622079500048C42 /* TMBOLoadingCell.h */,
-				BCB4EC051622079500048C42 /* TMBOLoadingCell.m */,
-				BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */,
+				BCE84F451634D2B30074C0FE /* Table Cells */,
 				BC2F21EC160E729200C28105 /* TMBOImageScrollView.h */,
 				BC2F21ED160E729200C28105 /* TMBOImageScrollView.m */,
-				BC2F2189160D0C7600C28105 /* TMBOUploadCell.h */,
-				BC2F218A160D0C7600C28105 /* TMBOUploadCell.m */,
-				BC2F218C160D0C8B00C28105 /* TMBOUploadCell.xib */,
+				BCE84F471634D2FD0074C0FE /* NNProgressCircleView.h */,
+				BCE84F481634D2FD0074C0FE /* NNProgressCircleView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -463,6 +463,19 @@
 				BCB4EC021621FB6900048C42 /* TMBORange.m */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		BCE84F451634D2B30074C0FE /* Table Cells */ = {
+			isa = PBXGroup;
+			children = (
+				BCB4EC041622079500048C42 /* TMBOLoadingCell.h */,
+				BCB4EC051622079500048C42 /* TMBOLoadingCell.m */,
+				BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */,
+				BC2F2189160D0C7600C28105 /* TMBOUploadCell.h */,
+				BC2F218A160D0C7600C28105 /* TMBOUploadCell.m */,
+				BC2F218C160D0C8B00C28105 /* TMBOUploadCell.xib */,
+			);
+			name = "Table Cells";
 			sourceTree = "<group>";
 		};
 		BCFD229B162E62D5006B60FA /* UIImageView-NDVAnimatedGIFSupport */ = {
@@ -660,6 +673,7 @@
 				BC6662201623D986007EB031 /* TMBOObjectList.m in Sources */,
 				BC599174162D4B420044BC63 /* debugger.c in Sources */,
 				BCFD229F162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.m in Sources */,
+				BCE84F491634D2FD0074C0FE /* NNProgressCircleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
