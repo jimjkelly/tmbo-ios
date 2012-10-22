@@ -292,20 +292,7 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
 - (void)refreshControlEvent:(UIRefreshControl *)refreshControl;
 {
     [self.topRefresh beginRefreshing];
-    
-    [[TMBODataStore sharedStore] latestUploadsWithType:kTMBOTypeImage completion:^(NSArray *results, NSError *error) {
-        Assert(!!results ^ !!error);
-        
-        if (results) {
-            [self _addUploads:results];
-        } else if (error) {
-            NSLog(@"Refresh error: %@", [error localizedDescription]);
-        }
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.topRefresh endRefreshing];
-        });
-    }];
+    [self _loadUploadsForRange:[TMBORange rangeWithFirst:kFirstUploadID last:NSIntegerMax]];
 }
 
 #pragma mark KVO notifications for updating upload cells
@@ -368,6 +355,12 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
         @synchronized (self.loading) {
             [self.loading removeObject:range];
         }
+        
+        if (self.refreshControl.isRefreshing) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.refreshControl endRefreshing];
+            });
+        }
     };
     
     // Avoid dogpiling requests for this range
@@ -377,7 +370,7 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
     }
     
     if (range.last == NSIntegerMax) {
-        // Top loading can only mean one thing: no uploads yet! Oh no!
+        // Top loading always checked first—the special value for range.last is used by the initial load and the pull-to-refresh widget
         [[TMBODataStore sharedStore] latestUploadsWithType:self.type completion:completion];
     } else if (range.first == kFirstUploadID) {
         // Bottom loading: load last -> first
