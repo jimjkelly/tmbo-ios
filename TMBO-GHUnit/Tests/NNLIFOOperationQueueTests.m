@@ -99,6 +99,28 @@ static NSTimeInterval operationTime = 0.1f;
     [runMock verify];
 }
 
+- (void)testSuspendWhileRunning;
+{
+    NNLIFOOperationQueue *opq = [[NNLIFOOperationQueue alloc] init];
+    
+    id mock1 = [self mockOperationToRun];
+    [opq addOperation:mock1 forKey:@"test"];
+    
+    id mock2 = [self mockOperationToRun];
+    [opq addOperation:mock2 forKey:@"test2"];
+
+    [self halfOperationWait];
+
+    opq.suspended = YES;
+    [self operationTimeoutWait];
+    [mock2 verify];
+    GHAssertThrows([mock1 verify], @"");
+
+    opq.suspended = NO;
+    [self operationTimeoutWait];
+    [mock1 verify];
+}
+
 #pragma mark Mocks
 
 - (id)mockOperationToRun;

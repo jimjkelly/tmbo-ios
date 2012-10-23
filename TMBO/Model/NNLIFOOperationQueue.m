@@ -69,7 +69,6 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
             wrap.operation = operation;
             wrap.key = key;
             wrap.seq = self.seq++;
-            NSLog(@"Added operation %@ (with key: %@)", wrap.operation, wrap.key);
             [self.priorityQueue addObject:wrap];
             [self.keyDict setObject:wrap forKey:key];
             [self worker];
@@ -136,7 +135,6 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
             Assert(index != NSNotFound);
         }
         
-        NSLog(@"Removed operation %@ (with key: %@)", wrap.operation, wrap.key);
         [self.keyDict removeObjectForKey:wrap.key];
         // NSArray is still a list inside, so removing from the middle can be expensive. Mitigate this by replacing operations with tombstone objects.
         [self.priorityQueue replaceObjectAtIndex:index withObject:@(wrap.seq)];
@@ -165,7 +163,10 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
                     [self.priorityQueue removeLastObject];
                     continue;
                 }
-                if (self.suspended) return;
+                if (self.suspended) {
+                    self.running = NO;
+                    return;
+                }
                 
                 wrap = [self.priorityQueue lastObject];
                 [self.priorityQueue removeLastObject];
@@ -181,10 +182,8 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
                 [self.keyDict removeObjectForKey:wrap.key];
             }
             
-            NSLog(@"Started operation %@ (with key: %@)", wrap.operation, wrap.key);
             [wrap.operation start];
             [wrap.operation waitUntilFinished];
-            NSLog(@"Finished operation %@ (with key: %@)", wrap.operation, wrap.key);
             
             @synchronized(self) {
                 // In case the operation was re-added while another instance of it was running
