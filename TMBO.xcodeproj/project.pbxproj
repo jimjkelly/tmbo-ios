@@ -19,7 +19,6 @@
 		BC2B7B541634FEA90056325D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2B7B531634FEA90056325D /* Default.png */; };
 		BC2B7B561634FEA90056325D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2B7B551634FEA90056325D /* Default@2x.png */; };
 		BC2B7B581634FEA90056325D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC2B7B571634FEA90056325D /* Default-568h@2x.png */; };
-		BC2B7B5D1634FEEC0056325D /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2B7B5C1634FEEC0056325D /* GHUnitIOS.framework */; };
 		BC2B7B601634FFDE0056325D /* TMBOObjectListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC6662231623F7A9007EB031 /* TMBOObjectListTests.m */; };
 		BC2B7B611634FFF80056325D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF606160AA21500FE4AA5 /* SenTestingKit.framework */; };
 		BC2B7B62163500370056325D /* TMBORange.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC021621FB6900048C42 /* TMBORange.m */; };
@@ -29,6 +28,7 @@
 		BC2B7B6916350B220056325D /* NNProgressCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE84F481634D2FD0074C0FE /* NNProgressCircleView.m */; };
 		BC2B7B8516351BE10056325D /* UIImageView+ImageSize.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7B8416351BE10056325D /* UIImageView+ImageSize.m */; };
 		BC2B7BA116365D870056325D /* NNLIFOOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7BA016365D870056325D /* NNLIFOOperationQueue.m */; };
+		BC2B7BBA1637071A0056325D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2B7BB31637071A0056325D /* libOCMock.a */; };
 		BC2F210E160B8DB900C28105 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2F210D160B8DB900C28105 /* Crashlytics.framework */; };
 		BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */; };
 		BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -58,6 +58,9 @@
 		BC2FF609160AA21500FE4AA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
 		BC2FF611160AA21500FE4AA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC2FF60F160AA21500FE4AA5 /* InfoPlist.strings */; };
 		BC2FF614160AA21500FE4AA5 /* TMBOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2FF613160AA21500FE4AA5 /* TMBOTests.m */; };
+		BC48A25216370E8700C5C80A /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC48A25116370E8700C5C80A /* GHUnitIOS.framework */; };
+		BC48A25516370EBF00C5C80A /* NNLIFOOperationQueueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC48A25416370EBF00C5C80A /* NNLIFOOperationQueueTests.m */; };
+		BC48A25D1637139800C5C80A /* NNLIFOOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7BA016365D870056325D /* NNLIFOOperationQueue.m */; };
 		BC4F5967162FE05500836F18 /* NNAnimatedGIFView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4F5966162FE05500836F18 /* NNAnimatedGIFView.m */; };
 		BC599151162D1C900044BC63 /* cellSeparator.png in Resources */ = {isa = PBXBuildFile; fileRef = BC59914F162D1C900044BC63 /* cellSeparator.png */; };
 		BC599152162D1C900044BC63 /* cellSeparator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC599150162D1C900044BC63 /* cellSeparator@2x.png */; };
@@ -117,13 +120,13 @@
 		BC2B7B531634FEA90056325D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		BC2B7B551634FEA90056325D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BC2B7B571634FEA90056325D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		BC2B7B5C1634FEEC0056325D /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = Frameworks/GHUnitIOS.framework; sourceTree = "<group>"; };
 		BC2B7B661635089E0056325D /* NNProgressCircleViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNProgressCircleViewTests.h; path = Tests/NNProgressCircleViewTests.h; sourceTree = "<group>"; };
 		BC2B7B671635089E0056325D /* NNProgressCircleViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNProgressCircleViewTests.m; path = Tests/NNProgressCircleViewTests.m; sourceTree = "<group>"; };
 		BC2B7B8316351BE10056325D /* UIImageView+ImageSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+ImageSize.h"; path = "lib/UIImageView+ImageSize.h"; sourceTree = "<group>"; };
 		BC2B7B8416351BE10056325D /* UIImageView+ImageSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+ImageSize.m"; path = "lib/UIImageView+ImageSize.m"; sourceTree = "<group>"; };
 		BC2B7B9F16365D870056325D /* NNLIFOOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNLIFOOperationQueue.h; path = Model/NNLIFOOperationQueue.h; sourceTree = "<group>"; };
 		BC2B7BA016365D870056325D /* NNLIFOOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNLIFOOperationQueue.m; path = Model/NNLIFOOperationQueue.m; sourceTree = "<group>"; };
+		BC2B7BB31637071A0056325D /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		BC2F210D160B8DB900C28105 /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
 		BC2F2159160BF9CB00C28105 /* TMBO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMBO.xcdatamodel; sourceTree = "<group>"; };
 		BC2F216D160C0A0C00C28105 /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ISO8601DateFormatter.h; path = "lib/iso-8601-date-formatter/ISO8601DateFormatter.h"; sourceTree = "<group>"; };
@@ -167,6 +170,15 @@
 		BC2FF610160AA21500FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC2FF612160AA21500FE4AA5 /* TMBOTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TMBOTests.h; sourceTree = "<group>"; };
 		BC2FF613160AA21500FE4AA5 /* TMBOTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TMBOTests.m; sourceTree = "<group>"; };
+		BC48A25116370E8700C5C80A /* GHUnitIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnitIOS.framework; path = Frameworks/GHUnitIOS.framework; sourceTree = "<group>"; };
+		BC48A25316370EBF00C5C80A /* NNLIFOOperationQueueTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNLIFOOperationQueueTests.h; path = Tests/NNLIFOOperationQueueTests.h; sourceTree = "<group>"; };
+		BC48A25416370EBF00C5C80A /* NNLIFOOperationQueueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNLIFOOperationQueueTests.m; path = Tests/NNLIFOOperationQueueTests.m; sourceTree = "<group>"; };
+		BC48A25716370FAA00C5C80A /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
+		BC48A25816370FAA00C5C80A /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
+		BC48A25916370FAA00C5C80A /* OCMConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
+		BC48A25A16370FAA00C5C80A /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
+		BC48A25B16370FAA00C5C80A /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
+		BC48A25C16370FAA00C5C80A /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
 		BC4F5965162FE05500836F18 /* NNAnimatedGIFView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNAnimatedGIFView.h; path = "lib/UIImageView-NDVAnimatedGIFSSupport/NNAnimatedGIFView.h"; sourceTree = "<group>"; };
 		BC4F5966162FE05500836F18 /* NNAnimatedGIFView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNAnimatedGIFView.m; path = "lib/UIImageView-NDVAnimatedGIFSSupport/NNAnimatedGIFView.m"; sourceTree = "<group>"; };
 		BC59914F162D1C900044BC63 /* cellSeparator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cellSeparator.png; path = "Resources/Cell Assets/cellSeparator.png"; sourceTree = "<group>"; };
@@ -231,11 +243,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC2B7B5D1634FEEC0056325D /* GHUnitIOS.framework in Frameworks */,
+				BC2B7BBA1637071A0056325D /* libOCMock.a in Frameworks */,
 				BC2B7B611634FFF80056325D /* SenTestingKit.framework in Frameworks */,
 				BC2B7B441634FEA90056325D /* UIKit.framework in Frameworks */,
 				BC2B7B451634FEA90056325D /* Foundation.framework in Frameworks */,
 				BC2B7B461634FEA90056325D /* CoreGraphics.framework in Frameworks */,
+				BC48A25216370E8700C5C80A /* GHUnitIOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +282,9 @@
 		BC2B7B471634FEA90056325D /* TMBO-GHUnit */ = {
 			isa = PBXGroup;
 			children = (
+				BC48A25316370EBF00C5C80A /* NNLIFOOperationQueueTests.h */,
+				BC48A25416370EBF00C5C80A /* NNLIFOOperationQueueTests.m */,
+				BC2B7BB11637068B0056325D /* lib */,
 				BC2B7B481634FEA90056325D /* Supporting Files */,
 				BC2B7B661635089E0056325D /* NNProgressCircleViewTests.h */,
 				BC2B7B671635089E0056325D /* NNProgressCircleViewTests.m */,
@@ -288,6 +304,24 @@
 				BC2B7B571634FEA90056325D /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BC2B7BB11637068B0056325D /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				BC2B7BB21637071A0056325D /* OCMock */,
+			);
+			name = lib;
+			sourceTree = "<group>";
+		};
+		BC2B7BB21637071A0056325D /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				BC48A25616370FAA00C5C80A /* OCMock */,
+				BC2B7BB31637071A0056325D /* libOCMock.a */,
+			);
+			name = OCMock;
+			path = lib/OCMock;
 			sourceTree = "<group>";
 		};
 		BC2F2156160BF9B500C28105 /* Model */ = {
@@ -379,7 +413,7 @@
 		BC2FF5E7160AA21400FE4AA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BC2B7B5C1634FEEC0056325D /* GHUnitIOS.framework */,
+				BC48A25116370E8700C5C80A /* GHUnitIOS.framework */,
 				BCFD22A2162E65B8006B60FA /* QuartzCore.framework */,
 				BCFD22A0162E6527006B60FA /* ImageIO.framework */,
 				BC97BDCC1613D48300A3676A /* CoreData.framework */,
@@ -444,6 +478,19 @@
 				BC2FF60F160AA21500FE4AA5 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BC48A25616370FAA00C5C80A /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				BC48A25716370FAA00C5C80A /* NSNotificationCenter+OCMAdditions.h */,
+				BC48A25816370FAA00C5C80A /* OCMArg.h */,
+				BC48A25916370FAA00C5C80A /* OCMConstraint.h */,
+				BC48A25A16370FAA00C5C80A /* OCMock.h */,
+				BC48A25B16370FAA00C5C80A /* OCMockObject.h */,
+				BC48A25C16370FAA00C5C80A /* OCMockRecorder.h */,
+			);
+			path = OCMock;
 			sourceTree = "<group>";
 		};
 		BC4F5982163466C700836F18 /* Categories */ = {
@@ -761,6 +808,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC48A25D1637139800C5C80A /* NNLIFOOperationQueue.m in Sources */,
 				BC2B7B6916350B220056325D /* NNProgressCircleView.m in Sources */,
 				BC2B7B64163500700056325D /* debugger.c in Sources */,
 				BC2B7B631635003E0056325D /* TMBOObjectList.m in Sources */,
@@ -768,6 +816,7 @@
 				BC2B7B601634FFDE0056325D /* TMBOObjectListTests.m in Sources */,
 				BC2B7B4E1634FEA90056325D /* main.m in Sources */,
 				BC2B7B681635089E0056325D /* NNProgressCircleViewTests.m in Sources */,
+				BC48A25516370EBF00C5C80A /* NNLIFOOperationQueueTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -865,15 +914,20 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Frameworks\"",
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 					"$(inherited)",
-					"\"$(SRCROOT)/Frameworks\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TMBO-GHUnit/TMBO-GHUnit-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/TMBO-GHUnit/lib/OCMock\"";
 				INFOPLIST_FILE = "TMBO-GHUnit/TMBO-GHUnit-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/TMBO-GHUnit/lib/OCMock\"",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -889,15 +943,20 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Frameworks\"",
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 					"$(inherited)",
-					"\"$(SRCROOT)/Frameworks\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TMBO-GHUnit/TMBO-GHUnit-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/TMBO-GHUnit/lib/OCMock\"";
 				INFOPLIST_FILE = "TMBO-GHUnit/TMBO-GHUnit-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/TMBO-GHUnit/lib/OCMock\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
