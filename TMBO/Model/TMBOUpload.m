@@ -14,6 +14,7 @@
 
 #import "TMBOUpload.h"
 
+#import "NNLIFOOperationQueue.h"
 #import "TMBOAPIClient.h"
 #import "UIImage+Resize.h"
 
@@ -24,6 +25,8 @@ NSComparator kUploadComparator = ^(id a, id b) {
     // Reverse sort: lower indexes are higher uploads
     return [[b uploadid] compare:[a uploadid]];
 };
+
+static NNLIFOOperationQueue *thumbnailOperationQueue;
 
 @implementation TMBOUpload
 
@@ -51,7 +54,12 @@ NSComparator kUploadComparator = ^(id a, id b) {
 
 @synthesize thumbnail = _thumbnail;
 
-- (UIImage *)thumbnail
++ (void)initialize;
+{
+    thumbnailOperationQueue = [[NNLIFOOperationQueue alloc] init];
+}
+
+- (UIImage *)thumbnail;
 {
     if (!self.thumbnailData) return nil;
     
@@ -121,7 +129,9 @@ NSComparator kUploadComparator = ^(id a, id b) {
 - (void)refreshThumbnailWithMinimumSize:(CGSize)thumbsize;
 {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // TODO: check this!
         // Thumbnail is not good enough. Load another!
+        
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kTMBOBaseURLString, self.thumbURL]];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -146,7 +156,7 @@ NSComparator kUploadComparator = ^(id a, id b) {
             Log(@"%@ encountered error: %@", operation, error);
         }];
         
-        [operation start];
+        [thumbnailOperationQueue addOperation:operation forKey:self.thumbURL];
     });
 }
 

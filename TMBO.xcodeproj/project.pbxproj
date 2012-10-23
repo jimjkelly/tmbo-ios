@@ -28,6 +28,7 @@
 		BC2B7B681635089E0056325D /* NNProgressCircleViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7B671635089E0056325D /* NNProgressCircleViewTests.m */; };
 		BC2B7B6916350B220056325D /* NNProgressCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE84F481634D2FD0074C0FE /* NNProgressCircleView.m */; };
 		BC2B7B8516351BE10056325D /* UIImageView+ImageSize.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7B8416351BE10056325D /* UIImageView+ImageSize.m */; };
+		BC2B7BA116365D870056325D /* NNLIFOOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7BA016365D870056325D /* NNLIFOOperationQueue.m */; };
 		BC2F210E160B8DB900C28105 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2F210D160B8DB900C28105 /* Crashlytics.framework */; };
 		BC2F215A160BF9CB00C28105 /* TMBO.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC2F2158160BF9CB00C28105 /* TMBO.xcdatamodeld */; };
 		BC2F216F160C0A0C00C28105 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2F216E160C0A0C00C28105 /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -121,6 +122,8 @@
 		BC2B7B671635089E0056325D /* NNProgressCircleViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNProgressCircleViewTests.m; path = Tests/NNProgressCircleViewTests.m; sourceTree = "<group>"; };
 		BC2B7B8316351BE10056325D /* UIImageView+ImageSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+ImageSize.h"; path = "lib/UIImageView+ImageSize.h"; sourceTree = "<group>"; };
 		BC2B7B8416351BE10056325D /* UIImageView+ImageSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+ImageSize.m"; path = "lib/UIImageView+ImageSize.m"; sourceTree = "<group>"; };
+		BC2B7B9F16365D870056325D /* NNLIFOOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNLIFOOperationQueue.h; path = Model/NNLIFOOperationQueue.h; sourceTree = "<group>"; };
+		BC2B7BA016365D870056325D /* NNLIFOOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNLIFOOperationQueue.m; path = Model/NNLIFOOperationQueue.m; sourceTree = "<group>"; };
 		BC2F210D160B8DB900C28105 /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Crashlytics.framework; sourceTree = "<group>"; };
 		BC2F2159160BF9CB00C28105 /* TMBO.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TMBO.xcdatamodel; sourceTree = "<group>"; };
 		BC2F216D160C0A0C00C28105 /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ISO8601DateFormatter.h; path = "lib/iso-8601-date-formatter/ISO8601DateFormatter.h"; sourceTree = "<group>"; };
@@ -290,6 +293,8 @@
 		BC2F2156160BF9B500C28105 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BC2B7B9F16365D870056325D /* NNLIFOOperationQueue.h */,
+				BC2B7BA016365D870056325D /* NNLIFOOperationQueue.m */,
 				BC97BD9C1613A2D300A3676A /* TMBOUpload.h */,
 				BC97BD99161372D800A3676A /* TMBODataStore.h */,
 				BC66621E1623D986007EB031 /* TMBOObjectList.h */,
@@ -804,6 +809,7 @@
 				BC4F5967162FE05500836F18 /* NNAnimatedGIFView.m in Sources */,
 				BCE84F491634D2FD0074C0FE /* NNProgressCircleView.m in Sources */,
 				BC2B7B8516351BE10056325D /* UIImageView+ImageSize.m in Sources */,
+				BC2B7BA116365D870056325D /* NNLIFOOperationQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
