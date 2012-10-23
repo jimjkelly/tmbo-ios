@@ -19,6 +19,9 @@
 @property (nonatomic, assign, getter = isSuspended) BOOL suspended;
 @property (nonatomic, readonly) NSArray *operations;
 
+// If you just want the number of operations in the queue, calling -operationCount will be MUCH faster than [-operations count]
+- (NSUInteger)operationCount;
+
 - (void)addOperation:(NSOperation *)operation forKey:(id<NSCopying>)key;
 - (void)cancelAllOperations;
 

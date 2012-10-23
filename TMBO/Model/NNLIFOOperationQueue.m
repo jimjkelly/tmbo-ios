@@ -101,9 +101,23 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
 
 #pragma mark Properties
 
+- (NSUInteger)operationCount;
+{
+    return [self.keyDict count];
+}
+
 - (NSArray *)operations;
 {
-    return [self.priorityQueue copy];
+    NSMutableArray *operations = [NSMutableArray array];
+
+    @synchronized(self) {
+        for (id obj in self.priorityQueue) {
+            if (![obj isKindOfClass:[NNInternalOperationWrapper class]]) continue;
+            [operations addObject:[obj operation]];
+        }
+    }
+
+    return operations;
 }
 
 #pragma mark Private
