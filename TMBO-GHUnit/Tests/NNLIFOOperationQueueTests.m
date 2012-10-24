@@ -18,8 +18,8 @@
 
 #import "NNLIFOOperationQueue.h"
 
-static NSTimeInterval operationTime = 0.1f;
-#define operationTimeout ((NSTimeInterval)(operationTime * 1.2f))
+static NSTimeInterval operationTime = 0.01f;
+#define operationTimeout ((NSTimeInterval)(operationTime * 1.2f + 0.04f))
 
 @implementation NNLIFOOperationQueueTests
 
