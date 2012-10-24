@@ -36,16 +36,18 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
 @property (nonatomic, strong) NSMutableDictionary *keyDict;
 @property (nonatomic, assign) BOOL running;
 @property (nonatomic, assign) NSUInteger seq;
+@property (nonatomic, strong) dispatch_queue_t soul;
 
 @end
 
 @implementation NNLIFOOperationQueue
-@synthesize suspended = _suspended;
 
 - (id)init;
 {
     self = [super init];
     BailUnless(self, nil);
+    
+    _soul = dispatch_queue_create([[self description] UTF8String], DISPATCH_QUEUE_SERIAL);
     
     _priorityQueue = [[NSMutableArray alloc] init];
     _keyDict = [[NSMutableDictionary alloc] init];
@@ -57,45 +59,39 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
 
 - (void)addOperation:(NSOperation *)operation forKey:(id<NSCopying>)key;
 {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        @synchronized(self) {
-            NNInternalOperationWrapper *wrap = [self.keyDict objectForKey:key];
-            if (wrap) {
-                [self cancelWrappedOperationWithKey:wrap.key];
-                wrap = nil;
-            }
-            
-            wrap = [[NNInternalOperationWrapper alloc] init];
-            wrap.operation = operation;
-            wrap.key = key;
-            wrap.seq = self.seq++;
-            [self.priorityQueue addObject:wrap];
-            [self.keyDict setObject:wrap forKey:key];
-            [self worker];
+    dispatch_async(self.soul, ^{
+        NNInternalOperationWrapper *wrap = [self.keyDict objectForKey:key];
+        if (wrap) {
+            [self cancelWrappedOperationWithKey:wrap.key];
+            wrap = nil;
         }
+        
+        wrap = [[NNInternalOperationWrapper alloc] init];
+        wrap.operation = operation;
+        wrap.key = key;
+        wrap.seq = self.seq++;
+        [self.priorityQueue addObject:wrap];
+        [self.keyDict setObject:wrap forKey:key];
+        [self worker];
     });
 }
 
 - (void)cancelAllOperations;
 {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        @synchronized(self) {
-            while ([self.priorityQueue count]) {
-                [self cancelWrappedOperationWithKey:((NNInternalOperationWrapper *)[self.priorityQueue lastObject]).key];
-            }
+    dispatch_async(self.soul, ^{
+        while ([self.priorityQueue count]) {
+            [self cancelWrappedOperationWithKey:((NNInternalOperationWrapper *)[self.priorityQueue lastObject]).key];
         }
     });
 }
 
 - (void)setSuspended:(BOOL)suspended;
 {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        @synchronized(self) {
-            if (!suspended) {
-                [self worker];
-            }
-            _suspended = suspended;
+    dispatch_async(self.soul, ^{
+        if (!suspended) {
+            [self worker];
         }
+        _suspended = suspended;
     });
 }
 
@@ -110,12 +106,12 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
 {
     NSMutableArray *operations = [NSMutableArray array];
 
-    @synchronized(self) {
+    dispatch_sync(self.soul, ^{
         for (id obj in self.priorityQueue) {
             if (![obj isKindOfClass:[NNInternalOperationWrapper class]]) continue;
             [operations addObject:[obj operation]];
         }
-    }
+    });
 
     return operations;
 }
@@ -124,68 +120,112 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
 
 - (void)cancelWrappedOperationWithKey:(id<NSCopying>)key;
 {
+    // This sucks and I'm told by People that there will be a better way to do exacty this check in the future.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    Assert(dispatch_get_current_queue() == self.soul);
+#pragma clang diagnostic pop
+    
     NNInternalOperationWrapper *wrap;
     
-    @synchronized(self) {
-        wrap = [self.keyDict objectForKey:key];
-        if (!wrap) return;
-        
-        NSUInteger index = [self.priorityQueue indexOfObject:wrap inSortedRange:NSMakeRange(0, [self.priorityQueue count]) options:NSBinarySearchingFirstEqual usingComparator:priorityQueueComparator];
-        if (index == NSNotFound) {
-            Assert(index != NSNotFound);
-        }
-        
-        [self.keyDict removeObjectForKey:wrap.key];
-        // NSArray is still a list inside, so removing from the middle can be expensive. Mitigate this by replacing operations with tombstone objects.
-        [self.priorityQueue replaceObjectAtIndex:index withObject:@(wrap.seq)];
+    wrap = [self.keyDict objectForKey:key];
+    if (!wrap) return;
+    
+    NSUInteger index = [self.priorityQueue indexOfObject:wrap inSortedRange:NSMakeRange(0, [self.priorityQueue count]) options:NSBinarySearchingFirstEqual usingComparator:priorityQueueComparator];
+    if (index == NSNotFound) {
+        Assert(index != NSNotFound);
     }
+    
+    [self.keyDict removeObjectForKey:wrap.key];
+    // NSArray is still a list inside, so removing from the middle can be expensive. Mitigate this by replacing operations with tombstone objects.
+    [self.priorityQueue replaceObjectAtIndex:index withObject:@(wrap.seq)];
 
-    [wrap.operation cancel];
-    [wrap.operation start];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [wrap.operation cancel];
+        [wrap.operation start];
+    });
+}
+
+- (NNInternalOperationWrapper *)nextAvailableOperation;
+{
+    // This sucks and I'm told by People that there will be a better way to do exacty this check in the future.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    Assert(dispatch_get_current_queue() == self.soul);
+#pragma clang diagnostic pop
+    
+    // Nothing to run if queue is suspended
+    if (self.suspended || !self.running) {
+        self.running = NO;
+        return nil;
+    }
+    
+    NNInternalOperationWrapper *wrap = nil;
+    NSUInteger watchdog = 0;
+    void (^removeTombstones)() = ^{
+        while ([[self.priorityQueue lastObject] isKindOfClass:[NSNumber class]]) {
+            [self.priorityQueue removeLastObject];
+        }
+    };
+    
+    removeTombstones();
+    
+    while(watchdog < [self.priorityQueue count] && ![((NNInternalOperationWrapper *)[self.priorityQueue lastObject]).operation isReady]) {
+        // Need to use KVO to restart the queue when an unprepared operation becomes ready. For now, all operations should be ready to go so there's no rush to implement this yet.
+        Assert([((NNInternalOperationWrapper *)[self.priorityQueue lastObject]).operation isReady]);
+        watchdog++;
+        [self.priorityQueue insertObject:[self.priorityQueue lastObject] atIndex:0];
+        [self.priorityQueue removeLastObject];
+        removeTombstones();
+    }
+    
+    if (![((NNInternalOperationWrapper *)[self.priorityQueue lastObject]).operation isReady]) {
+        self.running = NO;
+        return nil;
+    }
+    
+    wrap = [self.priorityQueue lastObject];
+
+    
+    [self.priorityQueue removeLastObject];
+    Assert([self.keyDict objectForKey:wrap.key]);
+    [self.keyDict removeObjectForKey:wrap.key];
+    
+    return wrap;
 }
 
 - (void)worker;
 {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        @synchronized(self) {
-            if (self.suspended) return;
-            if (self.running) return;
-            if (![self.priorityQueue count]) return;
-            self.running = YES;
+        
+        __block BOOL shouldAbort = NO;
+        dispatch_sync(self.soul, ^{
+            if (self.suspended || self.running || ![self.priorityQueue count]) {
+                shouldAbort = YES;
+            } else {
+                self.running = YES;
+            }
+        });
+        if (shouldAbort) {
+            return;
         }
         
         while ([self.priorityQueue count]) {
-            NNInternalOperationWrapper *wrap;
+            __block NNInternalOperationWrapper *wrap;
             
-            @synchronized(self) {
-                // Skip tombstones
-                if ([[self.priorityQueue lastObject] isKindOfClass:[NSNumber class]]) {
-                    [self.priorityQueue removeLastObject];
-                    continue;
-                }
-                if (self.suspended) {
-                    self.running = NO;
-                    return;
-                }
-                
-                wrap = [self.priorityQueue lastObject];
-                [self.priorityQueue removeLastObject];
-                
-                Check([wrap.operation isReady]);
-                if(![wrap.operation isReady]) {
-                    // Bad behaviour is rewarded by being inserted at the very end of the queue
-                    [self.priorityQueue insertObject:wrap atIndex:0];
-                    continue;
-                }
-                
-                Assert([self.keyDict objectForKey:wrap.key]);
-                [self.keyDict removeObjectForKey:wrap.key];
+            dispatch_sync(self.soul, ^{
+                wrap = [self nextAvailableOperation];
+            });
+            
+            if (!self.running) {
+                Assert(!wrap);
+                return;
             }
-            
+
             [wrap.operation start];
             [wrap.operation waitUntilFinished];
             
-            @synchronized(self) {
+            dispatch_sync(self.soul, ^{
                 // In case the operation was re-added while another instance of it was running
                 if ([self.keyDict objectForKey:wrap.key]) {
                     [self cancelWrappedOperationWithKey:wrap.key];
@@ -193,9 +233,8 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
                 
                 if (![self.priorityQueue count]) {
                     self.running = NO;
-                    return;
                 }
-            }
+            });
         }
     });
 }
