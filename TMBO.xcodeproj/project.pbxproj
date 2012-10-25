@@ -61,6 +61,7 @@
 		BC48A25216370E8700C5C80A /* GHUnitIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC48A25116370E8700C5C80A /* GHUnitIOS.framework */; };
 		BC48A25516370EBF00C5C80A /* NNLIFOOperationQueueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC48A25416370EBF00C5C80A /* NNLIFOOperationQueueTests.m */; };
 		BC48A25D1637139800C5C80A /* NNLIFOOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2B7BA016365D870056325D /* NNLIFOOperationQueue.m */; };
+		BC48A2821637CDCD00C5C80A /* NNLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = BC48A2811637CDCD00C5C80A /* NNLogger.m */; };
 		BC4F5967162FE05500836F18 /* NNAnimatedGIFView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4F5966162FE05500836F18 /* NNAnimatedGIFView.m */; };
 		BC599151162D1C900044BC63 /* cellSeparator.png in Resources */ = {isa = PBXBuildFile; fileRef = BC59914F162D1C900044BC63 /* cellSeparator.png */; };
 		BC599152162D1C900044BC63 /* cellSeparator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BC599150162D1C900044BC63 /* cellSeparator@2x.png */; };
@@ -179,6 +180,8 @@
 		BC48A25A16370FAA00C5C80A /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
 		BC48A25B16370FAA00C5C80A /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
 		BC48A25C16370FAA00C5C80A /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
+		BC48A2801637CDCD00C5C80A /* NNLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNLogger.h; path = lib/NNLogger.h; sourceTree = "<group>"; };
+		BC48A2811637CDCD00C5C80A /* NNLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNLogger.m; path = lib/NNLogger.m; sourceTree = "<group>"; };
 		BC4F5965162FE05500836F18 /* NNAnimatedGIFView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNAnimatedGIFView.h; path = "lib/UIImageView-NDVAnimatedGIFSSupport/NNAnimatedGIFView.h"; sourceTree = "<group>"; };
 		BC4F5966162FE05500836F18 /* NNAnimatedGIFView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNAnimatedGIFView.m; path = "lib/UIImageView-NDVAnimatedGIFSSupport/NNAnimatedGIFView.m"; sourceTree = "<group>"; };
 		BC59914F162D1C900044BC63 /* cellSeparator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cellSeparator.png; path = "Resources/Cell Assets/cellSeparator.png"; sourceTree = "<group>"; };
@@ -341,6 +344,8 @@
 		BC2F216B160C09EF00C28105 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				BC48A2801637CDCD00C5C80A /* NNLogger.h */,
+				BC48A2811637CDCD00C5C80A /* NNLogger.m */,
 				BC97BDAE1613D36B00A3676A /* AFNetworking */,
 				BC4F5982163466C700836F18 /* Categories */,
 				BC599171162D4B420044BC63 /* debugger */,
@@ -859,6 +864,7 @@
 				BCE84F491634D2FD0074C0FE /* NNProgressCircleView.m in Sources */,
 				BC2B7B8516351BE10056325D /* UIImageView+ImageSize.m in Sources */,
 				BC2B7BA116365D870056325D /* NNLIFOOperationQueue.m in Sources */,
+				BC48A2821637CDCD00C5C80A /* NNLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
