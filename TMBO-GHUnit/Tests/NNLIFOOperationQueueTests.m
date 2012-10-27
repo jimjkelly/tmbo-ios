@@ -134,6 +134,9 @@
     
     [runMock finishJob];
 
+    // After the mock operation finishes, the operation queue needs a nonzero amount of time to cancel the duplicate operation and run it.
+    usleep(10000);
+
     [cancelMock verify];
     GHAssertTrue(runMock.started, @"");
 }
@@ -185,7 +188,7 @@
 {
     [NNLogger setLogLevel:kNNSeverityTrace forContext:@"NNLIFOOperationQueue" orFile:(__FILE__)];
     NMSetLogLevel(kNNSeverityTrace);
-    NMLogDebug(@"Set up logging for %@ and %@", @"NNLIFOOperationQueue", @"NNLIFOOperationQueueTests");
+    NMLogDebug(@"Set up logging for self and %@", @"NNLIFOOperationQueue");
 }
 
 - (BOOL)shouldRunOnMainThread;
