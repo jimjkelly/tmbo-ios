@@ -62,7 +62,7 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
     dispatch_async(self.soul, ^{
         NNInternalOperationWrapper *wrap = [self.keyDict objectForKey:key];
         if (wrap) {
-            [self cancelWrappedOperationWithKey:wrap.key];
+            [self removeWrappedOperationWithKey:wrap.key];
             wrap = nil;
         }
         
@@ -80,7 +80,7 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
 {
     dispatch_async(self.soul, ^{
         while ([self.priorityQueue count]) {
-            [self cancelWrappedOperationWithKey:((NNInternalOperationWrapper *)[self.priorityQueue lastObject]).key];
+            [self removeWrappedOperationWithKey:((NNInternalOperationWrapper *)[self.priorityQueue lastObject]).key];
         }
     });
 }
@@ -118,7 +118,7 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
 
 #pragma mark Private
 
-- (void)cancelWrappedOperationWithKey:(id<NSCopying>)key;
+- (void)removeWrappedOperationWithKey:(id<NSCopying>)key;
 {
     // This sucks and I'm told by People that there will be a better way to do exacty this check in the future.
 #pragma clang diagnostic push
@@ -197,7 +197,6 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
 - (void)worker;
 {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        
         __block BOOL shouldAbort = NO;
         dispatch_sync(self.soul, ^{
             if (self.suspended || self.running || ![self.priorityQueue count]) {
@@ -209,14 +208,15 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
         if (shouldAbort) {
             return;
         }
-        
-        while ([self.priorityQueue count]) {
-            __block NNInternalOperationWrapper *wrap;
+
+        __block NNInternalOperationWrapper *wrap;
+
+        dispatch_sync(self.soul, ^{
+            wrap = [self nextAvailableOperation];
             
-            dispatch_sync(self.soul, ^{
-                wrap = [self nextAvailableOperation];
-            });
-            
+        });
+
+        while (wrap) {
             if (!self.running) {
                 Assert(!wrap);
                 return;
@@ -228,12 +228,14 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
             dispatch_sync(self.soul, ^{
                 // In case the operation was re-added while another instance of it was running
                 if ([self.keyDict objectForKey:wrap.key]) {
-                    [self cancelWrappedOperationWithKey:wrap.key];
+                    [self removeWrappedOperationWithKey:wrap.key];
                 }
                 
                 if (![self.priorityQueue count]) {
                     self.running = NO;
                 }
+                
+                wrap = [self nextAvailableOperation];
             });
         }
     });
