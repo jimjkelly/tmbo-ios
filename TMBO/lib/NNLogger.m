@@ -19,7 +19,7 @@
 #import "NNConsoleLogWriter.h"
 #endif
 
-static NSString * const kRootLoggerContext = @"root";
+NSString * const kRootLoggerContext = @"root";
 
 static NSMutableDictionary *contextForFilename;
 static NSMutableDictionary *loggerForContext;
@@ -53,7 +53,8 @@ static NSMutableSet *logWriters;
     self = [super init];
     BailUnless(self, nil);
     
-    self.logLevel = kNNSeverityInfo;
+    _logLevel = kNNSeverityInfo;
+    _context = context;
     
     [loggerForContext setObject:self forKey:context];
     
@@ -67,7 +68,7 @@ static NSMutableSet *logWriters;
     }
     
     for (NNLogWriter *writer in logWriters) {
-        [writer logMessage:message withSeverity:severity inFile:filename atLine:line userInfo:userInfo];
+        [writer logMessage:message inContext:self.context withSeverity:severity inFile:filename atLine:line userInfo:userInfo];
     }
 }
 

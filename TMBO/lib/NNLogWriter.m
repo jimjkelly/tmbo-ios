@@ -10,7 +10,7 @@
 
 @implementation NNLogWriter
 
-- (void)logMessage:(NSString *)message withSeverity:(NNSeverity)severity inFile:(char *)filename atLine:(NSUInteger)line userInfo:(NSDictionary *)userInfo;
+- (void)logMessage:(NSString *)message inContext:(NSString *)context withSeverity:(NNSeverity)severity inFile:(char *)filename atLine:(NSUInteger)line userInfo:(NSDictionary *)userInfo;
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Subclasses of %@ must override %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd)]

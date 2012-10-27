@@ -10,11 +10,15 @@
 
 @implementation NNConsoleLogWriter
 
-- (void)logMessage:(NSString *)message withSeverity:(NNSeverity)severity inFile:(char *)filename atLine:(NSUInteger)line userInfo:(NSDictionary *)userInfo;
+- (void)logMessage:(NSString *)message inContext:(NSString *)context withSeverity:(NNSeverity)severity inFile:(char *)filename atLine:(NSUInteger)line userInfo:(NSDictionary *)userInfo;
 {
-    NSString *shortFilename = [[[NSString alloc] initWithCString:(filename) encoding:NSUTF8StringEncoding] lastPathComponent];
     // TODO: need severity
-    NSLog(@"%@:%d: %@ %@", shortFilename, line, message, userInfo ? [NSString stringWithFormat:@" userInfo: %@", userInfo] : @"");
+    if ([context isEqualToString:kRootLoggerContext]) {
+        NSString *shortFilename = [[[NSString alloc] initWithCString:(filename) encoding:NSUTF8StringEncoding] lastPathComponent];
+        NSLog(@"%@:%d: %@ %@", shortFilename, line, message, userInfo ? [NSString stringWithFormat:@" userInfo: %@", userInfo] : @"");
+    } else {
+        NSLog(@"[%@:%d]: %@ %@", context, line, message, userInfo ? [NSString stringWithFormat:@" userInfo: %@", userInfo] : @"");
+    }
 }
 
 @end

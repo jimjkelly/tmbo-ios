@@ -24,6 +24,8 @@ typedef enum : NSUInteger {
     kNNSeverityCount
 } NNSeverity;
 
+extern NSString * const kRootLoggerContext;
+
 @interface NNLogger : NSObject
 @property (nonatomic, assign) NNSeverity logLevel;
 @property (nonatomic, readonly) NSString *context;
