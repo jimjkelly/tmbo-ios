@@ -14,6 +14,7 @@
 
 #import "TMBOObjectListTests.h"
 
+#import "NNLogger.h"
 #import "TMBOObjectList.h"
 #import "TMBORange.h"
 
@@ -815,6 +816,15 @@ static NSArray *testObjects = nil;
     }
     
     return YES;
+}
+
+#pragma mark Superclass
+
+- (void)setUpClass;
+{
+    [NNLogger setLogLevel:kNNSeverityTrace forContext:@"TMBOObjectList" orFile:(__FILE__)];
+    NMSetLogLevel(kNNSeverityTrace);
+    NMLogDebug(@"Set up logging for self and %@", @"TMBOObjectList");
 }
 
 @end

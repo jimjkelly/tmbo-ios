@@ -14,6 +14,7 @@
 
 #import "TMBOObjectList.h"
 
+#import "NNLogger.h"
 #import "TMBORange.h"
 
 #define arrayObjectAtIndexAsObject(arr, x) ((id<TMBOObject>)[(arr) objectAtIndex:(x)])
@@ -49,6 +50,8 @@ static NSComparator kObjectComparator = ^(id a, id b) {
 
 - (void)destroy;
 {
+    NMLogDebug(@"Destorying object list %p", self);
+    
     if (!self.removedObject) return;
     
     for (id object in self.list) {
@@ -77,6 +80,8 @@ static NSComparator kObjectComparator = ^(id a, id b) {
 
 - (void)addObjectsFromArray:(NSArray *)immutableObjects;
 {
+    NMLogDebug(@"Adding objects from array %p to object list %p", immutableObjects, self);
+    
     if (![immutableObjects count]) return;
 
     NSMutableArray *objects = [immutableObjects mutableCopy];
@@ -214,7 +219,9 @@ static NSComparator kObjectComparator = ^(id a, id b) {
 - (void)setMinimumID:(NSNumber *)minimumID;
 {
     if (_minimumID && ![minimumID isEqualToNumber:_minimumID]) {
-        [NSException raise:@"TMBOObjectListInvalidMinimumIDException" format:@"Minimum ID %@ is different from already-existing minimum: %@", minimumID, _minimumID];
+        NSString *errormsg = [NSString stringWithFormat:@"Minimum ID %@ is different from already-existing minumum: %@", minimumID, _minimumID];
+        NMLogFatal(errormsg);
+        [NSException raise:@"TMBOObjectListInvalidMinimumIDException" format:@"%@", errormsg];
     }
     
     if (_minimumID) return;
@@ -226,7 +233,9 @@ static NSComparator kObjectComparator = ^(id a, id b) {
             Assert([[[self.list lastObject] class] conformsToProtocol:@protocol(TMBOObject)]);
             
             if ([(id<TMBOObject>)[self.list lastObject] objectid] < [minimumID integerValue]) {
-                [NSException raise:@"TMBOObjectListInvalidMinimumIDException" format:@"Minimum ID %@ is larger than objects already in list: %@", minimumID, self.list];
+                NSString *errormsg = [NSString stringWithFormat:@"Minimum ID %@ is larger than objects already in list: %@", minimumID, self.list];
+                NMLogFatal(errormsg);
+                [NSException raise:@"TMBOObjectListInvalidMinimumIDException" format:@"%@", errormsg];
             }
             
             if ([(id<TMBOObject>)[self.list lastObject] objectid] > [minimumID integerValue]) {
