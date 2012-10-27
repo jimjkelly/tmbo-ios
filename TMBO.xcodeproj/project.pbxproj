@@ -92,6 +92,11 @@
 		BCB4EC061622079500048C42 /* TMBOLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC051622079500048C42 /* TMBOLoadingCell.m */; };
 		BCB4EC08162207BB00048C42 /* TMBOLoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */; };
 		BCB4EC0F16220CB500048C42 /* UIImage+TMBOAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */; };
+		BCE54868163B426A00457C3A /* NNLogWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE54867163B426A00457C3A /* NNLogWriter.m */; };
+		BCE5486C163B447200457C3A /* NNConsoleLogWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE5486B163B447200457C3A /* NNConsoleLogWriter.m */; };
+		BCE5486D163B468A00457C3A /* NNLogWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE54867163B426A00457C3A /* NNLogWriter.m */; };
+		BCE5486E163B468A00457C3A /* NNLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = BC48A2811637CDCD00C5C80A /* NNLogger.m */; };
+		BCE5486F163B468A00457C3A /* NNConsoleLogWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE5486B163B447200457C3A /* NNConsoleLogWriter.m */; };
 		BCE84F491634D2FD0074C0FE /* NNProgressCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE84F481634D2FD0074C0FE /* NNProgressCircleView.m */; };
 		BCFD229F162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFD229E162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.m */; };
 		BCFD22A1162E6527006B60FA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFD22A0162E6527006B60FA /* ImageIO.framework */; };
@@ -233,6 +238,10 @@
 		BCB4EC07162207BB00048C42 /* TMBOLoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOLoadingCell.xib; path = Views/TMBOLoadingCell.xib; sourceTree = "<group>"; };
 		BCB4EC0D16220CB500048C42 /* UIImage+TMBOAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+TMBOAssets.h"; path = "lib/UIImage+TMBOAssets.h"; sourceTree = "<group>"; };
 		BCB4EC0E16220CB500048C42 /* UIImage+TMBOAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+TMBOAssets.m"; path = "lib/UIImage+TMBOAssets.m"; sourceTree = "<group>"; };
+		BCE54866163B426A00457C3A /* NNLogWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNLogWriter.h; path = lib/NNLogWriter.h; sourceTree = "<group>"; };
+		BCE54867163B426A00457C3A /* NNLogWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNLogWriter.m; path = lib/NNLogWriter.m; sourceTree = "<group>"; };
+		BCE5486A163B447200457C3A /* NNConsoleLogWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNConsoleLogWriter.h; path = lib/NNConsoleLogWriter.h; sourceTree = "<group>"; };
+		BCE5486B163B447200457C3A /* NNConsoleLogWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNConsoleLogWriter.m; path = lib/NNConsoleLogWriter.m; sourceTree = "<group>"; };
 		BCE84F471634D2FD0074C0FE /* NNProgressCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NNProgressCircleView.h; path = Views/NNProgressCircleView.h; sourceTree = "<group>"; };
 		BCE84F481634D2FD0074C0FE /* NNProgressCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NNProgressCircleView.m; path = Views/NNProgressCircleView.m; sourceTree = "<group>"; };
 		BCFD229D162E62EF006B60FA /* UIImageView+NDVAnimatedGIFSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+NDVAnimatedGIFSupport.h"; path = "lib/UIImageView-NDVAnimatedGIFSSupport/UIImageView+NDVAnimatedGIFSupport.h"; sourceTree = "<group>"; };
@@ -344,8 +353,12 @@
 		BC2F216B160C09EF00C28105 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				BCE54866163B426A00457C3A /* NNLogWriter.h */,
+				BCE54867163B426A00457C3A /* NNLogWriter.m */,
 				BC48A2801637CDCD00C5C80A /* NNLogger.h */,
 				BC48A2811637CDCD00C5C80A /* NNLogger.m */,
+				BCE5486A163B447200457C3A /* NNConsoleLogWriter.h */,
+				BCE5486B163B447200457C3A /* NNConsoleLogWriter.m */,
 				BC97BDAE1613D36B00A3676A /* AFNetworking */,
 				BC4F5982163466C700836F18 /* Categories */,
 				BC599171162D4B420044BC63 /* debugger */,
@@ -822,6 +835,9 @@
 				BC2B7B4E1634FEA90056325D /* main.m in Sources */,
 				BC2B7B681635089E0056325D /* NNProgressCircleViewTests.m in Sources */,
 				BC48A25516370EBF00C5C80A /* NNLIFOOperationQueueTests.m in Sources */,
+				BCE5486D163B468A00457C3A /* NNLogWriter.m in Sources */,
+				BCE5486E163B468A00457C3A /* NNLogger.m in Sources */,
+				BCE5486F163B468A00457C3A /* NNConsoleLogWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -865,6 +881,8 @@
 				BC2B7B8516351BE10056325D /* UIImageView+ImageSize.m in Sources */,
 				BC2B7BA116365D870056325D /* NNLIFOOperationQueue.m in Sources */,
 				BC48A2821637CDCD00C5C80A /* NNLogger.m in Sources */,
+				BCE54868163B426A00457C3A /* NNLogWriter.m in Sources */,
+				BCE5486C163B447200457C3A /* NNConsoleLogWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
