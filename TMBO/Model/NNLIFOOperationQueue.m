@@ -14,6 +14,8 @@
 
 #import "NNLIFOOperationQueue.h"
 
+#import "NNLogger.h"
+
 @interface NNInternalOperationWrapper : NSObject
 @property (nonatomic, strong) NSOperation *operation;
 @property (nonatomic, strong) id<NSCopying> key;
@@ -62,8 +64,11 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
     dispatch_async(self.soul, ^{
         NNInternalOperationWrapper *wrap = [self.keyDict objectForKey:key];
         if (wrap) {
+            NMLogDebug(@"Adding operation 0x%p to queue 0x%p (replacing existing operation with key \"%@\")", operation, self, key);
             [self removeWrappedOperationWithKey:wrap.key];
             wrap = nil;
+        } else {
+            NMLogDebug(@"Added operation 0x%p to queue 0x%p (key \"%@\")", operation, self, key);
         }
         
         wrap = [[NNInternalOperationWrapper alloc] init];
@@ -89,7 +94,10 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
 {
     dispatch_async(self.soul, ^{
         if (!suspended) {
+            NMLogInfo(@"Resuming queue 0x%p", self);
             [self worker];
+        } else {
+            NMLogInfo(@"Suspended queue 0x%p", self);
         }
         _suspended = suspended;
     });
@@ -136,6 +144,7 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
         Assert(index != NSNotFound);
     }
     
+    NMLogDebug(@"Removing operation 0x%p from queue 0x%p (key \"%@\")", wrap.operation, self, key);
     [self.keyDict removeObjectForKey:wrap.key];
     // NSArray is still a list inside, so removing from the middle can be expensive. Mitigate this by replacing operations with tombstone objects.
     [self.priorityQueue replaceObjectAtIndex:index withObject:@(wrap.seq)];
@@ -200,6 +209,13 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
         __block BOOL shouldAbort = NO;
         dispatch_sync(self.soul, ^{
             if (self.suspended || self.running || ![self.priorityQueue count]) {
+                if (self.suspended) {
+                    NMLogTrace(@"Worker thread called, but queue 0x%p is suspended", self);
+                } else if (self.running) {
+                    NMLogTrace(@"Worker thread already running for queue 0x%p", self);
+                } else if (![self.priorityQueue count]) {
+                    NMLogWarn(@"Worker thread called with no jobs for queue 0x%p", self);
+                }
                 shouldAbort = YES;
             } else {
                 self.running = YES;
@@ -209,11 +225,15 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
             return;
         }
 
+        NMLogTrace(@"Starting worker thread for queue 0x%p (%d operations in queue)", self, [self.keyDict count]);
         __block NNInternalOperationWrapper *wrap;
 
         dispatch_sync(self.soul, ^{
             wrap = [self nextAvailableOperation];
             
+            if (wrap) {
+                NMLogTrace(@"Dequeued operation 0x%p for queue 0x%p (key: \"%@\")", wrap.operation, self, wrap.key);
+            }
         });
 
         while (wrap) {
@@ -222,16 +242,20 @@ static NSComparator priorityQueueComparator = ^(id obj1, id obj2) {
                 return;
             }
 
+            NMLogDebug(@"Running operation 0x%p on queue 0x%p (key: \"%@\")", wrap.operation, self, wrap.key);
             [wrap.operation start];
             [wrap.operation waitUntilFinished];
+            NMLogTrace(@"Finished running operation 0x%p on queue 0x%p (key: \"%@\")", wrap.operation, self, wrap.key);
             
             dispatch_sync(self.soul, ^{
                 // In case the operation was re-added while another instance of it was running
                 if ([self.keyDict objectForKey:wrap.key]) {
+                    NMLogTrace(@"Cancelling late-duplicated operation 0x%p on queue 0x%p (key: \"%@\")", [[self.keyDict objectForKey:wrap.key] operation], self, wrap.key);
                     [self removeWrappedOperationWithKey:wrap.key];
                 }
                 
                 if (![self.priorityQueue count]) {
+                    NMLogTrace(@"Worker thread ran out of operations for queue 0x%p", self);
                     self.running = NO;
                 }
                 

@@ -17,6 +17,7 @@
 #import <OCMock/OCMock.h>
 
 #import "NNLIFOOperationQueue.h"
+#import "NNLogger.h"
 
 @interface NNMockOperation : NSOperation
 @property (nonatomic, strong) dispatch_semaphore_t workSemaphore;
@@ -179,6 +180,13 @@
 }
 
 #pragma mark GHUnit
+
+- (void)setUpClass;
+{
+    [NNLogger setLogLevel:kNNSeverityTrace forContext:@"NNLIFOOperationQueue" orFile:(__FILE__)];
+    NMSetLogLevel(kNNSeverityTrace);
+    NMLogDebug(@"Set up logging for %@ and %@", @"NNLIFOOperationQueue", @"NNLIFOOperationQueueTests");
+}
 
 - (BOOL)shouldRunOnMainThread;
 {
