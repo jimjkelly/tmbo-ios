@@ -18,28 +18,64 @@
 
 #import "NNLIFOOperationQueue.h"
 
-static NSTimeInterval operationTime = 0.01f;
-#define operationTimeout ((NSTimeInterval)(operationTime * 1.2f + 0.04f))
+@interface NNMockOperation : NSOperation
+@property (nonatomic, strong) dispatch_semaphore_t workSemaphore;
+@property (nonatomic, strong) dispatch_semaphore_t mockSemaphore;
+@property (nonatomic, assign) BOOL started;
++ (NNMockOperation *)operation;
+- (void)finishJob;
+@end
+@implementation NNMockOperation
++ (NNMockOperation *)operation;
+{
+    return [[NNMockOperation alloc] init];
+}
+
+- (id)init;
+{
+    self = [super init];
+    BailUnless(self, nil);
+    _workSemaphore = dispatch_semaphore_create(0);
+    _mockSemaphore = dispatch_semaphore_create(0);
+    _started = NO;
+    return self;
+}
+
+- (void)main;
+{
+    self.started = YES;
+    dispatch_semaphore_wait(self.workSemaphore, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_signal(self.mockSemaphore);
+}
+
+- (void)finishJob;
+{
+    dispatch_semaphore_signal(self.workSemaphore);
+    if (dispatch_semaphore_wait(self.mockSemaphore, dispatch_time(DISPATCH_TIME_NOW, 1000000000))) {
+        @throw [NSException exceptionWithName:@"OperationNeverRanException" reason:@"Operation never ran!" userInfo:nil];
+    }
+    // Give the pq enough time to queue the next job
+    usleep(10000);
+}
+@end
 
 @implementation NNLIFOOperationQueueTests
 
 - (void)testOperationRun;
 {
     NNLIFOOperationQueue *opq = [[NNLIFOOperationQueue alloc] init];
-
-    id mock = [self mockOperationToRun];
+    
+    NNMockOperation *mock;
+    
+    mock = [NNMockOperation operation];
     [opq addOperation:mock forKey:@"test"];
+    [mock finishJob];
+    GHAssertTrue(mock.started, @"");
     
-    [self operationTimeoutWait];
-    
-    [mock verify];
-    
-    mock = [self mockOperationToRun];
+    mock = [NNMockOperation operation];
     [opq addOperation:mock forKey:@"test"];
-    
-    [self operationTimeoutWait];
-    
-    [mock verify];
+    [mock finishJob];
+    GHAssertTrue(mock.started, @"");
 }
 
 - (void)testSuspend;
@@ -47,17 +83,15 @@ static NSTimeInterval operationTime = 0.01f;
     NNLIFOOperationQueue *opq = [[NNLIFOOperationQueue alloc] init];
     opq.suspended = YES;
     
-    id mock = [self mockOperationToRun];
+    NNMockOperation *mock = [NNMockOperation operation];
     [opq addOperation:mock forKey:@"test"];
     
-    [self operationTimeoutWait];
-    GHAssertThrows([mock verify], @"");
+    GHAssertFalse(mock.started, @"");
     
     opq.suspended = NO;
     
-    [self operationTimeoutWait];
-
-    [mock verify];
+    [mock finishJob];
+    GHAssertTrue(mock.started, @"");
 }
 
 - (void)testReplacement;
@@ -69,15 +103,15 @@ static NSTimeInterval operationTime = 0.01f;
     id cancelMock = [self mockOperationToCancel];
     [opq addOperation:cancelMock forKey:dupKey];
     
-    id runMock = [self mockOperationToRun];
+    NNMockOperation *runMock = [NNMockOperation operation];
     [opq addOperation:runMock forKey:dupKey];
     
     opq.suspended = NO;
     
-    [self operationTimeoutWait];
+    [runMock finishJob];
     
     [cancelMock verify];
-    [runMock verify];
+    GHAssertTrue(runMock.started, @"");
 }
 
 - (void)testReplacementWhileRunning;
@@ -85,54 +119,54 @@ static NSTimeInterval operationTime = 0.01f;
     NNLIFOOperationQueue *opq = [[NNLIFOOperationQueue alloc] init];
     
     NSString *dupKey = @"test";
-    id runMock = [self mockOperationToRun];
+    NNMockOperation *runMock = [NNMockOperation operation];
     [opq addOperation:runMock forKey:dupKey];
 
-    [self halfOperationWait];
+    while (!runMock.started) {
+        usleep(100);
+    }
     
     id cancelMock = [self mockOperationToCancel];
     [opq addOperation:cancelMock forKey:dupKey];
+    // addOperation is async, which is good for real life, but bad for testing. wait a tick to make sure it gets added to the queue
+    usleep(10000);
     
-    [self operationTimeoutWait];
+    [runMock finishJob];
 
     [cancelMock verify];
-    [runMock verify];
+    GHAssertTrue(runMock.started, @"");
 }
 
 - (void)testSuspendWhileRunning;
 {
     NNLIFOOperationQueue *opq = [[NNLIFOOperationQueue alloc] init];
     
-    id mock1 = [self mockOperationToRun];
+    opq.suspended = YES;
+    
+    NNMockOperation *mock1 = [NNMockOperation operation];
     [opq addOperation:mock1 forKey:@"test"];
     
-    id mock2 = [self mockOperationToRun];
+    NNMockOperation *mock2 = [NNMockOperation operation];
     [opq addOperation:mock2 forKey:@"test2"];
+    
+    opq.suspended = NO;
 
-    [self halfOperationWait];
-
+    while (!mock2.started) {
+        usleep(100);
+    }
+    
     opq.suspended = YES;
-    [self operationTimeoutWait];
-    [mock2 verify];
-    GHAssertThrows([mock1 verify], @"");
+
+    [mock2 finishJob];
+    GHAssertTrue(mock2.started, @"");
+    GHAssertFalse(mock1.started, @"");
 
     opq.suspended = NO;
-    [self operationTimeoutWait];
-    [mock1 verify];
+    [mock1 finishJob];
+    GHAssertTrue(mock1.started, @"");
 }
 
 #pragma mark Mocks
-
-- (id)mockOperationToRun;
-{
-    id mock = [OCMockObject mockForClass:[NSOperation class]];
-    
-    [[[mock stub] andReturnValue:OCMOCK_VALUE((BOOL){YES})] isReady];
-    [(NSOperation *)[mock expect] start];
-    [(NSOperation *)[[mock stub] andCall:@selector(operationWait) onObject:self] waitUntilFinished];
-    
-    return mock;
-}
 
 - (id)mockOperationToCancel;
 {
@@ -142,23 +176,6 @@ static NSTimeInterval operationTime = 0.01f;
     [(NSOperation *)[mock expect] start];
     
     return mock;
-}
-
-#pragma mark Timers
-
-- (void)operationWait;
-{
-    usleep((useconds_t)(operationTime * 1000000.0f));
-}
-
-- (void)operationTimeoutWait;
-{
-    usleep((useconds_t)(operationTimeout * 1000000.0f));
-}
-
-- (void)halfOperationWait;
-{
-    usleep((useconds_t)(operationTime * 1000000.0f));
 }
 
 #pragma mark GHUnit
