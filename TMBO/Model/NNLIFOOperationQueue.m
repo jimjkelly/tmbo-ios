@@ -14,8 +14,6 @@
 
 #import "NNLIFOOperationQueue.h"
 
-#import "NNLogger.h"
-
 @interface NNInternalOperationWrapper : NSObject
 @property (nonatomic, strong) NSOperation *operation;
 @property (nonatomic, strong) id<NSCopying> key;
