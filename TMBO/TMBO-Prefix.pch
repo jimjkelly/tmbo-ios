@@ -16,6 +16,7 @@
     #define kDawnOfTime [NSDate dateWithTimeIntervalSince1970:1095206400]
     #define kServerTimeZone [NSTimeZone timeZoneWithName:@"America/Los_Angeles"]
     #define kTMBOToken [[NSUserDefaults standardUserDefaults] stringForKey:@"TMBOToken"]
-    #define kTMBOBaseURL [NSURL URLWithString:@"https://thismight.be"]
+    #define kTMBOBaseURLString @"https://thismight.be"
+    #define kTMBOBaseURL [NSURL URLWithString:kTMBOBaseURLString]
     #define kTMBOUserAgent [NSString stringWithFormat:@"TMBO: The App! (running on %@)", [[UIDevice currentDevice] name]]
 #endif

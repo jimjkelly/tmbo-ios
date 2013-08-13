@@ -15,5 +15,5 @@
 #import <UIKit/UIKit.h>
 
 @interface TMBOImageScrollView : UIScrollView
-@property (nonatomic, weak) UIImageView *imageView;
+@property (nonatomic, weak) UIView *contentView;
 @end

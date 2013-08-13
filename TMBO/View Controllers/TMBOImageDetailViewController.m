@@ -14,33 +14,31 @@
 
 #import "TMBOImageDetailViewController.h"
 
-#import "UIImageView+AFNetworking.h"
-
+#import "AFNetworking.h"
+#import "NNAnimatedGIFView.h"
+#import "NNProgressCircleView.h"
 #import "TMBOImageScrollView.h"
 #import "TMBOUpload.h"
+#import "UIImageView+ImageSize.h"
 
 @interface TMBOImageDetailViewController ()
+@property (nonatomic, assign) CGSize imageSize;
+
 - (void)fit;
 @end
 
 @implementation TMBOImageDetailViewController
-@synthesize upload;
-@synthesize scrollView;
-@synthesize imageView;
-@synthesize spinner;
 
 #pragma mark Factored functionality
 
 // Called in the image load success completion block and viewWillAppear
 - (void)fit;
 {
-    if (![self.imageView image]) return;
-    
-    CGFloat minScale = [self minScaleForImage:[self.imageView image] inContainer:[self.scrollView frame].size];
+    CGFloat minScale = [self minScaleForImage:self.imageSize inContainer:self.scrollView.frame.size];
     [self.scrollView setMinimumZoomScale:minScale];
     [self.scrollView setMaximumZoomScale:[[UIScreen mainScreen] scale]];
     
-    [self.scrollView setZoomScale:[self.scrollView minimumZoomScale] animated:NO];
+    [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:NO];
 }
 
 #pragma mark - UIView overloaded methods
@@ -55,27 +53,41 @@
     [self.view addGestureRecognizer:swipe];
     
     // Loading!
-    [spinner startAnimating];
+    [self.spinner startAnimating];
+    self.progressCircle.hidden = YES;
     
     // Default configuration for zooming scrollview
     [self.scrollView setMinimumZoomScale:1.0];
     [self.scrollView setMaximumZoomScale:1.0];
     [self.scrollView setDelegate:self];
-    [self.scrollView setImageView:self.imageView];
     
-    NSURL *fileURL = [NSURL URLWithString:[upload fileURL] relativeToURL:kTMBOBaseURL];
-    
-    // TODO: 1) get image with progress 2) get image via model, so model can update thumbnail/cache
-    [imageView setImageWithURLRequest:[NSURLRequest requestWithURL:fileURL] placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
-        
-        [self.scrollView setContentSize:[image size]];
-        [self.imageView setFrame:CGRectMake(0.0, 0.0, [image size].width, [image size].height)];
-        
-        [self fit];
-        
-        [spinner stopAnimating];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error){
+    [self.upload getFileWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.progressCircle.hidden = YES;
+            
+            Assert([responseObject isKindOfClass:[NSData class]]);
+            NSData *responseData = (NSData *)responseObject;
+            UIView *contentView = [NNAnimatedGIFView imageViewForData:responseData];
+            Assert([contentView isKindOfClass:[UIImageView class]] || [contentView isKindOfClass:[NNAnimatedGIFView class]]);
+            self.imageSize = [(id<TMBOImageSize>)contentView imageSize];
+            self.scrollView.contentView = contentView;
+
+            [self fit];
+
+            [self.spinner stopAnimating];
+        });
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // TODO: Failure *is* an option
+    } progress:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+        [self.spinner stopAnimating];
+        self.spinner.hidden = YES;
+        self.progressCircle.hidden = NO;
+        
+        if (totalBytesRead == totalBytesExpectedToRead) {
+            self.progressCircle.progress = 1.0f;
+        } else {
+            [self.progressCircle setProgress:((CGFloat)totalBytesRead / (CGFloat)totalBytesExpectedToRead) animated:YES];
+        }
     }];
 }
 
@@ -90,14 +102,14 @@
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView;
 {
-    return imageView;
+    return self.scrollView.contentView;
 }
 
 #pragma mark - Rotation resizing
 
-- (CGFloat)minScaleForImage:(UIImage *)image inContainer:(CGSize)container;
+- (CGFloat)minScaleForImage:(CGSize)size inContainer:(CGSize)container;
 {
-    CGFloat minScale = MIN((container.width / image.size.width), (container.height / image.size.height));
+    CGFloat minScale = MIN((container.width / size.width), (container.height / size.height));
     
     return MIN(minScale, 1.0);
 }
@@ -108,7 +120,7 @@
     BOOL resize = minScale == [self.scrollView zoomScale];
     
     // Set new minScale
-    minScale = [self minScaleForImage:[self.imageView image] inContainer:[self.scrollView frame].size];
+    minScale = [self minScaleForImage:self.imageSize inContainer:[self.scrollView frame].size];
     [self.scrollView setMinimumZoomScale:minScale];
     
     if (resize || minScale > [self.scrollView zoomScale]) {
@@ -122,8 +134,6 @@
 {
     if ([swipe direction] == UISwipeGestureRecognizerDirectionUp) {
         [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        NSLog(@"%@", swipe);
     }
 }
 

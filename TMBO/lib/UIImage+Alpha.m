@@ -41,6 +41,10 @@
                                                           CGImageGetColorSpace(imageRef),
                                                           kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedFirst);
     
+    // If the context failed, abort
+    // http://stackoverflow.com/questions/2457116/iphone-changing-cgimagealphainfo-of-cgimage
+    BailUnless(offscreenContext, nil);
+    
     // Draw the image into the context and retrieve the new image, which will now have an alpha layer
     CGContextDrawImage(offscreenContext, CGRectMake(0, 0, width, height), imageRef);
     CGImageRef imageRefWithAlpha = CGBitmapContextCreateImage(offscreenContext);

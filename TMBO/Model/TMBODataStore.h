@@ -14,6 +14,10 @@
 
 #import <Foundation/Foundation.h>
 
+#import "TMBOUpload.h"
+
+@class TMBORange;
+
 /**
  `TMBODataStore` offers a simple programmatic interface to reading and writing data on TMBO.
  
@@ -36,18 +40,7 @@
  When DEBUG is defined, the model will fail fast and hard wherever possible. If a data getter/setter method is called and there is no token, an exception will be thrown. If `-updateUploadsWithType:inRange:completion:` is called with a range of uploads that is not within the set of uploads cached locally, an exception will be thrown. 
 */
 
-typedef enum : NSUInteger {
-    kTMBOTypeImage  = 0x1,
-    kTMBOTypeTopic  = 0x2,
-    kTMBOTypeAudio  = 0x4,
-    kTMBOTypeAvatar = 0x8,
-    kTMBOTypeAny    = kTMBOTypeImage | kTMBOTypeTopic | kTMBOTypeAudio | kTMBOTypeAvatar
-} kTMBOType;
-
-typedef struct {
-    NSUInteger first;
-    NSUInteger last;
-} TMBORange;
+extern const NSUInteger kFirstUploadID;
 
 @interface TMBODataStore : NSObject
 
@@ -120,11 +113,14 @@ typedef struct {
 /**
  Synchronizes upload data with the server.
  
+ @discussion Unlike other TMBODataStore methods, this method does not pass objects back to the caller via the callback block. Callers interested in specific updates to model objects are encouraged to use KVO notifications.
+ 
  @param type The type of upload to update
  @param range The range of uploads to update, inclusive
- @param block A block with no arguments that is called when all updates inside the range have been processed.
+ @param block A block with an error argument that is called when all updates inside the range have been processed or the operation failed.
  */
-- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange)range completion:(void (^)(void))block;
+- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange *)range completion:(void (^)(NSError *))block;
+
 
 ///---------------------------------
 /// @name Pickuplink Property Access

@@ -30,6 +30,10 @@
                                                  CGImageGetColorSpace(image.CGImage),
                                                  CGImageGetBitmapInfo(image.CGImage));
 
+    // If the context failed, abort
+    // http://stackoverflow.com/questions/2457116/iphone-changing-cgimagealphainfo-of-cgimage
+    BailUnless(context, nil);
+    
     // Create a clipping path with rounded corners
     CGContextBeginPath(context);
     [self addRoundedRectToPath:CGRectMake(borderSize, borderSize, image.size.width - borderSize * 2, image.size.height - borderSize * 2)

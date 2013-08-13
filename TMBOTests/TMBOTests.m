@@ -30,9 +30,9 @@
     [super tearDown];
 }
 
-- (void)testExample
-{
-    STFail(@"Unit tests are not implemented yet in TMBOTests");
-}
+//- (void)testExample
+//{
+//    STFail(@"Unit tests are not implemented yet in TMBOTests");
+//}
 
 @end

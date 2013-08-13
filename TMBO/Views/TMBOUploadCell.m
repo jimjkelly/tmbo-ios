@@ -1,5 +1,5 @@
 //
-//  TMBOImageListCell.m
+//  TMBOUploadCell.m
 //  TMBO
 //
 //  Created by Scott Perry on 09/21/12.
@@ -12,34 +12,25 @@
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import "TMBOImageListCell.h"
+#import "TMBOUploadCell.h"
 
-@implementation TMBOImageListCell
-@synthesize thumbnailView;
-@synthesize filenameView;
-@synthesize uploaderView;
-@synthesize commentsView;
-@synthesize votesView;
-@synthesize spinner;
+static const CGFloat kXPadding = 4.0f;
 
-#define kXPadding 4.0f
+NSString * const kTMBOUploadCellName = @"TMBOUploadCell";
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
+@implementation TMBOUploadCell
 
 - (void)layoutSubviews;
 {
+    [super layoutSubviews];
+    
     CGSize cellSize = self.frame.size;
     CGRect frame, thumbFrame = [self.thumbnailView frame];
     
-    // votesView has height (as needed) and width (as needed) and anchors at (cellWidth - (votesViewWidth + padding), cellHeight - (votesViewHeight + padding)
-    UILabel *label = self.votesView;
+    // commentsView has height (as needed) and width (as needed) and anchors at (cellWidth - (commentsViewWidth + padding), cellHeight - (uploaderViewHeight + padding))
+    UILabel *label = self.commentsView;
     CGSize size = [[label text] sizeWithFont:[label font]];
-    
+
     frame.size = size;
     frame.size.height = 18.0f;
     frame.origin.x = cellSize.width - (frame.size.width + kXPadding);
@@ -47,20 +38,8 @@
     
     [label setFrame:frame];
     [label setContentMode:UIViewContentModeRedraw];
-
-    // commentsView has height (as needed) and width (as needed) and anchors at (cellWidth - (commentsViewWidth + padding), padding)
-    label = self.commentsView;
-    size = [[label text] sizeWithFont:[label font]];
-
-    frame.size = size;
-    frame.size.height = 18.0f;
-    frame.origin.x = cellSize.width - (frame.size.width + kXPadding);
-    frame.origin.y = 4.0f;
     
-    [label setFrame:frame];
-    [label setContentMode:UIViewContentModeRedraw];
-    
-    // uploaderView has height (as needed) and width (cellWidth - xAnchor - votesViewWidth - padding) and anchors at (thumbnailViewRightEdge + padding, cellHeight - (uploaderViewHeight + padding)
+    // uploaderView has height (as needed) and width (cellWidth - xAnchor - commentsViewWidth - padding) and anchors at (thumbnailViewRightEdge + padding, cellHeight - (uploaderViewHeight + padding))
     label = self.uploaderView;
     size = [[label text] sizeWithFont:[label font]];
 
@@ -68,12 +47,12 @@
     frame.origin.y = 23.0f;
     frame.size = size;
     frame.size.height = 18.0f;
-    frame.size.width = MIN(cellSize.width - (frame.origin.x + [self.votesView frame].size.width + kXPadding), frame.size.width);
+    frame.size.width = MIN(cellSize.width - (frame.origin.x + [self.commentsView frame].size.width + kXPadding), frame.size.width);
     
     [label setFrame:frame];
     [label setContentMode:UIViewContentModeRedraw];
     
-    // filenameView has height (as needed) and width (xAnchor - commentsViewXAnchor - padding) and anchors at (thumbnailViewWidth + padding, padding)
+    // filenameView has height (as needed) and width (cellWidth - (xAnchor + 2 * padding)) and anchors at (thumbnailViewWidth + padding, padding)
     label = self.filenameView;
     size = [[label text] sizeWithFont:[label font]];
 
@@ -81,7 +60,7 @@
     frame.origin.y = 3.0f;
     frame.size = size;
     frame.size.height = 20.0f;
-    frame.size.width = MIN(cellSize.width - (frame.origin.x + [self.commentsView frame].size.width + 5.0f), frame.size.width);
+    frame.size.width = MIN(cellSize.width - (frame.origin.x + 2.0f * kXPadding), frame.size.width);
     
     [label setFrame:frame];
     [label setContentMode:UIViewContentModeRedraw];
@@ -96,8 +75,8 @@
 {
     CGRect thumbFrame;
     thumbFrame.origin = CGPointZero;
-    thumbFrame.size.height = self.frame.size.height;
-    thumbFrame.size.width = 133.0f / 100.0f * self.frame.size.height;
+    thumbFrame.size.height = self.frame.size.height - 1.f;
+    thumbFrame.size.width = floor(133.0f / 100.0f * (self.frame.size.height - 1.f));
     [self.thumbnailView setFrame:thumbFrame];
     [self.thumbnailView setImage:nil];
     [self.spinner startAnimating];

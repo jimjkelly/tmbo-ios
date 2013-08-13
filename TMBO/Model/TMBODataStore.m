@@ -16,10 +16,12 @@
 
 #import <CoreData/CoreData.h>
 
-#import "AFHTTPRequestOperation.h"
+#import "AFNetworking.h"
 #import "ISO8601DateFormatter.h"
 #import "TMBOAPIClient.h"
-#import "TMBOUpload.h"
+#import "TMBORange.h"
+
+const NSUInteger kFirstUploadID = 112;
 
 @interface TMBODataStore ()
 {
@@ -45,9 +47,8 @@ static TMBODataStore *shared = nil;
 static const NSUInteger kQueryLimit = 50;
 
 @implementation TMBODataStore
-
-@synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize managedObjectModel = _managedObjectModel;
 @synthesize context = _context;
 @synthesize client = _client;
 
@@ -93,7 +94,7 @@ static const NSUInteger kQueryLimit = 50;
 {
     if (_managedObjectModel) return _managedObjectModel;
     
-    @synchronized(_managedObjectModel) {
+    @synchronized(self) {
         if (_managedObjectModel) return _managedObjectModel;
         
         NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"TMBO" withExtension:@"momd"];
@@ -107,7 +108,7 @@ static const NSUInteger kQueryLimit = 50;
 {
     if (_persistentStoreCoordinator) return _persistentStoreCoordinator;
     
-    @synchronized(_persistentStoreCoordinator) {
+    @synchronized(self) {
         if (_persistentStoreCoordinator) return _persistentStoreCoordinator;
         
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -129,7 +130,7 @@ static const NSUInteger kQueryLimit = 50;
 {
     if (_context) return _context;
     
-    @synchronized(_context) {
+    @synchronized(self) {
         if (_context) return _context;
 
         _context = [[NSManagedObjectContext alloc] init];
@@ -143,7 +144,7 @@ static const NSUInteger kQueryLimit = 50;
 {
     if (_client) return _client;
     
-    @synchronized(_client) {
+    @synchronized(self) {
         if (_client) return _client;
         
         _client = [TMBOAPIClient sharedClient];
@@ -181,7 +182,7 @@ static const NSUInteger kQueryLimit = 50;
         // Handle error in API call or parsing
         if ([result isKindOfClass:[NSError class]]) {
             NSError *error = (NSError *)result;
-            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            Log(@"API call returned error: %@", [error localizedDescription]);
             block(nil, error);
             return;
         }
@@ -193,13 +194,12 @@ static const NSUInteger kQueryLimit = 50;
 
 - (void)uploadsWithType:(kTMBOType)type before:(NSUInteger)before completion:(void (^)(NSArray *, NSError *))block;
 {
-    NotTested();
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         // Get the raw parsed data from the API call
         id rawData = nil;
         {
             NSString *method = @"getuploads";
-            NSMutableDictionary *args = [@{@"before" : @(before), @"limit" : @(kQueryLimit)} mutableCopy];
+            NSMutableDictionary *args = [@{@"max" : @(before), @"limit" : @(kQueryLimit)} mutableCopy];
             if ([self typeStringForType:type]) {
                 [args setObject:[self typeStringForType:type] forKey:@"type"];
             }
@@ -212,7 +212,7 @@ static const NSUInteger kQueryLimit = 50;
         // Handle error in API call or parsing
         if ([result isKindOfClass:[NSError class]]) {
             NSError *error = (NSError *)result;
-            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            Log(@"API call returned error: %@", [error localizedDescription]);
             block(nil, error);
             return;
         }
@@ -237,12 +237,13 @@ static const NSUInteger kQueryLimit = 50;
         }
         
         // Turn the parsed data into model objects
+        // TODO: possible for rawData to still be nil due to timeout?
         id result = [self parseUploadData:rawData];
         
         // Handle error in API call or parsing
         if ([result isKindOfClass:[NSError class]]) {
             NSError *error = (NSError *)result;
-            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            Log(@"API call returned error: %@", [error localizedDescription]);
             block(nil, error);
             return;
         }
@@ -252,13 +253,39 @@ static const NSUInteger kQueryLimit = 50;
     });
 }
 
-- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange)range completion:(void (^)(void))block;
+- (void)updateUploadsWithType:(kTMBOType)type inRange:(TMBORange *)range completion:(void (^)(NSError *))block;
 {
-    Assert(NO);
-    int64_t delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        block();
+    NotTested();
+    Assert(range.first < range.last);
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // Get the raw parsed data from the API call
+        id rawData = nil;
+        {
+            NSString *method = @"getuploads";
+            NSMutableDictionary *args = [@{
+                @"since" : @(range.first),
+                @"before" : @(range.last),
+                @"limit" : @(kQueryLimit)
+            } mutableCopy];
+            if ([self typeStringForType:type]) {
+                [args setObject:[self typeStringForType:type] forKey:@"type"];
+            }
+            rawData = [self callAPIMethod:method withArgs:args];
+        }
+        
+        // Turn the parsed data into model objects
+        id result = [self parseUploadData:rawData];
+        
+        // Handle error in API call or parsing
+        if ([result isKindOfClass:[NSError class]]) {
+            NSError *error = (NSError *)result;
+            Log(@"API call returned error: %@", [error localizedDescription]);
+            block(error);
+            return;
+        }
+        Assert([result isKindOfClass:[NSArray class]]);
+        
+        block(nil);
     });
 }
 
@@ -268,7 +295,7 @@ static const NSUInteger kQueryLimit = 50;
     int64_t delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        block(112, nil);
+        block(kFirstUploadID, nil);
     });
 }
 
@@ -291,7 +318,7 @@ static const NSUInteger kQueryLimit = 50;
         // Handle error in API call or parsing
         if ([result isKindOfClass:[NSError class]]) {
             NSError *error = (NSError *)result;
-            NSLog(@"API call returned error: %@", [error localizedDescription]);
+            Log(@"API call returned error: %@", [error localizedDescription]);
             block(error);
             return;
         }
@@ -307,7 +334,7 @@ static const NSUInteger kQueryLimit = 50;
          "last_used":"0000-00-00 00:00:00"
          }
          */
-        NSLog(@"Successfully generated token %@ for userid %@ for application \"%@\" on %@",
+        Log(@"Successfully generated token %@ for userid %@ for application \"%@\" on %@",
               [dict objectForKey:@"tokenid"], [dict objectForKey:@"userid"], [dict objectForKey:@"issued_to"], [dict objectForKey:@"issue_date"]);
         
         [[NSUserDefaults standardUserDefaults] setValue:[dict objectForKey:@"tokenid"] forKey:@"TMBOToken"];
@@ -330,8 +357,8 @@ static const NSUInteger kQueryLimit = 50;
 
 - (id)callAPIMethod:(NSString *)method withArgs:(NSDictionary *)args;
 {
+    // if Assert -> [[NSUserDefaults standardUserDefaults] setValue:<#(NSString *)token#> forKey:@"TMBOToken"]; [[NSUserDefaults standardUserDefaults] synchronize]; DebugBreak(); // <- Don't forget to re-comment this line and remove your token!
     Assert(kTMBOToken);
-    // if Assert -> [[NSUserDefaults standardUserDefaults] setValue:<#(NSString *)token#> forKey:@"TMBOToken"]; DebugBreak(); // <- Don't forget to re-comment this line and remove your token!
 
     // Return type for method should be json
     method = [method stringByAppendingString:@".json"];
@@ -373,8 +400,10 @@ static const NSUInteger kQueryLimit = 50;
              500 Internal Server Error - kaboom. Please report if reproducible.
              502 Bad Gateway - TMBO is down for maintenance. Please wait a few minutes and try your call again.
              503 Service Unavailable - Refusal. You have attempted to log in too many times in a rolling 30 minute period and you are blocked from any more attempts. Wait and try again later.
+             
+             Error Domain=NSURLErrorDomain Code=-1009 "The Internet connection appears to be offline." UserInfo=0x1d0611a0 {NSErrorFailingURLStringKey=https://thismight.be/offensive/api.php/getuploads.json?token=w9hcc1pvxalgwghgi85c0ddhrqviydsv&type=image&limit=50, NSErrorFailingURLKey=https://thismight.be/offensive/api.php/getuploads.json?token=w9hcc1pvxalgwghgi85c0ddhrqviydsv&type=image&limit=50, NSLocalizedDescription=The Internet connection appears to be offline., NSUnderlyingError=0x1c56d4e0 "The Internet connection appears to be offline."}
              */
-            NSLog(@"Error: %@ -> %@", operation, error);
+            Log(@"Error: %@ -> %@", operation, error);
             NotTested();
         }
         result = error;
@@ -413,7 +442,7 @@ static const NSUInteger kQueryLimit = 50;
         NSArray *array = [self.context executeFetchRequest:request error:&error];
         if (array == nil) {
             // Deal with error...
-            NSLog(@"array was nil?");
+            Log(@"array was nil?");
             NotTested();
         } else if ([array count]) {
             Assert([array count] == 1);
@@ -458,12 +487,12 @@ static const NSUInteger kQueryLimit = 50;
                 // do we need to save the device's current time zone?
                 NSDate *date = [[[ISO8601DateFormatter alloc] init] dateFromString:value];
                 if ([date compare:kDawnOfTime] == NSOrderedAscending) {
-                    NSLog(@"Parsed key %@ (%@) as date, got %@", varname, value, date);
+                    Log(@"Parsed key %@ (%@) as date, got %@", varname, value, date);
                     NotTested();
                 }
                 value = date;
             } else {
-                NSLog(@"Not handled: %@ should be of type %@, but is actually type %@", varname, [TMBOUpload typeFor:varname], [value class]);
+                Log(@"Not handled: %@ should be of type %@, but is actually type %@", varname, [TMBOUpload typeFor:varname], [value class]);
                 NotTested();
                 // The setter below will throw an exception.
             }

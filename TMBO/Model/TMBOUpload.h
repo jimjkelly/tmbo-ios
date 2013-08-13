@@ -15,9 +15,20 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import "AFNetworking.h"
+#import "TMBOObjectList.h"
+
 extern NSComparator kUploadComparator;
 
-@interface TMBOUpload : NSManagedObject
+typedef enum : NSUInteger {
+    kTMBOTypeImage  = 0x1,
+    kTMBOTypeTopic  = 0x2,
+    kTMBOTypeAudio  = 0x4,
+    kTMBOTypeAvatar = 0x8,
+    kTMBOTypeAny    = kTMBOTypeImage | kTMBOTypeTopic | kTMBOTypeAudio | kTMBOTypeAvatar
+} kTMBOType;
+
+@interface TMBOUpload : NSManagedObject <TMBOObject>
 
 @property (nonatomic, retain) NSNumber * badVotes;
 @property (nonatomic, retain) NSNumber * comments;
@@ -43,9 +54,11 @@ extern NSComparator kUploadComparator;
 
 @property (nonatomic, retain) UIImage *thumbnail;
 
-// TODO: - (TMBOUpload *)prev;
-// TODO: - (TMBOUpload *)next;
-
 + (Class)typeFor:(NSString *)varname;
+- (kTMBOType)kindOfUpload;
 
+- (void)refreshThumbnailWithMinimumSize:(CGSize)thumbsize;
+- (void)getFileWithSuccess:(void ( ^ ) ( AFHTTPRequestOperation *operation , id responseObject ))success
+                   failure:(void ( ^ ) ( AFHTTPRequestOperation *operation , NSError *error ))failure
+                  progress:(void ( ^ ) ( NSUInteger bytesRead , long long totalBytesRead , long long totalBytesExpectedToRead ))progress;
 @end
