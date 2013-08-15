@@ -67,7 +67,10 @@
             
             Assert([responseObject isKindOfClass:[NSData class]]);
             NSData *responseData = (NSData *)responseObject;
-            UIView *contentView = [NNAnimatedGIFView imageViewForData:responseData];
+            // TODO: restore animated gif capabilities
+            //UIView *contentView = [NNAnimatedGIFView imageViewForData:responseData];
+            UIImage *image = [[UIImage alloc] initWithData:responseData];
+            UIView *contentView = [[UIImageView alloc] initWithImage:image];
             Assert([contentView isKindOfClass:[UIImageView class]] || [contentView isKindOfClass:[NNAnimatedGIFView class]]);
             self.imageSize = [(id<TMBOImageSize>)contentView imageSize];
             self.scrollView.contentView = contentView;

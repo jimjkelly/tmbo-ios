@@ -8,8 +8,7 @@
 
 #import "TMBOLoginViewController.h"
 
-#import "TMBOAPIClient.h"
-#import "TMBOJSONRequestOperation.h"
+#import "TMBODataStore.h"
 
 @interface TMBOLoginViewController ()
 
@@ -22,17 +21,26 @@
     self.activity.hidden = NO;
     [self.activity startAnimating];
     
-    TMBOAPIClient *api = [TMBOAPIClient sharedClient];
-    NSURLRequest *request = [api requestLoginTokenForUsername:[self.username text] andPassword:[self.password text]];
-    TMBOJSONRequestOperation *operation = [TMBOJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSLog(@"Got token: %@", [JSON valueForKey:@"tokenid"]);
-        [[NSUserDefaults standardUserDefaults] setValue:[JSON valueForKey:@"tokenid"] forKey:@"TMBOToken"];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"Failure: %@", error);
-        [self loginFailed];
+    __block TMBOLoginViewController *blockSafeLoginVCSelf = self;
+    
+    [[TMBODataStore sharedStore] authenticateUsername:[self.username text] password:[self.password text] completion:^(NSError *error){
+        if (error) {
+            // TODO: Better handle error conditions
+            NSLog(@"Error authenticating: %@", error);
+            [blockSafeLoginVCSelf loginFailed];
+        } else {
+            [blockSafeLoginVCSelf closeLoginWindow];
+            [[blockSafeLoginVCSelf.navigationController topViewController] reloadInputViews];
+        }
     }];
-    [operation start];
+}
+
+- (void)closeLoginWindow {
+    if([NSThread isMainThread]) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self performSelectorOnMainThread:@selector(closeLoginWindow) withObject:nil waitUntilDone:YES];
+    }
 }
 
 - (void)loginFailed {

@@ -13,15 +13,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/NSFetchRequest.h>
 
 #import "AFHTTPClient.h"
 
 @interface TMBOAPIClient : AFHTTPClient
 
 + (TMBOAPIClient *)sharedClient;
-<<<<<<< HEAD
 - (NSURLRequest *)requestLoginTokenForUsername:(NSString *)username andPassword:(NSString *)password;
-=======
 
->>>>>>> upstream/develop
 @end

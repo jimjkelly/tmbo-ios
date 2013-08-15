@@ -11,6 +11,8 @@
 		5D40605E16112AAB00EA0F5E /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605D16112AAB00EA0F5E /* Icon-57.png */; };
 		5D40606016112AB900EA0F5E /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605F16112AB900EA0F5E /* Icon-144.png */; };
 		5D40606216112ABF00EA0F5E /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40606116112ABF00EA0F5E /* Icon-72.png */; };
+		5D75CEFC17BB4ADF007456BC /* TMBOLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1B34D81611402800DDBAE2 /* TMBOLoginViewController.xib */; };
+		5D75CEFD17BB4B3D007456BC /* TMBOLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1B34D71611402800DDBAE2 /* TMBOLoginViewController.m */; };
 		BC2B7B441634FEA90056325D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5E8160AA21400FE4AA5 /* UIKit.framework */; };
 		BC2B7B451634FEA90056325D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EA160AA21400FE4AA5 /* Foundation.framework */; };
 		BC2B7B461634FEA90056325D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2FF5EC160AA21400FE4AA5 /* CoreGraphics.framework */; };
@@ -759,11 +761,11 @@
 				BC2F21BB160D432900C28105 /* th-filtered.png in Resources */,
 				BC2F21BC160D432900C28105 /* th-filtered@2x.png in Resources */,
 				BC2F21E7160E52ED00C28105 /* TMBOImageDetailViewController.xib in Resources */,
+				5D75CEFC17BB4ADF007456BC /* TMBOLoginViewController.xib in Resources */,
 				5D40605B16112A9C00EA0F5E /* Icon-114.png in Resources */,
 				5D40605E16112AAB00EA0F5E /* Icon-57.png in Resources */,
 				5D40606016112AB900EA0F5E /* Icon-144.png in Resources */,
 				5D40606216112ABF00EA0F5E /* Icon-72.png in Resources */,
-				5D1B34DA1611402800DDBAE2 /* TMBOLoginViewController.xib in Resources */,
 				BCB4EC08162207BB00048C42 /* TMBOLoadingCell.xib in Resources */,
 				BC599151162D1C900044BC63 /* cellSeparator.png in Resources */,
 				BC599152162D1C900044BC63 /* cellSeparator@2x.png in Resources */,
@@ -824,7 +826,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Frameworks/Crashlytics.framework/run eff98601e169f1338233242f16fb6b59edf0cf8c";
+			shellScript = "#./Frameworks/Crashlytics.framework/run eff98601e169f1338233242f16fb6b59edf0cf8c";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -863,8 +865,8 @@
 				BC2F21B7160D236D00C28105 /* UIImage+Alpha.m in Sources */,
 				BC2F21B8160D236D00C28105 /* UIImage+RoundedCorner.m in Sources */,
 				BC2F21E1160E506F00C28105 /* TMBOImageDetailViewController.m in Sources */,
+				5D75CEFD17BB4B3D007456BC /* TMBOLoginViewController.m in Sources */,
 				BC2F21EE160E729200C28105 /* TMBOImageScrollView.m in Sources */,
-				5D1B34D91611402800DDBAE2 /* TMBOLoginViewController.m in Sources */,
 				BC97BD9B161372E100A3676A /* TMBODataStore.m in Sources */,
 				BC97BD9E1613A2D300A3676A /* TMBOUpload.m in Sources */,
 				BC97BDA11613AAE400A3676A /* TMBOAPIClient.m in Sources */,

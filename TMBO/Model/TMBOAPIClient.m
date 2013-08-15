@@ -26,12 +26,7 @@ static TMBOAPIClient *_sharedClient = nil;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-<<<<<<< HEAD
-        _sharedClient = [[self alloc] initWithBaseURL:kTMBOAPIBaseURL];
-        [_sharedClient setDefaultHeader:@"User-Agent" value:kTMBOUserAgent];
-=======
         _sharedClient = [[TMBOAPIClient alloc] initWithBaseURL:kTMBOAPIBaseURL];
->>>>>>> upstream/develop
     });
 }
 
@@ -47,7 +42,6 @@ static TMBOAPIClient *_sharedClient = nil;
     
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
     
-<<<<<<< HEAD
     return self;
 }
 
@@ -138,7 +132,7 @@ static TMBOAPIClient *_sharedClient = nil;
 
     // TMBO API only returns up to 200 items at a time
     Assert([fetchRequest fetchLimit] <= 200);
-    [args setObject:[NSString stringWithFormat:@"%u", [fetchRequest fetchLimit]] forKey:@"limit"];
+    [args setObject:[NSString stringWithFormat:@"%lu", (unsigned long)[fetchRequest fetchLimit]] forKey:@"limit"];
 
     if ([fetchRequest.entityName isEqualToString:@"Upload"]) {
         mutableURLRequest = [self requestWithMethod:@"GET" path:@"getuploads.json" parameters:args];
@@ -147,7 +141,7 @@ static TMBOAPIClient *_sharedClient = nil;
     NSLog(@"API request: %@", [[mutableURLRequest URL] absoluteString]);
     return mutableURLRequest;
 }
-
+/*
 #define becomes(jsonkey, managedkey) [mutablePropertyValues setValue:[representation valueForKey:(jsonkey)] forKey:(managedkey)]
 - (NSDictionary *)attributesForRepresentation:(NSDictionary *)representation
                                      ofEntity:(NSEntityDescription *)entity
@@ -164,11 +158,10 @@ static TMBOAPIClient *_sharedClient = nil;
         becomes(@"vote_tmbo", @"tmboVotes");
         becomes(@"id", @"uploadid");
     }
-=======
+
     [self setDefaultHeader:@"User-Agent" value:kTMBOUserAgent];
->>>>>>> upstream/develop
     
     return self;
-}
+}*/
 
 @end

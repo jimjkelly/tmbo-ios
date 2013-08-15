@@ -19,6 +19,7 @@
 
 #import "AFNetworkActivityIndicatorManager.h"
 #import "TMBOUploadListViewController.h"
+#import "TMBOLoginViewController.h"
 #import "TMBODataStore.h"
 #import "TMBOUpload.h"
 
@@ -46,11 +47,12 @@
     [navController setNavigationBarHidden:YES];
     [[self window] setRootViewController:navController];
     
-    // Register for auth failure callbacks
-    [[TMBODataStore sharedStore] setAuthFailureTarget:self selector:@selector(authFailed)];
-    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    // Register for auth failure callbacks
+    [[TMBODataStore sharedStore] setAuthFailureTarget:[[UIApplication sharedApplication] delegate] selector:@selector(authFailed)];
+    
     return YES;
 }
 
@@ -86,10 +88,8 @@
 
 - (void)authFailed;
 {
-    // TODO: push a modal dialog and do not clear it until the NSError parameter to the auth callback is nil.
-//    [[TMBODataStore sharedStore] authenticateUsername:<#(NSString *)#> password:<#(NSString *)#> completion:^(NSError *error) {
-//        <#code#>
-//    }];
+    TMBOLoginViewController *loginVC = [[TMBOLoginViewController alloc] init];
+    [navController presentViewController:loginVC animated:YES completion:nil];
 }
 
 @end
