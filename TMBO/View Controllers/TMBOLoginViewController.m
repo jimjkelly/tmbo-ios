@@ -21,17 +21,15 @@
     self.loginError.hidden = YES;
     self.activity.hidden = NO;
     [self.activity startAnimating];
-    
-    __block TMBOLoginViewController *blockSafeLoginVCSelf = self;
-    
+        
     [[TMBODataStore sharedStore] authenticateUsername:[self.username text] password:[self.password text] completion:^(NSError *error){
         if (error) {
             // TODO: Better handle error conditions
             NSLog(@"Error authenticating: %@", error);
-            [blockSafeLoginVCSelf loginFailed];
+            [self loginFailed];
         } else {
-            [blockSafeLoginVCSelf closeLoginWindow];
-            [blockSafeLoginVCSelf.refreshTarget performSelector:self.action];
+            [self closeLoginWindow];
+            [self.refreshTarget performSelector:self.action];
         }
     }];
 }
