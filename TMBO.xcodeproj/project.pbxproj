@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D2F12B517BF2E7E00FDA1FF /* version.sh in Resources */ = {isa = PBXBuildFile; fileRef = 5D2F12B417BF2E7E00FDA1FF /* version.sh */; };
 		5D40605B16112A9C00EA0F5E /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605A16112A9C00EA0F5E /* Icon-114.png */; };
 		5D40605E16112AAB00EA0F5E /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605D16112AAB00EA0F5E /* Icon-57.png */; };
 		5D40606016112AB900EA0F5E /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D40605F16112AB900EA0F5E /* Icon-144.png */; };
@@ -119,6 +120,7 @@
 		5D1B34D61611402800DDBAE2 /* TMBOLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TMBOLoginViewController.h; path = "View Controllers/TMBOLoginViewController.h"; sourceTree = "<group>"; };
 		5D1B34D71611402800DDBAE2 /* TMBOLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TMBOLoginViewController.m; path = "View Controllers/TMBOLoginViewController.m"; sourceTree = "<group>"; };
 		5D1B34D81611402800DDBAE2 /* TMBOLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TMBOLoginViewController.xib; path = "View Controllers/TMBOLoginViewController.xib"; sourceTree = "<group>"; };
+		5D2F12B417BF2E7E00FDA1FF /* version.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = version.sh; sourceTree = "<group>"; };
 		5D40605A16112A9C00EA0F5E /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
 		5D40605D16112AAB00EA0F5E /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-57.png"; sourceTree = "<group>"; };
 		5D40605F16112AB900EA0F5E /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-144.png"; sourceTree = "<group>"; };
@@ -477,6 +479,7 @@
 				BC2FF5F1160AA21400FE4AA5 /* InfoPlist.strings */,
 				BC2FF5F4160AA21400FE4AA5 /* main.m */,
 				BC2FF5F6160AA21400FE4AA5 /* TMBO-Prefix.pch */,
+				5D2F12B417BF2E7E00FDA1FF /* version.sh */,
 				BC2FF5FA160AA21400FE4AA5 /* Default.png */,
 				BC2FF5FC160AA21400FE4AA5 /* Default@2x.png */,
 				BC2FF5FE160AA21400FE4AA5 /* Default-568h@2x.png */,
@@ -674,6 +677,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BC2FF617160AA21500FE4AA5 /* Build configuration list for PBXNativeTarget "TMBO" */;
 			buildPhases = (
+				5D2F12B617BF2E9D00FDA1FF /* ShellScript */,
 				BC2FF5E0160AA21400FE4AA5 /* Sources */,
 				BC2FF5E1160AA21400FE4AA5 /* Frameworks */,
 				BC2FF5E2160AA21400FE4AA5 /* Resources */,
@@ -775,6 +779,7 @@
 				BC59915A162D1C970044BC63 /* tornTop@2x.png in Resources */,
 				BC59915E162D23950044BC63 /* linenbackground.png in Resources */,
 				BC59915F162D23950044BC63 /* linenbackground@2x.png in Resources */,
+				5D2F12B517BF2E7E00FDA1FF /* version.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -789,6 +794,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5D2F12B617BF2E9D00FDA1FF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PROJECT_DIR}/TMBO/version.sh\"";
+		};
 		BC2F210F160B8DDF00C28105 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
