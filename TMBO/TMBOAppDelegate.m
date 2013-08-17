@@ -88,7 +88,7 @@
 
 - (void)authFailed;
 {
-    TMBOLoginViewController *loginVC = [[TMBOLoginViewController alloc] init];
+    TMBOLoginViewController *loginVC = [[TMBOLoginViewController alloc] initWithRefreshTarget:[navController topViewController] action:@selector(refreshControlEvent)];
     [navController presentViewController:loginVC animated:YES completion:nil];
 }
 

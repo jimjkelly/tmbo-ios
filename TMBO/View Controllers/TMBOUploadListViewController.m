@@ -289,8 +289,9 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
 
 #pragma mark Target-action for UIRefreshControl
 
-- (void)refreshControlEvent:(UIRefreshControl *)refreshControl;
+- (void)refreshControlEvent;
 {
+    NSLog(@"foobar");
     [self.topRefresh beginRefreshing];
     [self _loadUploadsForRange:[TMBORange rangeWithFirst:kFirstUploadID last:NSIntegerMax]];
 }
@@ -394,7 +395,7 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
 
             // Set up pull-to-refresh
             self.topRefresh = [[UIRefreshControl alloc] init];
-            [self.topRefresh addTarget:self action:@selector(refreshControlEvent:) forControlEvents:UIControlEventValueChanged];
+            [self.topRefresh addTarget:self action:@selector(refreshControlEvent) forControlEvents:UIControlEventValueChanged];
             [self setRefreshControl:self.topRefresh];
             [[self view] addSubview:self.topRefresh];
             

@@ -11,7 +11,8 @@
 #import "TMBODataStore.h"
 
 @interface TMBOLoginViewController ()
-
+@property (nonatomic, strong) id refreshTarget;
+@property (nonatomic, assign) SEL action;
 @end
 
 @implementation TMBOLoginViewController
@@ -30,7 +31,7 @@
             [blockSafeLoginVCSelf loginFailed];
         } else {
             [blockSafeLoginVCSelf closeLoginWindow];
-            [[blockSafeLoginVCSelf.navigationController topViewController] reloadInputViews];
+            [blockSafeLoginVCSelf.refreshTarget performSelector:self.action];
         }
     }];
 }
@@ -56,6 +57,16 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+    }
+    return self;
+}
+
+// Used to store a refresh target after login
+- (id)initWithRefreshTarget:(id)target action:(SEL)action {
+    self = [super init];
+    if (self) {
+        self.refreshTarget = target;
+        self.action = action;
     }
     return self;
 }

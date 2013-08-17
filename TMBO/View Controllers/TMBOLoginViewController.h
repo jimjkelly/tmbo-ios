@@ -13,4 +13,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *password;
 @property (weak, nonatomic) IBOutlet UILabel *loginError;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activity;
+
+- (id)initWithRefreshTarget:(id)target action:(SEL)action;
+
 @end
