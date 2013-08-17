@@ -1070,6 +1070,7 @@
 		BC2FF618160AA21500FE4AA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: James Kelly (4YQD9SZ5JF)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1079,6 +1080,7 @@
 				GCC_PREFIX_HEADER = "TMBO/TMBO-Prefix.pch";
 				INFOPLIST_FILE = "TMBO/TMBO-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "536E7BF0-F867-4E9A-8F8B-F0882489306A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1086,6 +1088,7 @@
 		BC2FF619160AA21500FE4AA5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: James Kelly (4YQD9SZ5JF)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1095,6 +1098,7 @@
 				GCC_PREFIX_HEADER = "TMBO/TMBO-Prefix.pch";
 				INFOPLIST_FILE = "TMBO/TMBO-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "536E7BF0-F867-4E9A-8F8B-F0882489306A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
