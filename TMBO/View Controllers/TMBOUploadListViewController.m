@@ -291,7 +291,6 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
 
 - (void)refreshControlEvent;
 {
-    NSLog(@"foobar");
     [self.topRefresh beginRefreshing];
     [self _loadUploadsForRange:[TMBORange rangeWithFirst:kFirstUploadID last:NSIntegerMax]];
 }
