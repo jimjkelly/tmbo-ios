@@ -48,9 +48,24 @@
     [super viewDidLoad];
     
     // TODO: do a better job of managing the navigation controller than this. menu bar overlay that shows on tap?
-    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
-    [swipe setDirection: UISwipeGestureRecognizerDirectionUp];
-    [self.view addGestureRecognizer:swipe];
+    UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    [swipeUp setDirection:UISwipeGestureRecognizerDirectionUp];
+    [self.view addGestureRecognizer:swipeUp];
+    
+    UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    [swipeDown setDirection:UISwipeGestureRecognizerDirectionDown];
+    [self.view addGestureRecognizer:swipeDown];
+    
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:swipeRight];
+    
+    [self getAndShowUpload];
+}
+
+- (void)getAndShowUpload {
+    // unload any existing view
+    [self.scrollView.contentView removeFromSuperview];
     
     // Loading!
     [self.spinner startAnimating];
@@ -71,6 +86,7 @@
             //UIView *contentView = [NNAnimatedGIFView imageViewForData:responseData];
             UIImage *image = [[UIImage alloc] initWithData:responseData];
             UIView *contentView = [[UIImageView alloc] initWithImage:image];
+            [contentView setUserInteractionEnabled:YES];
             Assert([contentView isKindOfClass:[UIImageView class]] || [contentView isKindOfClass:[NNAnimatedGIFView class]]);
             self.imageSize = [(id<TMBOImageSize>)contentView imageSize];
             self.scrollView.contentView = contentView;
@@ -93,6 +109,8 @@
         }
     }];
 }
+
+// Maybe handle this directly in here?
 
 - (void)viewWillAppear:(BOOL)animated;
 {
@@ -133,9 +151,20 @@
 
 #pragma mark - Gesture recognition
 
-- (void)swipe:(UISwipeGestureRecognizer *)swipe;
-{
-    if ([swipe direction] == UISwipeGestureRecognizerDirectionUp) {
+- (void)swipe:(UISwipeGestureRecognizer *)swipe {
+    if ([swipe direction] == UISwipeGestureRecognizerDirectionUp || [swipe direction] == UISwipeGestureRecognizerDirectionDown) {
+        NSLog(@"ohai");
+        TMBOUpload *nextUpload = [self.delegate respondTo:[swipe direction] from:[self upload]];
+        
+        if (nextUpload == self.upload) {
+            // We've reached the end of the internet
+            [self.navigationController popViewControllerAnimated:YES];
+        } else {
+            self.upload = nextUpload;
+        }
+        
+        [self getAndShowUpload];
+    } else if ([swipe direction] == UISwipeGestureRecognizerDirectionRight) {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
