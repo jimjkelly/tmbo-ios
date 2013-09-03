@@ -177,7 +177,7 @@
 		BC2FF5FA160AA21400FE4AA5 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		BC2FF5FC160AA21400FE4AA5 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BC2FF5FE160AA21400FE4AA5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		BC2FF605160AA21500FE4AA5 /* TMBOTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TMBOTests.octest; path = "TMBO-OCUnit.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC2FF605160AA21500FE4AA5 /* TMBO-OCUnit.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TMBO-OCUnit.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2FF606160AA21500FE4AA5 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		BC2FF60E160AA21500FE4AA5 /* TMBOTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TMBOTests-Info.plist"; sourceTree = "<group>"; };
 		BC2FF610160AA21500FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -432,7 +432,7 @@
 			isa = PBXGroup;
 			children = (
 				BC2FF5E4160AA21400FE4AA5 /* TMBO.app */,
-				BC2FF605160AA21500FE4AA5 /* TMBOTests.octest */,
+				BC2FF605160AA21500FE4AA5 /* TMBO-OCUnit.octest */,
 				BC2B7B421634FEA90056325D /* TMBO-GHUnit.app */,
 			);
 			name = Products;
@@ -709,7 +709,7 @@
 			);
 			name = "TMBO-OCUnit";
 			productName = TMBOTests;
-			productReference = BC2FF605160AA21500FE4AA5 /* TMBOTests.octest */;
+			productReference = BC2FF605160AA21500FE4AA5 /* TMBO-OCUnit.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
