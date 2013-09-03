@@ -90,12 +90,6 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = 45.0f;
     
-    //UIImage *background = [UIImage imageNamed:@"linenbackground"];
-    //Assert(background);
-    //UIImageView *backgroundView = [[UIImageView alloc] initWithImage:background];
-    //backgroundView.contentMode = UIViewContentModeCenter;
-    //self.tableView.backgroundView = backgroundView;
-    
     // TODO: persistent store
     //[self _addUploads:[[TMBODataStore sharedStore] cachedUploadsWithType:self.type near:<#lastposition#>]];
 

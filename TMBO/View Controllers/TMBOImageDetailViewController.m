@@ -48,15 +48,15 @@
     [super viewDidLoad];
     
     // TODO: do a better job of managing the navigation controller than this. menu bar overlay that shows on tap?
-    UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUp:)];
+    UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     [swipeUp setDirection:UISwipeGestureRecognizerDirectionUp];
     [self.view addGestureRecognizer:swipeUp];
     
-    UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeDown:)];
+    UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     [swipeDown setDirection:UISwipeGestureRecognizerDirectionDown];
     [self.view addGestureRecognizer:swipeDown];
     
-    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight:)];
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer:swipeRight];
     
@@ -151,8 +151,9 @@
 
 #pragma mark - Gesture recognition
 
-- (void)swipeUp:(UISwipeGestureRecognizer *)swipe {
-    if ([swipe direction] == UISwipeGestureRecognizerDirectionUp) {
+- (void)swipe:(UISwipeGestureRecognizer *)swipe {
+    if ([swipe direction] == UISwipeGestureRecognizerDirectionUp || [swipe direction] == UISwipeGestureRecognizerDirectionDown) {
+        NSLog(@"ohai");
         TMBOUpload *nextUpload = [self.delegate respondTo:[swipe direction] from:[self upload]];
         
         if (nextUpload == self.upload) {
@@ -163,26 +164,7 @@
         }
         
         [self getAndShowUpload];
-    }
-}
-
-- (void)swipeDown:(UISwipeGestureRecognizer *)swipe {
-    if ([swipe direction] == UISwipeGestureRecognizerDirectionDown) {
-        TMBOUpload *nextUpload = [self.delegate respondTo:[swipe direction] from:[self upload]];
-        
-        if (nextUpload == self.upload) {
-            // We've reached the end of the internet.
-            [self.navigationController popViewControllerAnimated:YES];
-        } else {
-            self.upload = nextUpload;
-        }
-        
-        [self getAndShowUpload];
-    }
-}
-
-- (void)swipeRight:(UISwipeGestureRecognizer *)swipe {
-    if ([swipe direction] == UISwipeGestureRecognizerDirectionRight) {
+    } else if ([swipe direction] == UISwipeGestureRecognizerDirectionRight) {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
