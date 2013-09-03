@@ -15,7 +15,14 @@
 #import <UIKit/UIKit.h>
 
 @class TMBOUpload;
+@class TMBOUploadDetailViewController;
+@protocol TMBOUploadDetailViewControllerDelegate <NSObject>
+@optional
+- (TMBOUpload *)respondTo:(UISwipeGestureRecognizerDirection)swipe from:(TMBOUpload *)upload;
+@end
+
 
 @interface TMBOUploadDetailViewController : UIViewController
 @property (nonatomic, strong) TMBOUpload *upload;
+@property (nonatomic, assign) id <TMBOUploadDetailViewControllerDelegate> delegate;
 @end

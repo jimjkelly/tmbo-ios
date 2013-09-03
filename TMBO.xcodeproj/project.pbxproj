@@ -177,7 +177,7 @@
 		BC2FF5FA160AA21400FE4AA5 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		BC2FF5FC160AA21400FE4AA5 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BC2FF5FE160AA21400FE4AA5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		BC2FF605160AA21500FE4AA5 /* TMBOTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TMBOTests.octest; path = "TMBO-OCUnit.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC2FF605160AA21500FE4AA5 /* TMBO-OCUnit.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TMBO-OCUnit.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC2FF606160AA21500FE4AA5 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		BC2FF60E160AA21500FE4AA5 /* TMBOTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TMBOTests-Info.plist"; sourceTree = "<group>"; };
 		BC2FF610160AA21500FE4AA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -432,7 +432,7 @@
 			isa = PBXGroup;
 			children = (
 				BC2FF5E4160AA21400FE4AA5 /* TMBO.app */,
-				BC2FF605160AA21500FE4AA5 /* TMBOTests.octest */,
+				BC2FF605160AA21500FE4AA5 /* TMBO-OCUnit.octest */,
 				BC2B7B421634FEA90056325D /* TMBO-GHUnit.app */,
 			);
 			name = Products;
@@ -709,7 +709,7 @@
 			);
 			name = "TMBO-OCUnit";
 			productName = TMBOTests;
-			productReference = BC2FF605160AA21500FE4AA5 /* TMBOTests.octest */;
+			productReference = BC2FF605160AA21500FE4AA5 /* TMBO-OCUnit.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -721,6 +721,11 @@
 				CLASSPREFIX = TMBO;
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Scott Perry";
+				TargetAttributes = {
+					BC2FF5E3160AA21400FE4AA5 = {
+						DevelopmentTeam = 4YQD9SZ5JF;
+					};
+				};
 			};
 			buildConfigurationList = BC2FF5DE160AA21400FE4AA5 /* Build configuration list for PBXProject "TMBO" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1070,7 +1075,8 @@
 		BC2FF618160AA21500FE4AA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: James Kelly (4YQD9SZ5JF)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1079,8 +1085,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TMBO/TMBO-Prefix.pch";
 				INFOPLIST_FILE = "TMBO/TMBO-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "536E7BF0-F867-4E9A-8F8B-F0882489306A";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1088,7 +1095,8 @@
 		BC2FF619160AA21500FE4AA5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: James Kelly (4YQD9SZ5JF)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1097,8 +1105,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TMBO/TMBO-Prefix.pch";
 				INFOPLIST_FILE = "TMBO/TMBO-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "536E7BF0-F867-4E9A-8F8B-F0882489306A";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

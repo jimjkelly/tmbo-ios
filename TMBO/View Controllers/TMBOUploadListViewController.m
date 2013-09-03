@@ -90,12 +90,6 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = 45.0f;
     
-    UIImage *background = [UIImage imageNamed:@"linenbackground"];
-    Assert(background);
-    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:background];
-    backgroundView.contentMode = UIViewContentModeCenter;
-    self.tableView.backgroundView = backgroundView;
-    
     // TODO: persistent store
     //[self _addUploads:[[TMBODataStore sharedStore] cachedUploadsWithType:self.type near:<#lastposition#>]];
 
@@ -261,22 +255,10 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
     } else {
         Assert([[self.uploads.items objectAtIndex:indexPath.row] isKindOfClass:[TMBOUpload class]]);
         TMBOUpload *upload = [self.uploads.items objectAtIndex:[indexPath row]];
-        TMBOUploadDetailViewController *detailView = nil;
-        switch ([upload kindOfUpload]) {
-            case kTMBOTypeImage:
-                detailView = [[TMBOImageDetailViewController alloc] init];
-                break;
-                
-            // Other upload types go here…
-                
-            default:
-                break;
-        }
-
-        if (detailView) {
-            [detailView setUpload:upload];
-            [self.navigationController pushViewController:detailView animated:YES];
-        } else {
+        
+        // Show the detail view of the upload, and if that fails (commonly due to not
+        // having a detail view for this type), then delsect our row in the tableview.
+        if (![self _displayDetailViewOf:upload]) {
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         }
     }
@@ -293,6 +275,28 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
 {
     [self.topRefresh beginRefreshing];
     [self _loadUploadsForRange:[TMBORange rangeWithFirst:kFirstUploadID last:NSIntegerMax]];
+}
+
+#pragma mark Handle delegated swipe
+
+- (TMBOUpload *)respondTo:(UISwipeGestureRecognizerDirection)swipe from:(TMBOUpload *)upload {
+    // Pop the currently displayed upload off.
+    //[self.navigationController popViewControllerAnimated:YES];
+
+    NSInteger currentUploadIndex = [self.uploads.items indexOfObject:upload];
+    
+    if (swipe == UISwipeGestureRecognizerDirectionUp) {
+        if (currentUploadIndex <= self.uploads.items.count) {
+            return [self.uploads.items objectAtIndex:++currentUploadIndex];
+        }
+    } else if (swipe == UISwipeGestureRecognizerDirectionDown) {
+        if (currentUploadIndex > 0) {
+            return [self.uploads.items objectAtIndex:--currentUploadIndex];
+        }
+    }
+    
+    // If we somehow ended up here... just return the same upload
+    return upload;
 }
 
 #pragma mark KVO notifications for updating upload cells
@@ -446,6 +450,33 @@ static void *kUploadCommentsContext = (void *)"TMBOUploadCommentsContext";
             [self.tableView setContentOffset:offset animated:NO];
         }
     });
+}
+
+// Show the detail view of an upload, return true for success
+// and false for failure to display a detailView
+- (BOOL)_displayDetailViewOf:(TMBOUpload *)upload {
+    TMBOUploadDetailViewController *detailView = nil;
+    switch ([upload kindOfUpload]) {
+        case kTMBOTypeImage:
+            detailView = [[TMBOImageDetailViewController alloc] init];
+            break;
+            
+            // Other upload types go here…
+            
+        default:
+            break;
+    }
+    
+    if (detailView) {
+        [detailView setUpload:upload];
+        [detailView setDelegate:self];
+        [self.navigationController pushViewController:detailView animated:YES];
+        return true;
+    }
+    
+    // If we haven't shown a detailView and returned above, we should default to false,
+    // indicating we haven't shown a detailView.
+    return false;
 }
 
 @end
